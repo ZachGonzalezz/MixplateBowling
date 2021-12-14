@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
 
   Widget build(BuildContext context) {
      if(length == 0){
-    length = Constants.sizeOfScreen.width * 0.4;
+    length = MediaQuery.of(context).size.width * 0.4;
   }
     return TextButton(
       onPressed: onClicked,

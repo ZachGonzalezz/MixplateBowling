@@ -3,8 +3,8 @@ import 'package:lois_bowling_website/NavigationBar/navigation_row.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class NavigationBar extends StatelessWidget {
-  NavigationBar({ Key? key, required this.selected }) : super(key: key);
+class CustomNavigationBar extends StatelessWidget {
+  CustomNavigationBar({ Key? key, required this.selected }) : super(key: key);
 
   String selected;
   @override

@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
 import 'package:lois_bowling_website/constants.dart';
@@ -5,8 +6,11 @@ import 'package:lois_bowling_website/constants.dart';
 class TournamentSelectBrain{
 
   Future<List<TournamentSelection>> getTournaments() async{
+    
     List<TournamentSelection> tournaments = [];
 
+   await Future.delayed(Duration(milliseconds: 500));
+  //  print(FirebaseAuth.instance.currentUser?.email);
    await Constants.dataBase.collection('Users').doc(Constants.currentSignedInEmail).collection('Tournaments').get().then((querySnapshot) {
 
      querySnapshot.docs.forEach((doc) {

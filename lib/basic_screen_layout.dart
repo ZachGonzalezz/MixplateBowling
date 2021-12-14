@@ -20,7 +20,7 @@ class ScreenLayout extends StatelessWidget {
               Positioned.fill(
                 left:  MediaQuery.of(context).size.width * 0.15,
                 child: Image.asset('images/background.png', fit: BoxFit.fill,)),
-                      NavigationBar(selected: selected,),
+                      CustomNavigationBar(selected: selected,),
        
               Positioned.fill(
                 left:  MediaQuery.of(context).size.width * 0.15,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/constants.dart';
 
 // ignore: must_be_immutable
 class TextFieldCustom extends StatelessWidget {
@@ -11,7 +10,7 @@ class TextFieldCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: Constants.sizeOfScreen.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.4,
       child: Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(10),

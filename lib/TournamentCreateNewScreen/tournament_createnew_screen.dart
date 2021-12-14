@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/LoginScreen/text_field.dart';
 import 'package:lois_bowling_website/TournamentCreateNewScreen/share_popup.dart';
 import 'package:lois_bowling_website/TournamentCreateNewScreen/tournament_create_brain.dart';
 import 'package:lois_bowling_website/constants.dart';
-  import 'package:intl/intl.dart';
 
 class TournamentCreatenewScreen extends StatefulWidget {
    TournamentCreatenewScreen({Key? key}) : super(key: key);
@@ -42,9 +42,9 @@ String nameOfTournament = '';
               Positioned.fill(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                      Constants.sizeOfScreen.width * 0.2,
-                      Constants.sizeOfScreen.height * 0.1,
-                      Constants.sizeOfScreen.width * 0.2,
+                      MediaQuery.of(context).size.width * 0.2,
+                      MediaQuery.of(context).size.height * 0.1,
+                      MediaQuery.of(context).size.width * 0.2,
                       0),
                   child: Stack(
                     children: [

@@ -1,6 +1,7 @@
 
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
 import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/settings_division.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_home.dart';
@@ -16,8 +17,14 @@ void main() async{
   await Firebase.initializeApp();
 
 
-
-
+//this means user is to stayed signed in accross sessions
+await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+//this check user state when user refreshes the page this called reset the value
+FirebaseAuth.instance.authStateChanges().listen((event) {
+  Constants.currentSignedInEmail = event?.email ?? 'Error';
+  
+});
+ 
   runApp(const MyApp());
 }
 
@@ -27,7 +34,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    
     return  MaterialApp(
       routes: {
         Constants.home : (context) => const LoginScreen(),

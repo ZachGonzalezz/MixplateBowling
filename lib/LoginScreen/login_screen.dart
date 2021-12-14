@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-         Constants.calculateScreenSize(context);
+   
     return Scaffold(
 
       body: SingleChildScrollView(

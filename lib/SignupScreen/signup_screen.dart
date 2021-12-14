@@ -3,7 +3,6 @@ import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
 import 'package:lois_bowling_website/LoginScreen/text_field.dart';
 import 'package:lois_bowling_website/SignupScreen/signup_brain.dart';
-import 'package:lois_bowling_website/constants.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
@@ -20,7 +19,7 @@ class SignUpScreen extends StatelessWidget {
         children: [
           SizedBox(
           
-            height: Constants.sizeOfScreen.height,
+            height: MediaQuery.of(context).size.height,
             child: Stack(
               fit: StackFit.expand,
       

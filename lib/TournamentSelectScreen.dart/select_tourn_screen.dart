@@ -1,11 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/TournamentCreateNewScreen/tournament_createnew_screen.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_select_brain.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_tile.dart';
 import 'package:lois_bowling_website/constants.dart';
-
 class SelectTournamentScreen extends StatefulWidget {
  SelectTournamentScreen({ Key? key }) : super(key: key);
 
@@ -20,6 +19,8 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
     super.initState();
     _loadTournaments();
 
+
+
   }
 
   _loadTournaments(){
@@ -28,7 +29,10 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
         usersTournaments = tournamentsFromDB;
       });
     });
+
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +43,7 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
           children: [
             Positioned.fill(child: Image.asset('images/background.png', fit: BoxFit.fill,)),
             Padding(
-              padding: EdgeInsets.fromLTRB(Constants.sizeOfScreen.width * 0.2, Constants.sizeOfScreen.height * 0.1, Constants.sizeOfScreen.width * 0.2, 0),
+              padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.2, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.2, 0),
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -62,7 +66,7 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
                         CustomButton(buttonTitle: 'Create New', onClicked: ()async {
        Navigator.pushNamed(context, Constants.tournamentCreate);
                          
-                        }),
+                        }, ),
                         const SizedBox(
                           height: 30,
                         ),

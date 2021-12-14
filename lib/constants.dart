@@ -13,11 +13,6 @@ static Gradient mainGradient = LinearGradient(
       end: const Alignment(1.0, 0.0),
       stops: const [0, 1]);
 
-  static Size sizeOfScreen = const Size(0, 0);
-
-  static void calculateScreenSize(BuildContext context) {
-    sizeOfScreen = MediaQuery.of(context).size;
-  }
 
     static FirebaseFirestore dataBase =
    FirebaseFirestore.instance;
