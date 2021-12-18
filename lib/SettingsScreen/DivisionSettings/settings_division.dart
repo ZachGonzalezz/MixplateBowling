@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/checkbox_tile.dart';
-import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/squad_picker.dart';
+import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
+import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/doubles_divisions_list.dart';
+import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/singles_division_list.dart';
+import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/teams_divisions_list.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/basic_screen_layout.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 
 class DivisionSettingsHome extends StatefulWidget {
   DivisionSettingsHome({Key? key, this.brain}) : super(key: key);
@@ -15,21 +18,37 @@ class DivisionSettingsHome extends StatefulWidget {
 }
 
 class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
+  //this laods the division on first build after that does not do it
+  bool isFirstTimeload = true;
+  @override
+  void initState() {
+    super.initState();
+    Constants.saveTournamentIdBeforeRefresh();
+    
+  }
+
   @override
   Widget build(BuildContext context) {
+    widget.brain = ModalRoute.of(context)!.settings.arguments as SettingsBrain;
+    if (isFirstTimeload) {
+      widget.brain!.loadDivisions().then((value) {
+        setState(() {
+          isFirstTimeload = false;
+        });
+      });
+    }
 
-      widget.brain ??= SettingsBrain();
-    
     return WillPopScope(
-       onWillPop: (){
-          Navigator.pushNamed(context, Constants.settingsHome);
-  return Future(() => true);
+      onWillPop: () {
+        Navigator.pushNamed(context, Constants.settingsHome);
+        return Future(() => true);
       },
       child: DefaultTabController(
-         initialIndex: 0,
+        initialIndex: 0,
         length: 3,
         child: Scaffold(
           body: ScreenLayout(
+              height: 1200,
               selected: 'Settings',
               child: Center(
                 child: Padding(
@@ -52,6 +71,13 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                           const SizedBox(
                             height: 20,
                           ),
+                          CustomButton(
+                            buttonTitle: 'Save Settings',
+                            length: 300,
+                            onClicked: () {
+                              widget.brain!.saveDivisionSettings();
+                            },
+                          ),
                           Text(
                             Constants.tournamentName,
                             style: TextStyle(
@@ -60,53 +86,55 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                           const SizedBox(
                             height: 20,
                           ),
-                          SquadPicker(),
-                           const SizedBox(
+                          SquadPicker(
+                            brain: widget.brain!,
+                            numberOfSquads: (widget.brain!.miscSettings['Squads'] ?? 1).toInt(),
+                            chnageSquads: (text) {
+                              setState(() {
+                                widget.brain!.divisionSelectedSquad = text;
+                              });
+                            },
+                          ),
+                          const SizedBox(
                             height: 20,
                           ),
-    
                           const TabBar(tabs: [
                             Tab(
-                              child: Text('Singles', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                              child: Text('Singles',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700)),
                             ),
                             Tab(
-                              child: Text('Doubles', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                              child: Text('Doubles',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700)),
                             ),
                             Tab(
-                              child: Text('Teams',style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700)),
+                              child: Text('Teams',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700)),
                             ),
-    
                           ]),
-    
                           SizedBox(
-                            height: 200,
+                            height: 600,
                             child: TabBarView(children: [
-    
                               Tab(
-                                child: Column(
-                                  children: [
-                                    CheckBoxTile(title: 'Scratch', brain: widget.brain!, isGreyedOut: widget.brain!.greyOutBoxed.contains('Singles Scratch'), divisionType: 'Singles', changeValues: (isChecked){
-                                      //remove function
-                                      setState(() {
-                                        widget.brain!.newBoxedChecked(isChecked, 'Singles Scratch');
-                                        
-                                      });
-                                      
-                                   
-                                      
-                                    })
-                                  ],
-                                ),
+                                  child: SinglesDivisionList(
+                                      brain: widget.brain!)),
+                              Tab(
+                                child: DoubleDivisionList(brain: widget.brain!),
                               ),
                               Tab(
-                                child: Text('Doubles'),
-                              ),
-                              Tab(
-                                child: Text('Teams'),
+                                child: TeamsDivisionList(brain: widget.brain!),
                               ),
                             ]),
                           )
-    
                         ],
                       ),
                     ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_select_brain.dart';
+import 'package:intl/intl.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
 import 'package:lois_bowling_website/constants.dart';
- import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TournamentTile extends StatelessWidget {
    TournamentTile({ Key? key, required this.tournament}) : super(key: key);
@@ -15,9 +15,12 @@ DateFormat dateFormat = DateFormat("MM/dd/yyyy");
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Constants.currentIdForTournament = 'Users/${Constants.currentSignedInEmail}/${tournament.id}';
+      onTap: () async{
+        Constants.currentIdForTournament = 'Users/${Constants.currentSignedInEmail}/Tournaments/${tournament.id}';
         Constants.tournamentName = tournament.name;
+         final prefs = await SharedPreferences.getInstance();
+      
+      prefs.setString('tournamentId', Constants.currentIdForTournament);
         Navigator.pushNamed(context, Constants.settingsHome);
       },
       child: Padding(

@@ -64,6 +64,7 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
                           height: 30,
                         ),
                         CustomButton(buttonTitle: 'Create New', onClicked: ()async {
+                          
        Navigator.pushNamed(context, Constants.tournamentCreate);
                          
                         }, ),
@@ -77,6 +78,8 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
                             itemCount: usersTournaments.length,
                             itemBuilder: (context, index){
                             
+                            
+                        
                             return TournamentTile(tournament: usersTournaments[index],);
                           }),
                         )

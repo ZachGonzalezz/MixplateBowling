@@ -10,6 +10,7 @@ String navigateTo;
 SettingsBrain brain;
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.2, 20, MediaQuery.of(context).size.width * 0.2, 20),
       child: Material(
@@ -29,6 +30,7 @@ SettingsBrain brain;
             children: [
               Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
               IconButton(onPressed: (){
+               
                 Navigator.pushNamed(context, navigateTo, arguments: brain);
               }, icon: const Icon(Icons.chevron_right_rounded))
             ],

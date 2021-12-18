@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:lois_bowling_website/CreateBowler/create_new_screen.dart';
 import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
 import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/settings_division.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_home.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
         Constants.tournamentHome : (context) => SelectTournamentScreen(),
         Constants.tournamentCreate : (context) => TournamentCreatenewScreen(),
         Constants.settingsHome : (context) => SettingsHome(),
-        Constants.settingsDivision : (context) => DivisionSettingsHome()
+        Constants.settingsDivision : (context) => DivisionSettingsHome(),
+        Constants.createNewBowler : (context) => CreateNewBowlerScreen()
 
 
       },

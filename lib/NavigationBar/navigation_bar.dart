@@ -21,7 +21,7 @@ class CustomNavigationBar extends StatelessWidget {
                       NavigationRow(icon: Icons.arrow_back_ios_rounded, screeName: 'Tournaments', sendTo:  Constants.tournamentHome, isSelected:  false,),
                       NavigationRow(icon: Icons.settings, screeName: 'Settings', sendTo:  Constants.settingsHome, isSelected: 'Settings' == selected,),
                       NavigationRow(icon: MdiIcons.tournament, screeName: 'Brackets', sendTo:  Constants.settingsHome, isSelected: 'Brackets' == selected,),
-                      NavigationRow(icon: Icons.person, screeName: 'Create Bowler', sendTo:  Constants.settingsHome, isSelected: 'Create Bowler' == selected,),
+                      NavigationRow(icon: Icons.person, screeName: 'Create Bowler', sendTo:  Constants.createNewBowler, isSelected: 'Create Bowler' == selected,),
                       NavigationRow(icon: Icons.people, screeName: 'Singles', sendTo:  Constants.settingsHome, isSelected: 'Singles' == selected,),
                       NavigationRow(icon: Icons.groups_rounded, screeName: 'Doubles', sendTo:  Constants.settingsHome, isSelected: 'Doubles' == selected,),
                       NavigationRow(icon: MdiIcons.accountGroup, screeName: 'Teams', sendTo:  Constants.settingsHome, isSelected: 'Teams' == selected,),

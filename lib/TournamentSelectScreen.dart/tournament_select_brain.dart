@@ -10,7 +10,7 @@ class TournamentSelectBrain{
     List<TournamentSelection> tournaments = [];
 
    await Future.delayed(Duration(milliseconds: 500));
-  //  print(FirebaseAuth.instance.currentUser?.email);
+
    await Constants.dataBase.collection('Users').doc(Constants.currentSignedInEmail).collection('Tournaments').get().then((querySnapshot) {
 
      querySnapshot.docs.forEach((doc) {
@@ -20,7 +20,7 @@ class TournamentSelectBrain{
         Timestamp to = data['to'] ?? Timestamp.now();
         List<String> emails = List.from(data['sharedWith'] ?? []);
         String name = data['name'] ?? '';
-
+     
         tournaments.add(TournamentSelection(name: name, start: from.toDate(), end: to.toDate(), sharedWith: emails, id: doc.id));
      });
 

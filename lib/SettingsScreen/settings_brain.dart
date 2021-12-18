@@ -1,57 +1,786 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lois_bowling_website/constants.dart';
+
 class SettingsBrain {
   List<String> divisions = [];
+
+  String divisionSelectedSquad = "A";
   //these are the settings on the settings home screen
   Map<String, double> miscSettings = {};
 
 //these are the boxes that are unavaible to be checked
   List<String> greyOutBoxed = [];
+//this is used to save the settings on the main settings screen
+  void saveHomeSettings() async {
+    await Constants.getTournamentId();
 
-  List<String> divisionsChecked = [];
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .update({'Basic Settings': miscSettings});
+  }
 
-//this is called everytime a new box is checked
-  void newBoxedChecked(bool isChecking, String title) {
+  void saveDivisionSettings() async {
+    await Constants.getTournamentId();
 
-    if (isChecking) {
-      switch (title) {
-        case ('Singles Scratch'):
-        //adds the division to divisions check array to be saved to db
-          divisionsChecked.add('Singles Scratch');
-          //removes any conflicting buttons
-          addToGreyOut(['']);
-          
-          break;
-        default:
-      }
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .update({
+      'Divisions': divisions,
+      'GreyedOutDivsions': greyOutBoxed,
+    });
+  }
+
+  Future<List<String>> loadDivisions() async {
+    List<String> divisionDB = [];
+    await Constants.getTournamentId();
+
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .get()
+        .then((doc) {
+      Map<String, dynamic> mainSettings = doc.data() as Map<String, dynamic>;
+
+      divisions = List<String>.from(mainSettings['Divisions'] ?? []);
+      divisionDB = divisions;
+      greyOutBoxed = List<String>.from(mainSettings['GreyedOutDivsions'] ?? []);
+    });
+    return divisionDB;
+  }
+
+//pulls the main settings from
+  Future<Map<String, double>> getMainSettings() async {
+    Map<String, double> returnData = {};
+    await Constants.getTournamentId();
+
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .get()
+        .then((doc) {
+      Map<String, dynamic> mainSettings = doc.data() as Map<String, dynamic>;
+      returnData =
+          Map<String, double>.from(mainSettings['Basic Settings'] ?? {});
+    });
+
+    return returnData;
+  }
+
+//use to find whether the division is in singles/teams or doubles
+  String findDivision(String title) {
+    if (title.contains('Singles')) {
+      return 'Singles';
+    } else if (title.contains('Doubles')) {
+      return 'Doubles';
     } else {
-      //this is called when ischecking is false meaning the box is checked already so they are removing it
-      uncheckBox(title);
+      return 'Team';
     }
   }
 
-//called when user unchecks a box
-  void uncheckBox(String title){
-  switch (title) {
-        case ('Singles Scratch'):
-        //removes the division to divisions check array to be saved to db
-          divisionsChecked.remove('Singles Scratch');
-          
-          //ensures that buttons are no clickable bc seetings have been changed
-          removeFromGreyOut(['']);
-          break;
-        default:
+//this is called everytime a new box is checked
+  void newBoxedChecked(bool isChecking, String title) {
+    String divissionType = findDivision(title);
+
+    //gets rid of the word singles/doubles/team since they are all the same except those words to make it more efficent
+    switch (title
+        .replaceAll('Singles', '')
+        .replaceAll('Doubles', '')
+        .replaceAll('Team', '')) {
+      case (' Scratch (One Division)'):
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad + ' Men\'s ' + divissionType + ' Scratch',
+            divisionSelectedSquad + ' Women\'s ' + divissionType + ' Scratch'
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad + ' Men\'s ' + divissionType + ' Scratch',
+            divisionSelectedSquad + ' Women\'s ' + divissionType + ' Scratch'
+          ]);
+        }
+        break;
+
+      case ('Men\'s  Scratch'):
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Scratch (One Division)'
+          ]);
+        } else {
+          //if they do not have womens single scratch check allow them to the check single divison in scratch
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Scratch') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Scratch (One Division)'
+            ]);
+          }
+        }
+        break;
+
+      case ('Women\'s  Scratch'):
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Scratch (One Division)'
+          ]);
+        } else {
+          //if they do not have mens single scratch check allow them to the check single divison in scratch
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Scratch') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Scratch (One Division)'
+            ]);
+          } else {}
+        }
+
+        break;
+
+      case (' Handicap (One Division)'):
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap High',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap High',
+          ]);
+        }
+        break;
+
+      case ('Men\'s  Handicap'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap High',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+          ]);
+          //if womens single handicap division is unselected allow gender neturual
+          if (divisions.contains('Women\'s ' + divissionType + ' Handicap') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap Low',
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap High',
+            ]);
+          }
+          //removes single division from being unselected if nothing else is selected
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case ('Women\'s  Handicap'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap High',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap Low',
+          ]);
+          if (divisions.contains('Men\'s ' + divissionType + ' Handicap') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap Low',
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap High',
+            ]);
+          }
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case ('Men\'s  Handicap Low'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            'Men\'s ' + divissionType + ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap Low',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+          ]);
+          //handicap high and low are unchecked allow them to select one divison for men
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap High') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap'
+            ]);
+          }
+          //if women handicap low is unhcecked allow them to select gender netural Low
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap Low') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap Low',
+            ]);
+          }
+          //checks to see if any other handicap boxes are check if none says they can make it one division
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case ('Men\'s  Handicap High'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap High',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+          ]);
+          //handicap high and low are unchecked allow them to select one divison for men
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap Low') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap'
+            ]);
+          }
+          //if women handicap low is unhcecked allow them to select gender netural Low
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap High') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap High',
+            ]);
+          }
+          //checks to see if any other handicap boxes are check if none says they can make it one division
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case ('Women\'s  Handicap High'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap High',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+          ]);
+          //handicap high and low are unchecked allow them to select one divison for men
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap Low') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap'
+            ]);
+          }
+          //if women handicap low is unhcecked allow them to select gender netural Low
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap High') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap High',
+            ]);
+          }
+          //checks to see if any other handicap boxes are check if none says they can make it one division
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case ('Women\'s  Handicap Low'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Gender Neutural Handicap Low',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+          ]);
+          //handicap high and low are unchecked allow them to select one divison for men
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap High') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap'
+            ]);
+          }
+          //if women handicap low is unhcecked allow them to select gender netural Low
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap Low') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap Low',
+            ]);
+          }
+          //checks to see if any other handicap boxes are check if none says they can make it one division
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case (' Gender Neutural Handicap Low'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap Low',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap Low',
+          ]);
+
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap High') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap',
+              divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap',
+            ]);
+          }
+
+          //checks to see if any other handicap boxes are check if none says they can make it one division
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      case (' Gender Neutural Handicap High'):
+
+        //adds the division to divisions check array to be saved to db
+        if (isChecking) {
+          //removes any conflicting buttons
+          addToGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                divissionType +
+                ' Handicap (One Division)',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap',
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap',
+          ]);
+        } else {
+          removeFromGreyOut([
+            divisionSelectedSquad +
+                ' ' +
+                'Women\'s ' +
+                divissionType +
+                ' Handicap High',
+            divisionSelectedSquad +
+                ' ' +
+                'Men\'s ' +
+                divissionType +
+                ' Handicap High',
+          ]);
+          //if the gender neturual low is also no checked then allow them to select indivisual gender boxes
+          if (divisions.contains(divisionSelectedSquad +
+                  ' ' +
+                  divissionType +
+                  ' Gender Neutural Handicap Low') !=
+              true) {
+            removeFromGreyOut([
+              divisionSelectedSquad +
+                  ' ' +
+                  'Men\'s ' +
+                  divissionType +
+                  ' Handicap',
+              divisionSelectedSquad +
+                  ' ' +
+                  'Women\'s ' +
+                  divissionType +
+                  ' Handicap',
+            ]);
+          }
+
+          //checks to see if any other handicap boxes are check if none says they can make it one division
+          allDivisionsRemoved(divissionType);
+        }
+        break;
+
+      default:
+    }
+  }
+
+//checks if there are no more things checked in handicap divisions uncehck the box One Division Singles Handicap
+  void allDivisionsRemoved(String divisionType) {
+    bool isClearToUncheck = true;
+//goes through all the current selected divisions and if clear then is good to remove thme
+    for (String division in divisions) {
+      if (division.contains('Handicap') && division.contains(divisionType)) {
+        //means they founds soemthing that includes Handicap and the division
+        isClearToUncheck = false;
       }
+    }
+    if (isClearToUncheck) {
+      removeFromGreyOut([
+        divisionSelectedSquad + ' ' + divisionType + ' Handicap (One Division)'
+      ]);
+    }
   }
 
 //this means you are adding to the list of added division your tournament will have
   void addToGreyOut(List<String> tittles) {
     tittles.forEach((title) {
-      greyOutBoxed.add(title);
+      if (greyOutBoxed.contains(title) != true) {
+        greyOutBoxed.add(title);
+      }
     });
   }
 
 //this means that you are removing because a conflict for exmaple if they check hadnicap and scratch combine into one must remove everything else
   void removeFromGreyOut(List<String> tittles) {
     tittles.forEach((title) {
+      //no need to add squad bc its add
       greyOutBoxed.remove(title);
     });
   }

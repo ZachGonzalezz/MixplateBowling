@@ -27,7 +27,20 @@ class CheckBoxTile extends StatefulWidget {
 class _CheckBoxTileState extends State<CheckBoxTile> {
   @override
   Widget build(BuildContext context) {
-    print(widget.isGreyedOut);
+     Map<int, Color> colorCodes = {
+      50: Color.fromRGBO(147, 205, 72, .1),
+      100: Color.fromRGBO(147, 205, 72, .2),
+      200: Color.fromRGBO(147, 205, 72, .3),
+      300: Color.fromRGBO(147, 205, 72, .4),
+      400: Color.fromRGBO(147, 205, 72, .5),
+      500: Color.fromRGBO(147, 205, 72, .6),
+      600: Color.fromRGBO(147, 205, 72, .7),
+      700: Color.fromRGBO(147, 205, 72, .8),
+      800: Color.fromRGBO(147, 205, 72, .9),
+      900: Color.fromRGBO(147, 205, 72, 1),
+    };
+
+    MaterialColor color = new MaterialColor(0xFF93cd48, colorCodes);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
@@ -35,19 +48,27 @@ class _CheckBoxTileState extends State<CheckBoxTile> {
             
             Text(widget.title),
             Checkbox(
-                value: widget.brain.divisions.contains(widget.title),
-                onChanged: (isChecked) {
-                  widget.changeValues(isChecked ?? false);
-                  if (widget.brain.divisions.contains(widget.title)) {
+                value: widget.brain.divisions.contains(widget.brain.divisionSelectedSquad + ' ' +  widget.title),
+                activeColor: Colors.red,
+                fillColor:  widget.brain.greyOutBoxed.contains(widget.brain.divisionSelectedSquad + ' ' +  widget.title) ? MaterialStateProperty.all<Color>(Colors.pink) : MaterialStateProperty.all<Color>(Colors.black),
+                onChanged:
+                 widget.brain.greyOutBoxed.contains(widget.brain.divisionSelectedSquad + ' ' + widget.title) ? null :(isChecked) {
+                  //calls function in widget
+            
+                  if (widget.brain.divisions.contains(widget.brain.divisionSelectedSquad + ' ' +  widget.title)) {
                     setState(() {
-                      widget.brain.divisions.remove(widget.title);
+                      //removes the divison from the list
+                      widget.brain.divisions.remove(widget.brain.divisionSelectedSquad + ' ' +  widget.title);
                     });
                   } else {
                     setState(() {
-                      widget.brain.divisions.add(widget.title);
+                      //adds the divison from the list
+                      widget.brain.divisions.add( widget.brain.divisionSelectedSquad + ' ' + widget.title);
                     });
                   }
-                })
+                        widget.changeValues(isChecked ?? false);
+                }
+                )
           ],
         ));
   }
