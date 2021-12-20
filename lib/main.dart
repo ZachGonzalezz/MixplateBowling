@@ -2,11 +2,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:lois_bowling_website/AddDoublePartner/add_double.dart';
 import 'package:lois_bowling_website/CreateBowler/create_new_screen.dart';
 import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
 import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/settings_division.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_home.dart';
 import 'package:lois_bowling_website/SignupScreen/signup_screen.dart';
+import 'package:lois_bowling_website/TeamSearch/team_search.dart';
+import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
 import 'package:lois_bowling_website/TournamentCreateNewScreen/tournament_createnew_screen.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/select_tourn_screen.dart';
 import 'package:lois_bowling_website/constants.dart';
@@ -44,19 +47,21 @@ class MyApp extends StatelessWidget {
         Constants.tournamentCreate : (context) => TournamentCreatenewScreen(),
         Constants.settingsHome : (context) => SettingsHome(),
         Constants.settingsDivision : (context) => DivisionSettingsHome(),
-        Constants.createNewBowler : (context) => CreateNewBowlerScreen()
+        Constants.createNewBowler : (context) => CreateNewBowlerScreen(),
+        Constants.doublesSearch : (context) => AddDoublePartnerScreen(),
+        Constants.teamCreate : (context) => TeamCreateScreen(),
+        Constants.teamSearch : (context) => TeamSearchScreen()
+
 
 
       },
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

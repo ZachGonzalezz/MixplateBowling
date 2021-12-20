@@ -184,18 +184,29 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                              Row(
                                mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(children: const [
-                                  Icon(MdiIcons.accountGroup, 
-                                  size: 50
+                                Column(children: [
+                                  GestureDetector(
+                                     onTap: (){
+                                    Navigator.pushNamed(context, Constants.teamSearch);
+                                  },
+                                    child: Icon(MdiIcons.accountGroup, 
+                                    size: 50
+                                    ),
                                   ),
                                   Text('Teams', style: TextStyle(fontSize: 20, fontWeight:FontWeight.w700))
                                 ]),
                                 SizedBox(width: 100,),
-                                Column(children: const [
-                                  Icon(MdiIcons.accountMultiple,
-                                   size: 50),
-                                  Text('Double',  style: TextStyle(fontSize: 20, fontWeight:FontWeight.w700))
-                                ])
+                                GestureDetector(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, Constants.doublesSearch);
+                                  },
+                                  child: Column(
+                                    children: const [
+                                    Icon(MdiIcons.accountMultiple,
+                                     size: 50),
+                                    Text('Doubles',  style: TextStyle(fontSize: 20, fontWeight:FontWeight.w700))
+                                  ]),
+                                )
                               ],
                             ),
                                   SizedBox(height: 30),

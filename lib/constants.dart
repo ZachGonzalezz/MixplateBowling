@@ -22,15 +22,19 @@ class Constants {
   static String tournamentName = '';
   static List<String> squads = ['A', 'B', 'C', 'D', 'E'];
 
-  static String home = '/home';
+  static String home = '/';
   static String signUp = '/SignUp';
   static String tournamentHome = '/TournamentHome';
   static String tournamentCreate = '/TournamentHome/TournamentCreate';
   static String settingsHome = 'TournamentHome/TournamentCreate/settingsHome';
   static String createNewBowler =
       'TournamentHome/TournamentCreate/settingsHome/CreateNew';
+  static String doublesSearch = 'TournamentHome/TournamentCreate/SearchDoubles';
+  static String teamSearch = 'TournamentHome/TournamentCreate/SearchTeams';
+  static String teamCreate = 'TournamentHome/TournamentCreate/TeamCreate';
   static String settingsDivision =
       'TournamentHome/TournamentCreate/settings/Divsion';
+  
 
   static void saveTournamentIdBeforeRefresh() {
     html.window.onBeforeUnload.listen((event) async {
