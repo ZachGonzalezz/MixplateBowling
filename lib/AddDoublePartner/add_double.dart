@@ -5,14 +5,15 @@ import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
-import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 
 class AddDoublePartnerScreen extends StatefulWidget {
-  const AddDoublePartnerScreen({ Key? key }) : super(key: key);
+ AddDoublePartnerScreen({ Key? key, this.partnersSaved }) : super(key: key);
+
+  Map<String, dynamic>? partnersSaved;
 
   @override
   State<AddDoublePartnerScreen> createState() => _AddDoublePartnerScreenState();
@@ -34,12 +35,17 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
   List<Bowler> results = [];
 
   //this is the list of double partners the user has selected
-  List<Bowler> doublePartner = [];
+  Map<String, dynamic> doublePartner = {};
 @override
   void initState() {
     super.initState();
     loadTournamentSettings();
     loadBowlers();
+    //if the user already has double partners will pass it over here
+    if(widget.partnersSaved != null){
+      print(widget.partnersSaved);
+      doublePartner = widget.partnersSaved!;
+    }
   }
 
 void loadBowlers(){
@@ -91,7 +97,7 @@ void loadBowlers(){
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                            
+                              BackButton(),
                               SizedBox(
                                 height: 20,
                               ),
@@ -99,14 +105,14 @@ void loadBowlers(){
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   //this picks which division the user is in
-                                  DivisionPicker(
-                                    division: divisions,
-                                    selectedSquad: selectedSquad,
-                                    selectedDivision: selectedDivisions,
-                                    onDivisionChange: (newDivision){
-                                      selectedDivisions[selectedSquad] = newDivision;
-                                    },
-                                  ),
+                                  // DivisionPicker(
+                                  //   division: divisions,
+                                  //   selectedSquad: selectedSquad,
+                                  //   selectedDivision: selectedDivisions,
+                                  //   onDivisionChange: (newDivision){
+                                  //     selectedDivisions[selectedSquad] = newDivision;
+                                  //   },
+                                  // ),
                                   SizedBox(
                                     width: 30,
                                   ),
@@ -141,19 +147,22 @@ void loadBowlers(){
                                     leading: Text(results[index].firstName + ' ' + results[index].lastName),
                                     trailing: IconButton(onPressed: (){
                                       //this means person added already and now needs to undo
-                                      if(doublePartner.contains(results[index])){
+                                      if((doublePartner[selectedSquad] ?? []).contains(results[index].uniqueId)){
                                         setState(() {
-                                           doublePartner.remove(results[index]);
+                                          (doublePartner[selectedSquad] ?? []).remove(results[index].uniqueId);
                                         });
                                       }
                                       else{
+                                        if(doublePartner[selectedSquad] == null){
+                                          doublePartner[selectedSquad] = [];
+                                        }
                                         setState(() {
-                                             doublePartner.add(results[index]); 
+                                              (doublePartner[selectedSquad] ?? []).add(results[index].uniqueId);
                                         });
                                      
                                       }
                                     }, icon: Icon(MdiIcons.plus, 
-                                    color: doublePartner.contains(results[index]) ? Colors.blue : null,)),
+                                    color: (doublePartner[selectedSquad] ?? []).contains(results[index].uniqueId) ? Colors.blue : null,)),
                                   );
                                 }),
                               ),
@@ -162,7 +171,7 @@ void loadBowlers(){
                                   buttonTitle: 'Finalize',
                                   length: 300,
                                   onClicked: () {
-                                    
+                                    Navigator.pop(context, doublePartner);
                                     
                                   },
                                 ),
