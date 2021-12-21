@@ -6,13 +6,16 @@ import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/TeamsCreate/team_brain.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/team.dart';
+import 'package:lois_bowling_website/universal_ui.dart/basic_popup.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 
 class TeamCreateScreen extends StatefulWidget {
-  const TeamCreateScreen({Key? key}) : super(key: key);
+  TeamCreateScreen({Key? key, this.teamData}) : super(key: key);
 
+  Team? teamData;
   @override
   State<TeamCreateScreen> createState() => _TeamCreateScreenState();
 }
@@ -22,7 +25,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
   int amountOfSquads = 1;
   int teamSize = 1;
 
-  List<String> divisions = ['No Division'];
+  List<String> divisions = ['  No Division'];
 
   String selectedSquad = 'A';
   //this keeps track of which division is selecter per Squad sotred in {"A" : "A Singles (One Division)"}
@@ -37,7 +40,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
   List<Bowler> doublePartner = [];
 
   //stores the team members on the teams {0 Bowler('Zach' 'Gonzalez' 'hudahiu978ye9712' '195' '35')};
-  Map<int, Bowler> teamMates = {};
+  Map<String, Bowler> teamMates = {};
 
   TextEditingController teamName = TextEditingController();
   @override
@@ -45,13 +48,20 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
     super.initState();
     loadTournamentSettings();
     loadBowlers();
+    if (widget.teamData != null) {
+      widget.teamData!.loadBowlers().then((value) {
+        setState(() {
+         
+          teamMates = widget.teamData!.bowlers;
+        });
+      });
+    }
   }
 
   void loadBowlers() {
     DoublePartner.loadBowlers().then((bowlersFromDB) {
       setState(() {
         bowlers = bowlersFromDB;
-        print(bowlers.length);
         results = bowlersFromDB;
       });
     });
@@ -63,6 +73,10 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         teamSize = (basicSettings['Team Size'] ?? 1).toInt();
+        if (widget.teamData != null) {
+          teamName.text = widget.teamData!.name;
+          selectedDivisions[widget.teamData!.squad] = widget.teamData!.division;
+        }
       });
     });
     //loads all the divisions and squads
@@ -117,6 +131,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                     selectedDivisions[selectedSquad] =
                                         newDivision;
                                   },
+                                  mustContain: 'Team',
                                 ),
                                 SizedBox(
                                   width: 30,
@@ -197,25 +212,18 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                                     onSuggestionSelected:
                                                         (bowlerSelected) {
                                                       setState(() {
-                                                        teamMates[index] =
+                                                        teamMates[index
+                                                                .toString()] =
                                                             bowlerSelected;
                                                       });
                                                     },
                                                     textFieldConfiguration:
                                                         TextFieldConfiguration(
                                                       controller: TextEditingController(
-                                                          text: (teamMates[
-                                                                          index] ??
-                                                                      Bowler(
-                                                                          uniqueId:
-                                                                              ''))
-                                                                  .firstName +
-                                                              '' +
-                                                              (teamMates[index] ??
-                                                                      Bowler(
-                                                                          uniqueId:
-                                                                              ''))
-                                                                  .lastName),
+                                                          text: TeamBrain().displayName(
+                                                              bowler: teamMates[
+                                                                  index
+                                                                      .toString()])),
                                                       decoration: InputDecoration(
                                                           hintText:
                                                               'Team Member ' +
@@ -252,7 +260,6 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                   controller: teamName,
                                   decoration: InputDecoration(
                                       hintText: 'Team Name',
-                                      
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(20)),
@@ -266,10 +273,34 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                             ),
                             Center(
                               child: CustomButton(
-                                buttonTitle: 'Save Team',
+                                buttonTitle: widget.teamData == null
+                                    ? 'Save Team'
+                                    : 'Update Info',
                                 length: 300,
                                 onClicked: () {
-                                  TeamBrain().saveNewTeam(name: teamName.text, teamMembers: teamMates);
+                                  if(teamName.text != ''){
+                                  if (widget.teamData == null) {
+                                    TeamBrain().saveNewTeam(
+                                        name: teamName.text,
+                                        teamMembers: teamMates,
+                                        division:
+                                            selectedDivisions[selectedSquad] ??
+                                                '',
+                                        squad: selectedSquad);
+                                  } else {
+                                    TeamBrain().updateATeam(
+                                        name: teamName.text,
+                                        teamMembers: teamMates,
+                                        division:
+                                            selectedDivisions[selectedSquad] ??
+                                                '',
+                                        squad: selectedSquad,
+                                        id: widget.teamData!.id);
+                                  }
+                                  }
+                                  else{
+                                    BasicPopUp().showBasicDialog(context, 'Ensure that the team has a name');
+                                  }
                                 },
                               ),
                             ),

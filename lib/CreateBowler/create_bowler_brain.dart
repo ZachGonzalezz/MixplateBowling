@@ -7,10 +7,14 @@ class CreateBowlerBrain{
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController averageController = TextEditingController();
-  TextEditingController handicapController = TextEditingController();
-  TextEditingController sidePotController = TextEditingController();
+  // TextEditingController handicapController = TextEditingController();
+  // TextEditingController sidePotController = TextEditingController();
 
   Map<String, String> selectedSinglesDivisions = {};
+
+  Map<String, dynamic> doublePartner = {};
+
+   Map<String, List<String>> teams = {};
 
   bool? isMale;
   
@@ -30,9 +34,9 @@ class CreateBowlerBrain{
     if(averageController.text == ''){
       return 'Please enter an average';
     }
-    if(handicapController.text == ''){
-      return 'Please enter a handicap';
-    }
+    // if(handicapController.text == ''){
+    //   return 'Please enter a handicap';
+    // }
 
     return '';
 
@@ -44,12 +48,32 @@ class CreateBowlerBrain{
     await newDoc.set({
       'firstName' : firstNameController.text,
       'lastName' : lastNameController.text,
-      'average' : int.parse(averageController.text),
-      'handicap' : int.parse(handicapController.text),
+      'average' : double.parse(averageController.text),
+      // 'handicap' : int.parse(handicapController.text),
       'divisions' : selectedSinglesDivisions,
-      'id' : newDoc.id
+      'doublePartners' : doublePartner,
+      'id' : newDoc.id,
+      isMale : isMale
 
     });
   }
+
+  Future<void> updateBowler(String id) async{
+    await Constants.getTournamentId();
+    DocumentReference newDoc = FirebaseFirestore.instance.collection(Constants.currentIdForTournament + '/Bowlers').doc(id);
+    await newDoc.set({
+      'firstName' : firstNameController.text,
+      'lastName' : lastNameController.text,
+      'average' : double.parse(averageController.text),
+      // 'handicap' : int.parse(handicapController.text),
+      'divisions' : selectedSinglesDivisions,
+      'doublePartners' : doublePartner,
+      isMale : isMale
+
+    });
+  }
+
+
+
 
 }

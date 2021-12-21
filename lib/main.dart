@@ -4,10 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/AddDoublePartner/add_double.dart';
 import 'package:lois_bowling_website/CreateBowler/create_new_screen.dart';
+import 'package:lois_bowling_website/DoublesScreen/double_search.dart';
+import 'package:lois_bowling_website/InputScores/Input_Scores.dart';
 import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
+import 'package:lois_bowling_website/SearchBowlers/SearchBowler.dart';
 import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/settings_division.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_home.dart';
 import 'package:lois_bowling_website/SignupScreen/signup_screen.dart';
+import 'package:lois_bowling_website/SinglesScreen/search_singles.dart';
 import 'package:lois_bowling_website/TeamSearch/team_search.dart';
 import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
 import 'package:lois_bowling_website/TournamentCreateNewScreen/tournament_createnew_screen.dart';
@@ -50,7 +54,11 @@ class MyApp extends StatelessWidget {
         Constants.createNewBowler : (context) => CreateNewBowlerScreen(),
         Constants.doublesSearch : (context) => AddDoublePartnerScreen(),
         Constants.teamCreate : (context) => TeamCreateScreen(),
-        Constants.teamSearch : (context) => TeamSearchScreen()
+        Constants.teamSearch : (context) => TeamSearchScreen(isCreatingNewBowler: false,),
+        Constants.inputScores : (context) => InputScoreScreen(),
+        Constants.searchBowlers : (context) => SearchBowlerScreen(),
+        Constants.searchDoubles : (context) =>SearchDoublesScreen(),
+        Constants.searchSingles : (context) => SearchSinglesScreen(),
 
 
 

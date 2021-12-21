@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 
 class BasicPopUp extends StatelessWidget {
-  BasicPopUp({ Key? key, required this.text }) : super(key: key);
-  String text;
+  BasicPopUp({ Key? key,  this.text }) : super(key: key);
+  String? text;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Text(text),
+      content: Text(text ?? ''),
       
     );
   }

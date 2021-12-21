@@ -7,7 +7,8 @@ class DivisionPicker extends StatefulWidget {
       required this.division,
       required this.selectedSquad,
       required this.onDivisionChange,
-      this.selectedDivision = const {}})
+      this.selectedDivision = const {},
+      this.mustContain})
       : super(key: key);
 
   List<String> division;
@@ -17,6 +18,8 @@ class DivisionPicker extends StatefulWidget {
 
   //this holds the divisions in {"A" : "SIngles Handicap"} format used to auto matically select division the user has picked in past
   Map<String, String> selectedDivision = {};
+
+  String? mustContain;
 
   @override
   State<DivisionPicker> createState() => _DivisionPickerState();
@@ -37,18 +40,19 @@ class _DivisionPickerState extends State<DivisionPicker> {
     
     //filters divisions for squad
     divisionsForSquads =
-        Constants.findDivisionInSquad(widget.division, widget.selectedSquad);
+        Constants.findDivisionInSquad(widget.division, widget.selectedSquad, widget.mustContain);
     //this ensures that when user switches squad we change the value of selected so we do not get a value error in drop down
     if (selected == '  No Division' ||
         selected == '' ||
         divisionsForSquads.contains(selected) != true) {
+          
           //if there is no previous selected division for this squad  simply give it a default value
-          if(widget.selectedDivision[widget.selectedSquad] == null){
+          if(widget.selectedDivision[widget.selectedSquad + (widget.mustContain ?? '')] == null){
           selected = divisionsForSquads.first;
           }
           //if there is a history then set that
           else{
-          selected = widget.selectedDivision[widget.selectedSquad]!;
+          selected = widget.selectedDivision[widget.selectedSquad + (widget.mustContain ?? '')]!;
           }
 
     }

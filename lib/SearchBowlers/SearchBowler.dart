@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
+import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
+import 'package:lois_bowling_website/CreateBowler/create_new_screen.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/TeamsCreate/team_brain.dart';
-import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
+import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/team.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class TeamSearchScreen extends StatefulWidget {
-  TeamSearchScreen({Key? key, this.isCreatingNewBowler = true}) : super(key: key);
-
-  bool isCreatingNewBowler;
+class SearchBowlerScreen extends StatefulWidget {
+  const SearchBowlerScreen({Key? key}) : super(key: key);
 
   @override
-  State<TeamSearchScreen> createState() => _TeamSearchScreenState();
+  _SearchBowlerScreenState createState() => _SearchBowlerScreenState();
 }
 
-class _TeamSearchScreenState extends State<TeamSearchScreen> {
+class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
-  String teamsize = '';
 
   List<String> divisions = ['No Division'];
 
@@ -31,9 +27,9 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
   Map<String, String> selectedDivisions = {};
 
   //this is the original array from the database
-  List<Team> bowlers = [];
+  List<Bowler> bowlers = [];
   //this this the list returned
-  List<Team> results = [];
+  List<Bowler> results = [];
 
   //this is the list of double partners the user has selected
   Map<String, List<String>> doublePartner = {};
@@ -41,7 +37,16 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
   void initState() {
     super.initState();
     loadTournamentSettings();
-    loadTeams();
+    loadBowlers();
+  }
+
+  void loadBowlers() {
+    DoublePartner.loadBowlers().then((bowlersFromDB) {
+      setState(() {
+        bowlers = bowlersFromDB;
+        results = bowlersFromDB;
+      });
+    });
   }
 
 //loads the number of squads in the current tournament (based on name held in local storage)
@@ -49,7 +54,6 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
-        teamsize = (basicSettings['Team Size'] ?? 1).toInt().toString();
       });
     });
     //loads all the divisions and squads
@@ -60,20 +64,11 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
     });
   }
 
-  void loadTeams() {
-    TeamBrain().loadTeamsFromDb().then((teamsDb) {
-      setState(() {
-        bowlers = teamsDb;
-        results = teamsDb;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenLayout(
-        selected: widget.isCreatingNewBowler ? 'Create Bowler' : 'Teams',
+        selected: 'Bowlers',
         child: SingleChildScrollView(
           child: Center(
             child: Padding(
@@ -96,24 +91,10 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(MdiIcons.chevronLeft)),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: TextButton(
-                                child: Text('Make a Team'),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, Constants.teamCreate);
-                                },
-                              ),
-                            ),
+                            // Padding(padding: EdgeInsets.all(8),
+                            // child: IconButton(onPressed: (){
+                            //   Navigator.pop(context);
+                            // }, icon: Icon(MdiIcons.chevronLeft)),),
                             SizedBox(
                               height: 20,
                             ),
@@ -125,9 +106,8 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                 //   division: divisions,
                                 //   selectedSquad: selectedSquad,
                                 //   selectedDivision: selectedDivisions,
-                                //   onDivisionChange: (newDivision) {
-                                //     selectedDivisions[selectedSquad] =
-                                //         newDivision;
+                                //   onDivisionChange: (newDivision){
+                                //     selectedDivisions[selectedSquad] = newDivision;
                                 //   },
                                 // ),
                                 SizedBox(
@@ -150,8 +130,8 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                 onChange: (text) {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
-                                    results = TeamBrain.filterTeams(
-                                        teams: bowlers, search: text);
+                                    results = DoublePartner.filterBowlers(
+                                        bowlers: bowlers, search: text);
                                   });
                                 }),
                             SizedBox(
@@ -168,43 +148,21 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    TeamCreateScreen(
-                                                      teamData: results[index],
+                                                    CreateNewBowlerScreen(
+                                                      bowlerInfo:
+                                                          results[index],
                                                     )));
                                       },
-                                      leading: Text(results[index].name +
-                                          '     ' +
-                                          results[index]
-                                              .bowlerIDs
-                                              .values
-                                              .toList()
-                                              .length
-                                              .toString() +
-                                          '/' +
-                                          teamsize),
+                                      leading: Text(results[index].firstName +
+                                          ' ' +
+                                          results[index].lastName),
                                       trailing: IconButton(
-                                          onPressed: () {
-                                          
-                                          },
+                                          onPressed: () {},
                                           icon: Icon(
                                             MdiIcons.chevronRight,
-                                            color:
-                                                (doublePartner[selectedSquad] ??
-                                                            [])
-                                                        .contains(
-                                                            results[index].id)
-                                                    ? Colors.blue
-                                                    : null,
                                           )),
                                     );
                                   }),
-                            ),
-                            Center(
-                              child: CustomButton(
-                                buttonTitle: 'Finalize',
-                                length: 300,
-                                onClicked: () {},
-                              ),
                             ),
                           ])),
                 ),

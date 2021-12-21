@@ -34,6 +34,10 @@ class Constants {
   static String teamCreate = 'TournamentHome/TournamentCreate/TeamCreate';
   static String settingsDivision =
       'TournamentHome/TournamentCreate/settings/Divsion';
+  static String inputScores = 'TournamentHome/TournamentCreate/InputScores';
+  static String searchBowlers = 'TournamentHome/TournamentCreate/SearchBowlers';
+  static String searchSingles = 'TournamentHome/TournamentCreate/SearchSingles'; 
+   static String searchDoubles = 'TournamentHome/TournamentCreate/SearchDoubles';
   
 
   static void saveTournamentIdBeforeRefresh() {
@@ -91,7 +95,7 @@ class Constants {
 
 //takes in a list of divisions find all the ones in that one squad
   static List<String> findDivisionInSquad(
-      List<String> divisions, String squadLookingFor) {
+      List<String> divisions, String squadLookingFor, String? mustContain) {
     List<String> divisionsFound = ['  No Division'];
 
     divisions.forEach((division) {
@@ -99,6 +103,19 @@ class Constants {
         divisionsFound.add(division);
       }
     });
+
+    if(mustContain != null){
+     divisionsFound = divisionsFound.where((element) => element.contains(mustContain)).toList();
+    }
+
+    if(divisionsFound.length == 0){
+      divisionsFound = ['  No Division'];
+    }
+    else{
+      if(divisionsFound.contains('  No Division') == false){
+      divisionsFound.insert(0, '  No Division');
+      }
+    }
 
     return divisionsFound;
   }

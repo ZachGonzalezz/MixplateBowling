@@ -12,11 +12,11 @@ class CustomSearchBar extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
-        IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, backTo);
-            },
-            icon: Icon(MdiIcons.chevronLeft)),
+        // IconButton(
+        //     onPressed: () {
+        //       Navigator.pushNamed(context, backTo);
+        //     },
+        //     icon: Icon(MdiIcons.chevronLeft)),
         Expanded(
           flex: 2,
           child: TextField(
