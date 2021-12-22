@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/DoublesScreen/double_search_brain.dart';
 import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
 import 'package:lois_bowling_website/InputScores/scoreboard.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
+import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/team.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 
-class DoubleScoreScreen extends StatefulWidget {
-  DoubleScoreScreen({Key? key, required this.bowler}) : super(key: key);
+class TeamScoreScreen extends StatefulWidget {
+  TeamScoreScreen({Key? key, required this.team}) : super(key: key);
 
-  DoublePartners bowler;
+  Team team;
   @override
-  State<DoubleScoreScreen> createState() => _DoubleScoreScreenState();
+  State<TeamScoreScreen> createState() => _TeamScoreScreenState();
 }
 
-class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
+class _TeamScoreScreenState extends State<TeamScoreScreen> {
   SettingsBrain brain = SettingsBrain();
   InputScoreBrain scoreBrain = InputScoreBrain();
   int amountOfSquads = 1;
@@ -36,8 +37,10 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
   void initState() {
     super.initState();
     loadTournamentSettings();
-    scoreBrain.bowlers = widget.bowler.bowlers;
-    selectedSquad = widget.bowler.squad;
+    loadBowlers();
+ 
+
+    selectedSquad = widget.team.squad;
   }
 
 //loads the number of squads in the current tournament (based on name held in local storage)
@@ -52,6 +55,16 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
     SettingsBrain().loadDivisions().then((divisionFromDB) {
       setState(() {
         divisions = divisionFromDB;
+      });
+    });
+  }
+
+  void loadBowlers(){
+    widget.team.loadBowlers().then((value) {
+      setState(() {
+           scoreBrain.bowlers = widget.team.bowlers.values.toList();
+               print(scoreBrain.bowlers);
+        
       });
     });
   }
@@ -84,6 +97,15 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             BackButton(),
+                             Align(
+                              alignment: Alignment.topRight,
+                              child: TextButton(
+                                child: Text('Edit Team'),
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => TeamCreateScreen(teamData: widget.team,)));
+                                },
+                              ),
+                            ),
                             SizedBox(height: 30),
                             //these are the textfields to enter infromation controllers are held in create brain to be used to save in DB
                             SizedBox(
@@ -97,7 +119,10 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                                 SizedBox(
                                   width: 30,
                                 ),
-                                Text(selectedSquad, style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700))
+                                Text(selectedSquad,
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w700))
                                 // SquadPicker(
                                 //     brain: null,
                                 //     numberOfSquads: amountOfSquads,
@@ -114,7 +139,7 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                             ),
                             ScoreBoard(
                                 nmOfGames: numOfGames,
-                                results: widget.bowler.bowlers,
+                                results: widget.team.bowlers.values.toList(),
                                 scoreBrain: scoreBrain,
                                 selectedSquad: selectedSquad),
 
@@ -126,13 +151,10 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                                 buttonTitle: 'Update Info',
                                 length: 300,
                                 onClicked: () {
-
-                                  scoreBrain.bowlers = widget.bowler.bowlers;
+                     
 
                                   scoreBrain.saveScores();
-
-
-
+                       
                                 },
                               ),
                             ),

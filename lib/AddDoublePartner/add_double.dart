@@ -72,6 +72,7 @@ void loadBowlers(){
   }
   @override
   Widget build(BuildContext context) {
+    print(doublePartner);
     return Scaffold(
       body: ScreenLayout(
           selected: 'Create Bowler',

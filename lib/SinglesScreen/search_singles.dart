@@ -44,7 +44,8 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
     DoublePartner.loadBowlers().then((bowlersFromDB) {
       setState(() {
         bowlers = bowlersFromDB;
-        results = bowlersFromDB;
+         results = DoublePartner.filterBowlers(
+                                        bowlers: bowlers, search: '', squad: 'A');
       });
     });
   }
@@ -150,9 +151,22 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                                 builder: (context) =>
                                                    SingleScoreScreen(bowler: results[index])));
                                       },
-                                      leading: Text(results[index].firstName +
-                                          ' ' +
-                                          results[index].lastName),
+                                      leading: SizedBox(
+                                        width: 500,
+                                        child: Row(
+                                          children: [
+                                            Text(results[index].firstName +
+                                                ' ' +
+                                                results[index].lastName, style: TextStyle(fontWeight: FontWeight.w700, ),),
+
+                                                SizedBox(width: 20,),
+                                              Text(results[index].divisions[selectedSquad  + 'Singles'] ?? ''),
+                                                 SizedBox(width: 20,),
+
+                                                Text(results[index].findScoreForSquad(selectedSquad).toString())
+                                          ],
+                                        ),
+                                      ),
                                       trailing: IconButton(
                                           onPressed: () {},
                                           icon: Icon(

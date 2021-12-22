@@ -83,16 +83,16 @@ class _SettingsHomeState extends State<SettingsHome> {
                           navigateTo: Constants.settingsDivision,
                           brain: brain,
                         ),
-                        SettingSelectionTile(
-                          title: 'Spot Earnings',
-                          navigateTo: Constants.settingsDivision,
-                          brain: brain,
-                        ),
-                        SettingSelectionTile(
-                          title: 'Side Pots Amount',
-                          navigateTo: Constants.settingsDivision,
-                          brain: brain,
-                        ),
+                        // SettingSelectionTile(
+                        //   title: 'Spot Earnings',
+                        //   navigateTo: Constants.settingsDivision,
+                        //   brain: brain,
+                        // ),
+                        // SettingSelectionTile(
+                        //   title: 'Side Pots Amount',
+                        //   navigateTo: Constants.settingsDivision,
+                        //   brain: brain,
+                        // ),
                         InputValueTileSettings(
                             title: 'Entrees Fee', brain: brain, miscSettings: brain.miscSettings,),
                         InputValueTileSettings(

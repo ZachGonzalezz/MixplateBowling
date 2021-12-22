@@ -30,7 +30,7 @@ class DoublePartner {
           .where((element) => element.divisions[squad] == divison)
           .toList();
     }
-
+    filtered.sort((a, b) => b.findScoreForSquad(squad ?? '').compareTo(a.findScoreForSquad(squad ?? '')));
     //returns results of bowlers
     return filtered;
   }
@@ -56,6 +56,7 @@ class DoublePartner {
             Map<String, dynamic>.from(data['scores'] ?? {});
           bool isMale = data['IsMale'] ?? false;
           Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
+          
 
         Map<String, Map<String, int>> scores = {};
 

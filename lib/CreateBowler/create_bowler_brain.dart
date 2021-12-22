@@ -53,7 +53,7 @@ class CreateBowlerBrain{
       'divisions' : selectedSinglesDivisions,
       'doublePartners' : doublePartner,
       'id' : newDoc.id,
-      isMale : isMale
+      'isMale' : isMale
 
     });
   }
@@ -61,14 +61,14 @@ class CreateBowlerBrain{
   Future<void> updateBowler(String id) async{
     await Constants.getTournamentId();
     DocumentReference newDoc = FirebaseFirestore.instance.collection(Constants.currentIdForTournament + '/Bowlers').doc(id);
-    await newDoc.set({
+    await newDoc.update({
       'firstName' : firstNameController.text,
       'lastName' : lastNameController.text,
       'average' : double.parse(averageController.text),
       // 'handicap' : int.parse(handicapController.text),
       'divisions' : selectedSinglesDivisions,
       'doublePartners' : doublePartner,
-      isMale : isMale
+      'isMale' : isMale
 
     });
   }

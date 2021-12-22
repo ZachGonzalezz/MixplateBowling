@@ -122,20 +122,21 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                   onDivisionChange: (newDivision) {
                                     selectedDivisions[selectedSquad] =
                                         newDivision;
-                                 
-                                        if(newDivision != '  No Division'){
-                                          setState(() {
-                                            
-                                    results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers, search: '', divison: selectedDivisions[selectedSquad], squad: selectedSquad);
-                                  });
-                                        }
-                                        else{
-                                       
-                                          setState(() {
-                                            results = bowlers;
-                                          });
-                                        }
+
+                                    if (newDivision != '  No Division') {
+                                      setState(() {
+                                        results = DoublePartner.filterBowlers(
+                                            bowlers: bowlers,
+                                            search: '',
+                                            divison: selectedDivisions[
+                                                selectedSquad],
+                                            squad: selectedSquad);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        results = bowlers;
+                                      });
+                                    }
                                   },
                                 ),
                                 SizedBox(
@@ -159,13 +160,21 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers, search: text, divison: selectedDivisions[selectedSquad], squad: selectedSquad);
+                                        bowlers: bowlers,
+                                        search: text,
+                                        divison:
+                                            selectedDivisions[selectedSquad],
+                                        squad: selectedSquad);
                                   });
                                 }),
                             SizedBox(
                               height: 40,
                             ),
-                            ScoreBoard(nmOfGames: nmOfGames, results: results, scoreBrain: scoreBrain, selectedSquad: selectedSquad),
+                            ScoreBoard(
+                                nmOfGames: nmOfGames,
+                                results: results,
+                                scoreBrain: scoreBrain,
+                                selectedSquad: selectedSquad),
                           ])),
                 ),
               ),
@@ -176,5 +185,3 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
     );
   }
 }
-
-

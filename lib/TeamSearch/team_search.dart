@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
+import 'package:lois_bowling_website/TeamSearch/team_scores.dart';
 import 'package:lois_bowling_website/TeamsCreate/team_brain.dart';
 import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
 import 'package:lois_bowling_website/constants.dart';
@@ -64,7 +65,17 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
     TeamBrain().loadTeamsFromDb().then((teamsDb) {
       setState(() {
         bowlers = teamsDb;
-        results = teamsDb;
+
+          
+      });
+      bowlers.forEach((element) {
+        element.loadBowlers().then((value) {
+          setState(() {
+            
+          });
+           results = TeamBrain.filterTeams(
+                                        teams: bowlers, search: '');
+        });
       });
     });
   }
@@ -164,6 +175,7 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                   itemBuilder: (context, index) {
                                     return ListTile(
                                       onTap: () {
+                                        if(widget.isCreatingNewBowler){
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -171,17 +183,48 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                                     TeamCreateScreen(
                                                       teamData: results[index],
                                                     )));
+                                        }
+                                        else{
+                                            Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    TeamScoreScreen(
+                                                      team: results[index],
+                                                    )));
+                                        }
                                       },
-                                      leading: Text(results[index].name +
-                                          '     ' +
-                                          results[index]
-                                              .bowlerIDs
-                                              .values
-                                              .toList()
-                                              .length
-                                              .toString() +
-                                          '/' +
-                                          teamsize),
+                                      leading: SizedBox(
+                                        width: 500,
+                                        child: Row(
+                                          children: [
+                                            Text(results[index].name +
+                                                '     ' +
+                                                results[index]
+                                                    .bowlerIDs
+                                                    .values
+                                                    .toList()
+                                                    .length
+                                                    .toString() +
+                                                '/' +
+                                                teamsize, style: TextStyle(fontWeight: FontWeight.w700, )),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(results[index].division),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                 Text(results[index].squad),
+                                                  SizedBox(
+                                                  width: 20,
+                                                ),
+
+                                                //this is the score for the team
+                                                widget.isCreatingNewBowler == false ? Text(results[index].findTeamTotal().toString()) : SizedBox()
+                                          ],
+                                        ),
+                                      ),
                                       trailing: IconButton(
                                           onPressed: () {
                                           

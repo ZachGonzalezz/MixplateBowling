@@ -34,6 +34,24 @@ class Team {
         num handicap = data['handicap'] ?? 0;
         String firstName = data['firstName'] ?? ' ';
         String lastName = data['lastName'] ?? ' ';
+           Map<String, String> divisions =
+            Map<String, String>.from(data['divisions'] ?? {});
+        Map<String, dynamic> scoresDB =
+            Map<String, dynamic>.from(data['scores'] ?? {});
+          bool isMale = data['IsMale'] ?? false;
+          Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
+          
+
+        Map<String, Map<String, int>> scores = {};
+
+        scoresDB.forEach((squad, scoreMap) {
+          scores[squad] = {};
+
+          scoreMap.forEach((game, score) {
+            scores[squad]![game] = score.toInt();
+          });
+        });
+
         
 
         bowlers[key] = Bowler(
@@ -42,11 +60,22 @@ class Team {
           handicap: handicap.toDouble(),
           firstName: firstName,
           lastName: lastName,
+          divisions: divisions,
+          scores: scores, 
+          isMale: isMale
         
         );
-        print(bowlers);
+   
       });
     });
     return;
+  }
+
+ int findTeamTotal(){
+   int total = 0;
+    for(Bowler bowler in bowlers.values){
+      total += bowler.findScoreForSquad(squad);
+    }
+    return total;
   }
 }

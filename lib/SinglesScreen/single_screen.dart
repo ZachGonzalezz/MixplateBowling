@@ -133,7 +133,9 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                                 buttonTitle: 'Update Info',
                                 length: 300,
                                 onClicked: () {
-                                  
+                                     scoreBrain.bowlers = [widget.bowler];
+
+                                  scoreBrain.saveScores();
                                 },
                               ),
                             ),

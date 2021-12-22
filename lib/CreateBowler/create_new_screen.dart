@@ -42,6 +42,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
   void initState() {
     super.initState();
     loadTournamentSettings();
+  
   }
 
 //loads the number of squads in the current tournament (based on name held in local storage)
@@ -57,6 +58,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
         divisions = divisionFromDB;
         //if the the bowler is passing over data set the data here
         if (widget.bowlerInfo != null) {
+ 
           brain.averageController.text = widget.bowlerInfo!.average.toString();
           brain.firstNameController.text =
               widget.bowlerInfo!.firstName.toString();
@@ -64,7 +66,12 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
           brain.isMale = widget.bowlerInfo!.isMale;
           brain.selectedSinglesDivisions = widget.bowlerInfo!.divisions;
           selectedDivisions = widget.bowlerInfo!.divisions;
+
+
           brain.doublePartner = widget.bowlerInfo!.doublePartners;
+                   widget.bowlerInfo!.findDoublePartners();
+          
+          
         }
       });
     });
@@ -350,7 +357,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                     brain.selectedSinglesDivisions =
                                         selectedDivisions;
                                     //this means they are updating bowler info
-                                    if (widget.bowlerInfo == null) {
+                                    if (widget.bowlerInfo != null) {
                                       brain.updateBowler(
                                           widget.bowlerInfo!.uniqueId);
                                     }

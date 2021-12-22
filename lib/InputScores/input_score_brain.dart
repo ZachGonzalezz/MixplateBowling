@@ -8,6 +8,7 @@ class InputScoreBrain{
 
   void saveScores(){
     for(Bowler bowler in bowlers){
+  
       bowler.updateBowlerScores();
     }
   }

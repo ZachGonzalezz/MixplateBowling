@@ -118,6 +118,7 @@ class TeamBrain {
     }
     }
     
+     filtered.sort((a, b) => b.findTeamTotal().compareTo(a.findTeamTotal()));
     //returns results of bowlers
     return filtered;
   }

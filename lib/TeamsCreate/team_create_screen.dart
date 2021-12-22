@@ -297,6 +297,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                         squad: selectedSquad,
                                         id: widget.teamData!.id);
                                   }
+                                  Navigator.pop(context);
                                   }
                                   else{
                                     BasicPopUp().showBasicDialog(context, 'Ensure that the team has a name');

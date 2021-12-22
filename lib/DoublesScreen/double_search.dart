@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
 import 'package:lois_bowling_website/DoublesScreen/double_indivisual.dart';
+import 'package:lois_bowling_website/DoublesScreen/double_search_brain.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
@@ -31,6 +32,9 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
   //this this the list returned
   List<Bowler> results = [];
 
+    //this this the list returned
+  List<DoublePartners> resultsPartners = [];
+
   //this is the list of double partners the user has selected
   Map<String, List<String>> doublePartner = {};
   @override
@@ -45,9 +49,15 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
       setState(() {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
+          resultsPartners = DoubleSearchBrain().findDoublePartnes(bowlers, results);
+                      resultsPartners.sort((a, b) =>  b.findTeamTotal().compareTo(a.findTeamTotal()));
+
+        
       });
     });
   }
+
+  
 
 //loads the number of squads in the current tournament (based on name held in local storage)
   void loadTournamentSettings() {
@@ -132,6 +142,8 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
                                         bowlers: bowlers, search: text);
+                                      resultsPartners = DoubleSearchBrain().findDoublePartnes(bowlers, results);
+                                      resultsPartners.sort((a, b) =>  b.findTeamTotal().compareTo(a.findTeamTotal()));
                                   });
                                 }),
                             SizedBox(
@@ -140,22 +152,34 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.5,
                               child: ListView.builder(
-                                  itemCount: results.length,
+                                  itemCount: resultsPartners.length,
                                   itemBuilder: (context, index) {
+                                    
                                     return ListTile(
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DoubleScoreScreen(
-                                                    bowler:
-                                                          results[index],
-                                                    )));
+                                        Navigator.push(context, MaterialPageRoute(builder:(context) => DoubleScoreScreen(bowler: resultsPartners[index])));
                                       },
-                                      leading: Text(results[index].firstName +
-                                          ' ' +
-                                          results[index].lastName),
+                                      leading: SizedBox(
+                                        width: 700,
+                                        child: Row(
+                                          children: [
+                                            Text(resultsPartners[index].returnFirstName()),
+                                            SizedBox(width: 20,),
+                                            Icon(MdiIcons.arrowRightBold),
+                                             SizedBox(width: 20,),
+                                               Text(resultsPartners[index].returnSecondName()),
+                                                SizedBox(width: 20,),
+                                                    Text(resultsPartners[index].squad),
+                                                     SizedBox(width: 20,),
+                                                           
+
+
+
+                                            SizedBox(width: 20,),
+                                            Text(resultsPartners[index].findTeamTotal().toString())
+
+                                          ],
+                                        )),
                                       trailing: IconButton(
                                           onPressed: () {},
                                           icon: Icon(
