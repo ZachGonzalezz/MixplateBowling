@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lois_bowling_website/ImportBowlers/importBowlersPopup.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/SettingsScreen/setting_section_tile.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
@@ -110,6 +111,11 @@ class _SettingsHomeState extends State<SettingsHome> {
                           InputValueTileSettings(
                               title: 'Max on A Lane', brain: brain, miscSettings: brain.miscSettings,),
                           InputValueTileSettings(title: 'Games', brain: brain, miscSettings: brain.miscSettings,),
+
+                          TextButton(onPressed: (){
+                            showDialog(context: context, builder: (context) => ImportBowlersPopUp());
+                          },
+                          child: Text('Import Bowlers'),)
                         ])),
                   ),
                 ),

@@ -76,10 +76,13 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
           brain.lastNameController.text = widget.bowlerInfo!.lastName;
           brain.isMale = widget.bowlerInfo!.isMale;
           brain.selectedSinglesDivisions = widget.bowlerInfo!.divisions;
+          brain.laneNum.text = widget.bowlerInfo!.laneNUm;
+          brain.usbcNumController.text = widget.bowlerInfo!.uscbNum;
           selectedDivisions = widget.bowlerInfo!.divisions;
 
           brain.doublePartner = widget.bowlerInfo!.doublePartners;
           widget.bowlerInfo!.findDoublePartners();
+          
 
           brain.sidePotsUser = widget.bowlerInfo!.sidepots;
         }
@@ -187,6 +190,22 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                 ],
                               ),
                             ]),
+
+                            Row(
+                              children: [
+                                 SpecialTextField(
+                                item: 'USBC Num',
+                                controller: brain.usbcNumController,
+                              ),
+                               SizedBox(
+                                width: 60,
+                              ),
+                               SpecialTextField(
+                                item: 'Lane Num',
+                                controller: brain.laneNum
+                              ),
+                              ],
+                            ),
                             SizedBox(height: 30),
 
                             SizedBox(

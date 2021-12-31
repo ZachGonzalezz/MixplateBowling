@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
 import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepot_brain.dart';
@@ -6,7 +8,6 @@ import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
-import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 
 class FinanceScreen extends StatefulWidget {
   const FinanceScreen({Key? key}) : super(key: key);
@@ -145,7 +146,10 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                             )
                                           : Text(results[index - 1].firstName +
                                               ' ' +
-                                              results[index - 1].lastName),
+                                              results[index - 1].lastName + ' \$' +results[index - 1].findAmountOwedStill(entreeFee, sidepots).toString(),
+                                              style: TextStyle(
+                                                color: results[index - 1].findAmountOwedStill(entreeFee, sidepots) > 0 ? Colors.red : null
+                                              ),),
                                       trailing: SizedBox(
                                           width: 600,
                                           child: Row(
@@ -202,7 +206,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                   paidText =
                                                                   TextEditingController(
                                                                       text: (results[index - 1].financesPaid['Entree Fee'] ??
-                                                                              0)
+                                                                              '')
                                                                           .toString());
                                                               return SizedBox(
                                                                   width: 100,
@@ -214,8 +218,8 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                           onChanged:
                                                                               (text) {
                                                                             if (text ==
-                                                                                '') {
-                                                                              text = '0';
+                                                                                '' || paidText.text == '0') {
+                                                                              text = '';
                                                                             }
                                                                             if (int.tryParse(text) !=
                                                                                 null) {
@@ -223,19 +227,23 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                               results[index - 1].updateBowlerFinances();
                                                                             }
                                                                           },
+                                                                          style: TextStyle(color: Colors.green),
                                                                           decoration: InputDecoration(
                                                                               label: Text('Entree Fee'),
+                                                                              
+                                                                              hintText: entreeFee.toString(),
+                                                                              hintStyle: TextStyle(color: Colors.red),
                                                                               floatingLabelBehavior: FloatingLabelBehavior.always),
                                                                         )
                                                                       : TextField(
                                                                           controller: paidText
                                                                             ..text =
-                                                                                (results[index - 1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] ?? 0).toString(),
+                                                                                (results[index - 1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] ?? '').toString(),
                                                                           onChanged:
                                                                               (text) {
                                                                             if (text ==
-                                                                                '') {
-                                                                              text = '0';
+                                                                                '' || text == '0') {
+                                                                              text = '';
                                                                             }
                                                                             if (int.tryParse(text) !=
                                                                                 null) {
@@ -243,7 +251,10 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                               results[index - 1].updateBowlerFinances();
                                                                             }
                                                                           },
+                                                                         style: TextStyle(color: Colors.green),
                                                                           decoration: InputDecoration(
+                                                                                 hintText: results[index - 1].findAmountNeededForSidepot(results[index - 1].findFinaceSidePots()[indexBox - 1], sidepots).toString(),
+                                                                              hintStyle: TextStyle(color: Colors.red),
                                                                               label: Text(results[index - 1].findFinaceSidePots()[indexBox - 1]),
                                                                               floatingLabelBehavior: FloatingLabelBehavior.always),
                                                                         ));

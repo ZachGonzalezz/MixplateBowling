@@ -126,6 +126,7 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                               children: [
                                 //this picks which division the user is in
                                 DivisionPicker(
+                                  mustContain: 'Singles',
                                   division: divisions,
                                   selectedSquad: selectedSquad,
                                   selectedDivision: selectedDivisions,

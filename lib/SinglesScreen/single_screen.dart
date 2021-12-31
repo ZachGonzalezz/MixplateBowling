@@ -45,11 +45,7 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
     super.initState();
     loadTournamentSettings();
     scoreBrain.bowlers = [widget.bowler];
-
- 
   }
-
-
 
 //loads the number of squads in the current tournament (based on name held in local storage)
   void loadTournamentSettings() {
@@ -57,7 +53,6 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         numOfGames = (basicSettings['Games'] ?? 1).toInt();
-  
       });
     });
     //loads all the divisions and squads
@@ -105,7 +100,7 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 //this picks which division the user is in
-                               
+
                                 SizedBox(
                                   width: 30,
                                 ),
@@ -120,11 +115,15 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                                     }),
                               ],
                             ),
- SizedBox(
+                            SizedBox(
                               height: 20,
                             ),
-                            ScoreBoard(nmOfGames: numOfGames, results: [widget.bowler], scoreBrain: scoreBrain, selectedSquad: selectedSquad),
-                            
+                            ScoreBoard(
+                                nmOfGames: numOfGames,
+                                results: [widget.bowler],
+                                scoreBrain: scoreBrain,
+                                selectedSquad: selectedSquad),
+
                             SizedBox(
                               height: 20,
                             ),
@@ -133,7 +132,7 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                                 buttonTitle: 'Update Info',
                                 length: 300,
                                 onClicked: () {
-                                     scoreBrain.bowlers = [widget.bowler];
+                                  scoreBrain.bowlers = [widget.bowler];
 
                                   scoreBrain.saveScores();
                                 },

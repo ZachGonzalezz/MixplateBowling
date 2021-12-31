@@ -79,7 +79,7 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
         element.loadBowlers().then((value) {
           setState(() {});
           results = TeamBrain.filterTeams(
-              teams: bowlers, search: '', outOf: outOf, percent: percent);
+              teams: bowlers, search: '', outOf: outOf, percent: percent, squad: 'A');
         });
       });
     });
@@ -147,12 +147,22 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                               children: [
                                 // this picks which division the user is in
                                 DivisionPicker(
+                                  mustContain: 'Team',
                                   division: divisions,
                                   selectedSquad: selectedSquad,
                                   selectedDivision: selectedDivisions,
                                   onDivisionChange: (newDivision) {
                                     selectedDivisions[selectedSquad] =
                                         newDivision;
+                                          setState(() {
+                                    results = TeamBrain.filterTeams(
+                                        teams: bowlers,
+                                        search: '',
+                                        outOf: outOf,
+                                        percent: percent,
+                                        squad: selectedSquad,
+                                        division: selectedDivisions[selectedSquad] ?? 'A');
+                                  });
                                   },
                                 ),
                                 SizedBox(
@@ -165,6 +175,13 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                     chnageSquads: (squad) {
                                       setState(() {
                                         selectedSquad = squad;
+                                              results = TeamBrain.filterTeams(
+                                        teams: bowlers,
+                                        search: '',
+                                        outOf: outOf,
+                                        percent: percent,
+                                        squad: selectedSquad,
+                                          division: selectedDivisions[selectedSquad] ?? 'A');
                                       });
                                     }),
                               ],
@@ -179,7 +196,9 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                         teams: bowlers,
                                         search: text,
                                         outOf: outOf,
-                                        percent: percent);
+                                        percent: percent,
+                                        squad: selectedSquad,
+                                          division: selectedDivisions[selectedSquad] ?? 'A');
                                   });
                                 }),
                             SizedBox(

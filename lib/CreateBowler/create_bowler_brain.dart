@@ -7,6 +7,9 @@ class CreateBowlerBrain{
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController averageController = TextEditingController();
+  TextEditingController usbcNumController = TextEditingController();
+  TextEditingController laneNum = TextEditingController();
+
     Map<String, dynamic> sidePotsUser = {};
   // TextEditingController handicapController = TextEditingController();
   // TextEditingController sidePotController = TextEditingController();
@@ -55,8 +58,9 @@ class CreateBowlerBrain{
       'doublePartners' : doublePartner,
       'id' : newDoc.id,
       'isMale' : isMale,
-      'userSidePots' : sidePotsUser
-
+      'userSidePots' : sidePotsUser,
+      'usbcNum' : usbcNumController.text,
+      'laneNum' : laneNum.text
     });
   }
 
@@ -71,7 +75,9 @@ class CreateBowlerBrain{
       'divisions' : selectedSinglesDivisions,
       'doublePartners' : doublePartner,
       'isMale' : isMale,
-      'userSidePots' : sidePotsUser
+      'userSidePots' : sidePotsUser,
+      'usbcNum' : usbcNumController.text,
+      'laneNum' : laneNum.text
 
     });
   }

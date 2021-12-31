@@ -23,7 +23,7 @@ class DoublePartner {
         if (bowler.firstName.toLowerCase().contains(search.toLowerCase()) ||
             bowler.lastName.toLowerCase().contains(search.toLowerCase())) {
           filtered.add(bowler);
-          print(bowler.divisions);
+      
         }
       }
     }
@@ -68,6 +68,8 @@ class DoublePartner {
         Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
         Map<String, dynamic> sidepotsDB = Map.from(data['userSidePots'] ?? {});
         Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
+        String lanenNum = data['laneNum'] ?? '';
+        String usbcNum = data['usbcNum'] ?? '';
 
         Map<String, Map<String, int>> scores = {};
 
@@ -90,7 +92,9 @@ class DoublePartner {
             isMale: isMale,
             doublePartners: partners,
             sidepots: sidepotsDB,
-            financesPaid: financesDB));
+            financesPaid: financesDB,
+            laneNUm: lanenNum,
+            uscbNum: usbcNum));
       }
     });
 

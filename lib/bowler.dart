@@ -14,7 +14,10 @@ class Bowler {
       this.doublePartners = const {},
       this.isMale = false,
       this.sidepots = const {},
-      this.financesPaid = const {}});
+      this.financesPaid = const {},
+      this.laneNUm = '',
+      this.uscbNum = ''
+      });
 
   double average;
   Map<String, String> divisions;
@@ -28,6 +31,8 @@ class Bowler {
   int bestscore = 0;
   Map<String, dynamic> sidepots;
   Map<String, dynamic> financesPaid;
+  String uscbNum;
+  String laneNUm;
 
   void updateBowlerScores() async {
     await Constants.getTournamentId();
@@ -202,6 +207,33 @@ class Bowler {
 
 //takes the total amount of user side pots cost and entree fees to be total
     return sidePotAmount + entreeFee;
+  }
+
+  int findAmountNeededForSidepot(String sidePotName, List<Map<String, dynamic>> tournamentSidePots){
+    int valueReturned = 0;
+ 
+     tournamentSidePots.forEach((tournamentSidePot) {
+          //goes through the list trying to find the name of sidepot the user is in
+          tournamentSidePot.forEach((key, value) {
+
+            //once you find the sidepot finds the price then return amount cost
+            if (key == sidePotName.substring(2, sidePotName.length)) {
+            
+              valueReturned =  value;
+            }
+          });
+        });
+  return valueReturned;
+  }
+
+  int findAmountOwedStill(int entreeFee, List<Map<String, dynamic>> tournamentSidePots ){
+  int amountOwed =  findAmountOwed(entreeFee, tournamentSidePots);
+
+  int amountPaid = 0;
+  financesPaid.forEach((key, value) { 
+    amountPaid += value as int;
+  });
+  return amountOwed - amountPaid;
   }
 
 
