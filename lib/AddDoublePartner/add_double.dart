@@ -23,6 +23,9 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
 
+  int outOf = 200;
+  int percent = 100;
+
   List<String> divisions = ['No Division'];
 
   String selectedSquad = 'A';
@@ -61,7 +64,10 @@ void loadBowlers(){
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
-      });
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        
+              });
     });
     //loads all the divisions and squads
     SettingsBrain().loadDivisions().then((divisionFromDB) {
@@ -132,7 +138,7 @@ void loadBowlers(){
                               CustomSearchBar(backTo: Constants.createNewBowler, onChange: (text){
                                 //when user types in search bar automatically changes who pops up
                                 setState(() {
-                                           results =    DoublePartner.filterBowlers(bowlers: bowlers, search: text);
+                                           results =    DoublePartner.filterBowlers(bowlers: bowlers, search: text, outOf: outOf, percent: percent);
                                 });
                    
                               }),

@@ -19,6 +19,8 @@ class SearchBowlerScreen extends StatefulWidget {
 class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
+    int outOf = 200;
+  int percent = 100;
 
   List<String> divisions = ['No Division'];
 
@@ -54,6 +56,8 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
+             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
       });
     });
     //loads all the divisions and squads
@@ -131,6 +135,7 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
+                                       outOf: outOf, percent: percent,
                                         bowlers: bowlers, search: text);
                                   });
                                 }),

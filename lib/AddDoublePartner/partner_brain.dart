@@ -3,11 +3,14 @@ import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 
 class DoublePartner {
-  static List<Bowler> filterBowlers(
-      {required List<Bowler> bowlers,
-      required String? search,
-      String? divison,
-      String? squad}) {
+  static List<Bowler> filterBowlers({
+    required List<Bowler> bowlers,
+    required String? search,
+    required int outOf,
+    required int percent,
+    String? divison,
+    String? squad,
+  }) {
     List<Bowler> filtered = [];
 
     //if the search bar is empty send them back to default
@@ -30,7 +33,9 @@ class DoublePartner {
           .where((element) => element.divisions[squad] == divison)
           .toList();
     }
-    filtered.sort((a, b) => b.findScoreForSquad(squad ?? '').compareTo(a.findScoreForSquad(squad ?? '')));
+    filtered.sort((a, b) => b
+        .findScoreForSquad(squad ?? '', outOf, percent, true)
+        .compareTo(a.findScoreForSquad(squad ?? '', outOf, percent, true)));
     //returns results of bowlers
     return filtered;
   }
@@ -54,9 +59,10 @@ class DoublePartner {
             Map<String, String>.from(data['divisions'] ?? {});
         Map<String, dynamic> scoresDB =
             Map<String, dynamic>.from(data['scores'] ?? {});
-          bool isMale = data['IsMale'] ?? false;
-          Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
-          
+        bool isMale = data['IsMale'] ?? false;
+        Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
+        Map<String, dynamic> sidepotsDB = Map.from(data['userSidePots'] ?? {});
+         Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
 
         Map<String, Map<String, int>> scores = {};
 
@@ -75,8 +81,11 @@ class DoublePartner {
             firstName: firstName,
             lastName: lastName,
             divisions: divisions,
-            scores: scores, isMale: isMale,
-            doublePartners: partners ));
+            scores: scores,
+            isMale: isMale,
+            doublePartners: partners,
+            sidepots: sidepotsDB,
+            financesPaid: financesDB));
       }
     });
 

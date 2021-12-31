@@ -4,6 +4,7 @@ import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/SinglesScreen/single_screen.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
@@ -19,6 +20,9 @@ class SearchSinglesScreen extends StatefulWidget {
 class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
+  int outOf = 200;
+  int percent = 100;
+  int games = 0;
 
   List<String> divisions = ['No Division'];
 
@@ -44,8 +48,12 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
     DoublePartner.loadBowlers().then((bowlersFromDB) {
       setState(() {
         bowlers = bowlersFromDB;
-         results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers, search: '', squad: 'A');
+        results = DoublePartner.filterBowlers(
+            bowlers: bowlers,
+            search: '',
+            squad: 'A',
+            outOf: outOf,
+            percent: percent);
       });
     });
   }
@@ -55,6 +63,9 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+         games = (basicSettings['Games'] ?? 0).toInt();
       });
     });
     //loads all the divisions and squads
@@ -92,6 +103,15 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: TextButton(
+                                child: Text('Save Pdf'),
+                                onPressed: (){
+                                  PDFBrain().createSinglesPdf(results, games, outOf, percent);
+                                },
+                              )
+                            ),
                             // Padding(padding: EdgeInsets.all(8),
                             // child: IconButton(onPressed: (){
                             //   Navigator.pop(context);
@@ -132,7 +152,10 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers, search: text);
+                                        bowlers: bowlers,
+                                        search: text,
+                                        outOf: outOf,
+                                        percent: percent);
                                   });
                                 }),
                             SizedBox(
@@ -149,21 +172,39 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                   SingleScoreScreen(bowler: results[index])));
+                                                    SingleScoreScreen(
+                                                        bowler:
+                                                            results[index])));
                                       },
                                       leading: SizedBox(
                                         width: 500,
                                         child: Row(
                                           children: [
-                                            Text(results[index].firstName +
-                                                ' ' +
-                                                results[index].lastName, style: TextStyle(fontWeight: FontWeight.w700, ),),
-
-                                                SizedBox(width: 20,),
-                                              Text(results[index].divisions[selectedSquad  + 'Singles'] ?? ''),
-                                                 SizedBox(width: 20,),
-
-                                                Text(results[index].findScoreForSquad(selectedSquad).toString())
+                                            Text(
+                                              results[index].firstName +
+                                                  ' ' +
+                                                  results[index].lastName,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(results[index].divisions[
+                                                    selectedSquad +
+                                                        'Singles'] ??
+                                                ''),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(results[index]
+                                                .findScoreForSquad(
+                                                    selectedSquad,
+                                                    outOf,
+                                                    percent,
+                                                    true)
+                                                .toString())
                                           ],
                                         ),
                                       ),

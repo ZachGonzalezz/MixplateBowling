@@ -1,0 +1,273 @@
+import 'package:flutter/material.dart';
+import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
+import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepot_brain.dart';
+import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
+import 'package:lois_bowling_website/bowler.dart';
+import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
+import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
+
+class FinanceScreen extends StatefulWidget {
+  const FinanceScreen({Key? key}) : super(key: key);
+
+  @override
+  _FinanceScreenState createState() => _FinanceScreenState();
+}
+
+class _FinanceScreenState extends State<FinanceScreen> {
+  SettingsBrain brain = SettingsBrain();
+    List<Map<String, dynamic>> sidepots = [];
+  int amountOfSquads = 1;
+  int outOf = 200;
+  int percent = 100;
+  int entreeFee = 0;
+
+  List<String> divisions = ['No Division'];
+
+  String selectedSquad = 'A';
+  //this keeps track of which division is selecter per Squad sotred in {"A" : "A Singles (One Division)"}
+  Map<String, String> selectedDivisions = {};
+
+  //this is the original array from the database
+  List<Bowler> bowlers = [];
+  //this this the list returned
+  List<Bowler> results = [];
+
+  //this is the list of double partners the user has selected
+  Map<String, List<String>> doublePartner = {};
+  @override
+  void initState() {
+    super.initState();
+    loadTournamentSettings();
+    loadBowlers();
+    callSidePots();
+  }
+
+  void loadBowlers() {
+    DoublePartner.loadBowlers().then((bowlersFromDB) {
+      setState(() {
+        bowlers = bowlersFromDB;
+        results = bowlersFromDB;
+      });
+    });
+  }
+  void callSidePots() {
+    SidePotBrain().getSidePots().then((value) {
+      setState(() {
+        sidepots = value;
+      });
+    });
+  }
+
+
+//loads the number of squads in the current tournament (based on name held in local storage)
+  void loadTournamentSettings() {
+    SettingsBrain().getMainSettings().then((basicSettings) {
+      setState(() {
+        amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        entreeFee = (basicSettings['Entrees Fee'] ?? 0).toInt();
+      });
+    });
+    //loads all the divisions and squads
+    SettingsBrain().loadDivisions().then((divisionFromDB) {
+      setState(() {
+        divisions = divisionFromDB;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ScreenLayout(
+        selected: 'Finances',
+        child: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width * 0.15,
+                  MediaQuery.of(context).size.height * 0.15,
+                  MediaQuery.of(context).size.width * 0.15,
+                  0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Constants.lightBlue,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            // Padding(padding: EdgeInsets.all(8),
+                            // child: IconButton(onPressed: (){
+                            //   Navigator.pop(context);
+                            // }, icon: Icon(MdiIcons.chevronLeft)),),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //this picks which division the user is in
+                                // DivisionPicker(
+                                //   division: divisions,
+                                //   selectedSquad: selectedSquad,
+                                //   selectedDivision: selectedDivisions,
+                                //   onDivisionChange: (newDivision){
+                                //     selectedDivisions[selectedSquad] = newDivision;
+                                //   },
+                                // ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                SquadPicker(
+                                    brain: null,
+                                    numberOfSquads: amountOfSquads,
+                                    //when picker is change changes the selected squad whichd determines which division are shown
+                                    chnageSquads: (squad) {
+                                      setState(() {
+                                        selectedSquad = squad;
+                                      });
+                                    }),
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            CustomSearchBar(
+                                backTo: Constants.createNewBowler,
+                                onChange: (text) {
+                                  //when user types in search bar automatically changes who pops up
+                                  setState(() {
+                                    results = DoublePartner.filterBowlers(
+                                        outOf: outOf,
+                                        percent: percent,
+                                        bowlers: bowlers,
+                                        search: text);
+                                  });
+                                }),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: ListView.builder(
+                                  itemCount: results.length + 1,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      leading: index == 0
+                                          ? Text(
+                                              'Name',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700),
+                                            )
+                                          : Text(results[index - 1].firstName +
+                                              ' ' +
+                                              results[index - 1].lastName),
+                                      trailing: SizedBox(
+                                          width: 600,
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                index == 0
+                                                    ? Text(
+                                                        'Due     ',
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      )
+                                                    : Text('\$' + results[index - 1].findAmountOwed(entreeFee, sidepots).toString()),
+                                                SizedBox(
+                                                  width: 30,
+                                                ),
+                                                index == 0
+                                                    ? Text(
+                                                        'Paid  ',
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      )
+                                                    : SizedBox(
+                                                        width: (100 *
+                                                                    results[index -
+                                                                            1]
+                                                                        .findFinaceSidePots()
+                                                                        .length)
+                                                                .toDouble() +
+                                                            100,
+                                                        child: ListView.builder(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount: 1 +
+                                                                results[index -
+                                                                        1]
+                                                                    .findFinaceSidePots()
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    indexBox) {
+                                                                      TextEditingController paidText = TextEditingController(text:  (results[index -1].financesPaid['Entree Fee'] ?? 0).toString());
+                                                              return SizedBox(
+                                                                  width: 100,
+                                                                  child: indexBox ==
+                                                                          0
+                                                                      ? TextField(
+                                                                        controller: paidText,
+                                                                        onChanged: (text){
+                                                                            if(text == ''){
+                                                                             text = '0';
+                                                                           }
+                                                                            if(int.tryParse(text) != null){
+                                                                          results[index -1].financesPaid['Entree Fee'] = int.parse(text);
+                                                                          results[index -1].updateBowlerFinances();
+                                                                            }
+
+                                                                        },
+                                                                          decoration: InputDecoration(
+                                                                              label: Text('Entree Fee'),
+                                                                              
+                                                                              floatingLabelBehavior: FloatingLabelBehavior.always),
+                                                                        )
+                                                                      : TextField(
+                                                                                 controller: paidText..text =  (results[index -1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] ?? 0).toString(),
+                                                                         onChanged: (text){
+                                                                           if(text == ''){
+                                                                             text = '0';
+                                                                           }
+                                                                           if(int.tryParse(text) != null){
+                                                                          results[index -1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] = int.parse(text);
+                                                                            results[index -1].updateBowlerFinances();
+                                                                           }
+                                                                        },
+                                                                          decoration: InputDecoration(
+                                                                              label: Text(results[index - 1].findFinaceSidePots()[indexBox - 1]),
+                                                                              floatingLabelBehavior: FloatingLabelBehavior.always),
+                                                                        ));
+                                                            }),
+                                                      )
+                                              ])),
+                                    );
+                                  }),
+                            ),
+                          ])),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

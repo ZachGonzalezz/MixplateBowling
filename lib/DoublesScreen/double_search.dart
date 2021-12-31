@@ -5,6 +5,7 @@ import 'package:lois_bowling_website/DoublesScreen/double_search_brain.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
@@ -20,7 +21,10 @@ class SearchDoublesScreen extends StatefulWidget {
 class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
-
+  
+  int outOf = 200;
+  int percent = 100;
+  int game = 1;
   List<String> divisions = ['No Division'];
 
   String selectedSquad = 'A';
@@ -50,7 +54,7 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
           resultsPartners = DoubleSearchBrain().findDoublePartnes(bowlers, results);
-                      resultsPartners.sort((a, b) =>  b.findTeamTotal().compareTo(a.findTeamTotal()));
+                      resultsPartners.sort((a, b) =>  b.findTeamTotal(outOf, percent).compareTo(a.findTeamTotal(outOf, percent)));
 
         
       });
@@ -64,6 +68,9 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
+             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        game = (basicSettings['Games'] ?? 1).toInt();
       });
     });
     //loads all the divisions and squads
@@ -101,6 +108,15 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
+                               Align(
+                              alignment: Alignment.topRight,
+                              child: TextButton(
+                                child: Text('Save Pdf'),
+                                onPressed: (){
+                                  PDFBrain().createDoublesPdf(resultsPartners, game, outOf, percent);
+                                },
+                              )
+                            ),
                             // Padding(padding: EdgeInsets.all(8),
                             // child: IconButton(onPressed: (){
                             //   Navigator.pop(context);
@@ -141,9 +157,9 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers, search: text);
+                                        bowlers: bowlers, search: text, outOf: outOf, percent: percent);
                                       resultsPartners = DoubleSearchBrain().findDoublePartnes(bowlers, results);
-                                      resultsPartners.sort((a, b) =>  b.findTeamTotal().compareTo(a.findTeamTotal()));
+                                      resultsPartners.sort((a, b) =>  b.findTeamTotal(outOf, percent).compareTo(a.findTeamTotal(outOf, percent)));
                                   });
                                 }),
                             SizedBox(
@@ -176,7 +192,7 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
 
 
                                             SizedBox(width: 20,),
-                                            Text(resultsPartners[index].findTeamTotal().toString())
+                                            Text(resultsPartners[index].findTeamTotal(outOf, percent).toString())
 
                                           ],
                                         )),

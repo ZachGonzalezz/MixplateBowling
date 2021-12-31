@@ -43,69 +43,75 @@ class _SettingsHomeState extends State<SettingsHome> {
         Navigator.pushNamed(context, Constants.tournamentHome);
         return Future(() => true);
       },
-      child: Scaffold(
-        body: ScreenLayout(
-          selected: 'Settings',
-          child: SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    MediaQuery.of(context).size.width * 0.15,
-                    MediaQuery.of(context).size.height * 0.15,
-                    MediaQuery.of(context).size.width * 0.15,
-                    0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Constants.lightBlue,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(mainAxisSize: MainAxisSize.max, children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          Constants.tournamentName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800, fontSize: 30),
-                        ),
-                        CustomButton(
-                          buttonTitle: 'Save Settings',
-                          length: 300,
-                          onClicked: () {
-                            brain.saveHomeSettings();
-                          },
-                        ),
-                        SettingSelectionTile(
-                          title: 'Divisions',
-                          navigateTo: Constants.settingsDivision,
-                          brain: brain,
-                        ),
-                        // SettingSelectionTile(
-                        //   title: 'Spot Earnings',
-                        //   navigateTo: Constants.settingsDivision,
-                        //   brain: brain,
-                        // ),
-                        // SettingSelectionTile(
-                        //   title: 'Side Pots Amount',
-                        //   navigateTo: Constants.settingsDivision,
-                        //   brain: brain,
-                        // ),
-                        InputValueTileSettings(
-                            title: 'Entrees Fee', brain: brain, miscSettings: brain.miscSettings,),
-                        InputValueTileSettings(
-                            title: 'Handicapt Amount', brain: brain, miscSettings: brain.miscSettings,),
-                        InputValueTileSettings(
-                            title: 'Handicap Percentage', brain: brain, miscSettings: brain.miscSettings,),
-                        InputValueTileSettings(title: 'Squads', brain: brain, miscSettings: brain.miscSettings,),
-                        InputValueTileSettings(
-                            title: 'Team Size', brain: brain, miscSettings: brain.miscSettings,),
-                        InputValueTileSettings(
-                            title: 'Max on A Lane', brain: brain, miscSettings: brain.miscSettings,),
-                        InputValueTileSettings(title: 'Games', brain: brain, miscSettings: brain.miscSettings,),
-                      ])),
+      child: WillPopScope(
+        onWillPop: () async {
+          Navigator.pushNamed(context, Constants.settingsHome);
+          return true;
+        },
+        child: Scaffold(
+          body: ScreenLayout(
+            selected: 'Settings',
+            child: SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width * 0.15,
+                      MediaQuery.of(context).size.height * 0.15,
+                      MediaQuery.of(context).size.width * 0.15,
+                      0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Constants.lightBlue,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10))),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(mainAxisSize: MainAxisSize.max, children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            Constants.tournamentName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800, fontSize: 30),
+                          ),
+                          CustomButton(
+                            buttonTitle: 'Save Settings',
+                            length: 300,
+                            onClicked: () {
+                              brain.saveHomeSettings();
+                            },
+                          ),
+                          SettingSelectionTile(
+                            title: 'Divisions',
+                            navigateTo: Constants.settingsDivision,
+                            brain: brain,
+                          ),
+                          // SettingSelectionTile(
+                          //   title: 'Spot Earnings',
+                          //   navigateTo: Constants.settingsDivision,
+                          //   brain: brain,
+                          // ),
+                          SettingSelectionTile(
+                            title: 'Side Pots',
+                            navigateTo: Constants.sidePotSettings,
+                            brain: brain,
+                          ),
+                          InputValueTileSettings(
+                              title: 'Entrees Fee', brain: brain, miscSettings: brain.miscSettings,),
+                          InputValueTileSettings(
+                              title: 'Handicapt Amount', brain: brain, miscSettings: brain.miscSettings,),
+                          InputValueTileSettings(
+                              title: 'Handicap Percentage', brain: brain, miscSettings: brain.miscSettings,),
+                          InputValueTileSettings(title: 'Squads', brain: brain, miscSettings: brain.miscSettings,),
+                          InputValueTileSettings(
+                              title: 'Team Size', brain: brain, miscSettings: brain.miscSettings,),
+                          InputValueTileSettings(
+                              title: 'Max on A Lane', brain: brain, miscSettings: brain.miscSettings,),
+                          InputValueTileSettings(title: 'Games', brain: brain, miscSettings: brain.miscSettings,),
+                        ])),
+                  ),
                 ),
               ),
             ),

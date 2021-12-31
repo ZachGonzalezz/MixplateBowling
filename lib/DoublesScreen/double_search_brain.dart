@@ -73,11 +73,49 @@ class DoublePartners {
 
     return '';
   }
-  int findTeamTotal(){
+  int findTeamTotal(int outOf, int percent){
    int total = 0;
     for(Bowler bowler in bowlers){
-      total += bowler.findScoreForSquad(squad);
+      total += bowler.findScoreForSquad(squad, outOf, percent, true);
     }
     return total;
   }
+ 
+  
+   int findDoublesScratchTotal(int outOf, int percent){
+   int total = 0;
+    for(Bowler bowler in bowlers){
+      total += bowler.findScoreForSquad(squad, outOf, percent, false);
+    }
+    return total;
+  }
+
+  int findDoublesTotalAverage(){
+   int total = 0;
+   for(Bowler bowler in bowlers){
+     total += bowler.average.toInt();
+
+   }
+   return total;
+  }
+
+    int findDoublesTotalHandicap(int outOf, int percent){
+   int total = 0;
+   for(Bowler bowler in bowlers){
+     total += bowler.findHandicap(outOf, percent);
+
+   }
+   return total;
+  }
+
+  int findDoublesGameTOtal(String squad, int game){
+     int total = 0;
+   for(Bowler bowler in bowlers){
+     total += bowler.findScoreForGame(squad, game);
+
+   }
+   return total;
+  }
+
+
 }

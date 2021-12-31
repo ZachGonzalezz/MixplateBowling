@@ -35,6 +35,8 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
   List<Bowler> bowlers = [];
   //this this the list returned
   List<Bowler> results = [];
+    int outOf = 200;
+  int percent = 100;
 
   @override
   void initState() {
@@ -59,6 +61,8 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         nmOfGames = (basicSettings['Games'] ?? 1).toInt();
+             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
       });
     });
     //loads all the divisions and squads
@@ -126,11 +130,13 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                     if (newDivision != '  No Division') {
                                       setState(() {
                                         results = DoublePartner.filterBowlers(
+                                           outOf: outOf, percent: percent,
                                             bowlers: bowlers,
                                             search: '',
                                             divison: selectedDivisions[
                                                 selectedSquad],
-                                            squad: selectedSquad);
+                                            squad: selectedSquad,
+                                            );
                                       });
                                     } else {
                                       setState(() {
@@ -164,7 +170,8 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                         search: text,
                                         divison:
                                             selectedDivisions[selectedSquad],
-                                        squad: selectedSquad);
+                                        squad: selectedSquad,
+                                        outOf: outOf, percent: percent);
                                   });
                                 }),
                             SizedBox(

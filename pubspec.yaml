@@ -22,6 +22,8 @@ dependencies:
   material_design_icons_flutter: ^5.0.6295
   shared_preferences: ^2.0.11
   flutter_typeahead: ^3.2.4
+  syncfusion_flutter_pdf: ^19.4.40-beta
+  universal_html: ^2.0.8
 
 dev_dependencies:
   flutter_test:

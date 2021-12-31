@@ -38,6 +38,8 @@ class Constants {
   static String searchBowlers = 'TournamentHome/TournamentCreate/SearchBowlers';
   static String searchSingles = 'TournamentHome/TournamentCreate/SearchSingles'; 
    static String searchDoubles = 'TournamentHome/TournamentCreate/SearchDoubles';
+   static String sidePotSettings = 'TournamentHome/TournamentCreate/settingsHome/SidePots';
+   static String financeScreen = 'TournamentHome/TournamentCreate/Finance';
   
 
   static void saveTournamentIdBeforeRefresh() {

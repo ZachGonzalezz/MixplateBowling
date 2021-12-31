@@ -27,7 +27,7 @@ class CustomNavigationBar extends StatelessWidget {
                       NavigationRow(icon: MdiIcons.accountGroup, screeName: 'Teams', sendTo:  Constants.teamSearch, isSelected: 'Teams' == selected,),
                       NavigationRow(icon: MdiIcons.bowling, screeName: 'Bowlers', sendTo:  Constants.searchBowlers, isSelected: 'Bowlers' == selected,),
                       NavigationRow(icon: MdiIcons.scoreboard, screeName: 'Scores', sendTo:  Constants.inputScores, isSelected: 'Scores' == selected,),
-                      // NavigationRow(icon: Icons.attach_money_rounded, screeName: 'Finances', sendTo:  Constants.settingsHome, isSelected: 'Finances' == selected,),
+                      NavigationRow(icon: Icons.attach_money_rounded, screeName: 'Finances', sendTo:  Constants.financeScreen, isSelected: 'Finances' == selected,),
                       // NavigationRow(icon: MdiIcons.crown, screeName: 'Winners', sendTo:  Constants.settingsHome, isSelected: 'Winners' == selected,),
                       // NavigationRow(icon: MdiIcons.roadVariant, screeName: 'Lanes', sendTo:  Constants.settingsHome, isSelected:  'Lanes' == selected,),
                       NavigationRow(icon: Icons.logout, screeName: 'Logout', sendTo:  Constants.home, isSelected: false),

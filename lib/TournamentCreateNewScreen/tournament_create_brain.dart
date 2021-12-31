@@ -18,7 +18,8 @@ static void createCourse(String name, DateTime to, DateTime from, List<String> e
     'to' : to,
     'from' : from,
     'name' : name,
-    'sharedWith' : emails
+    'sharedWith' : emails,
+     'sidepots' : [{}]
   });
 }
 

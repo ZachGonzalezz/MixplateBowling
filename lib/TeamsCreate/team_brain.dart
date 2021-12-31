@@ -99,7 +99,7 @@ class TeamBrain {
   }
 
 
- static List<Team> filterTeams({required List<Team> teams, required String? search}){
+ static List<Team> filterTeams({required List<Team> teams, required String? search, required int outOf, required int percent}){
     List<Team> filtered = [];
 
 
@@ -118,7 +118,7 @@ class TeamBrain {
     }
     }
     
-     filtered.sort((a, b) => b.findTeamTotal().compareTo(a.findTeamTotal()));
+     filtered.sort((a, b) => b.findTeamTotal(outOf, percent).compareTo(a.findTeamTotal(outOf, percent)));
     //returns results of bowlers
     return filtered;
   }

@@ -71,11 +71,50 @@ class Team {
     return;
   }
 
- int findTeamTotal(){
+ int findTeamTotal(int outOf, int percent){
    int total = 0;
     for(Bowler bowler in bowlers.values){
-      total += bowler.findScoreForSquad(squad);
+      total += bowler.findScoreForSquad(squad, outOf, percent, true);
     }
     return total;
   }
+  
+   int findTeamScratchTotal(int outOf, int percent){
+   int total = 0;
+    for(Bowler bowler in bowlers.values){
+      total += bowler.findScoreForSquad(squad, outOf, percent, false);
+    }
+    return total;
+  }
+
+  int findTeamTotalAverage(){
+   int total = 0;
+   for(Bowler bowler in bowlers.values){
+     total += bowler.average.toInt();
+
+   }
+   return total;
+  }
+
+    int findTeamTotalHandicap(int outOf, int percent){
+   int total = 0;
+   for(Bowler bowler in bowlers.values){
+     total += bowler.findHandicap(outOf, percent);
+
+   }
+   return total;
+  }
+
+  int findTeamGameTOtal(String squad, int game){
+     int total = 0;
+   for(Bowler bowler in bowlers.values){
+     total += bowler.findScoreForGame(squad, game);
+
+   }
+   return total;
+  }
+
+
+
+
 }

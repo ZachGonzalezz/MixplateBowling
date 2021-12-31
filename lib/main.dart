@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/AddDoublePartner/add_double.dart';
 import 'package:lois_bowling_website/CreateBowler/create_new_screen.dart';
 import 'package:lois_bowling_website/DoublesScreen/double_search.dart';
+import 'package:lois_bowling_website/FinanceScreen/finaceScreen.dart';
 import 'package:lois_bowling_website/InputScores/Input_Scores.dart';
 import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
 import 'package:lois_bowling_website/SearchBowlers/SearchBowler.dart';
 import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/settings_division.dart';
+import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepotscreen.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_home.dart';
 import 'package:lois_bowling_website/SignupScreen/signup_screen.dart';
 import 'package:lois_bowling_website/SinglesScreen/search_singles.dart';
@@ -59,6 +61,8 @@ class MyApp extends StatelessWidget {
         Constants.searchBowlers : (context) => SearchBowlerScreen(),
         Constants.searchDoubles : (context) =>SearchDoublesScreen(),
         Constants.searchSingles : (context) => SearchSinglesScreen(),
+        Constants.sidePotSettings : (context) => SidePotScreen(),
+        Constants.financeScreen : (context) => FinanceScreen(),
 
 
 

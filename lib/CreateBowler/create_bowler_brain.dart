@@ -7,6 +7,7 @@ class CreateBowlerBrain{
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController averageController = TextEditingController();
+    Map<String, dynamic> sidePotsUser = {};
   // TextEditingController handicapController = TextEditingController();
   // TextEditingController sidePotController = TextEditingController();
 
@@ -53,7 +54,8 @@ class CreateBowlerBrain{
       'divisions' : selectedSinglesDivisions,
       'doublePartners' : doublePartner,
       'id' : newDoc.id,
-      'isMale' : isMale
+      'isMale' : isMale,
+      'userSidePots' : sidePotsUser
 
     });
   }
@@ -68,7 +70,8 @@ class CreateBowlerBrain{
       // 'handicap' : int.parse(handicapController.text),
       'divisions' : selectedSinglesDivisions,
       'doublePartners' : doublePartner,
-      'isMale' : isMale
+      'isMale' : isMale,
+      'userSidePots' : sidePotsUser
 
     });
   }

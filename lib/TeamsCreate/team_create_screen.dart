@@ -24,6 +24,8 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
   int teamSize = 1;
+    int outOf = 200;
+  int percent = 100;
 
   List<String> divisions = ['  No Division'];
 
@@ -73,6 +75,8 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         teamSize = (basicSettings['Team Size'] ?? 1).toInt();
+             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
         if (widget.teamData != null) {
           teamName.text = widget.teamData!.name;
           selectedDivisions[widget.teamData!.squad] = widget.teamData!.division;
@@ -180,7 +184,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                                       return DoublePartner
                                                           .filterBowlers(
                                                               bowlers: bowlers,
-                                                              search: text);
+                                                              search: text, outOf: outOf, percent: percent);
                                                     },
                                                     itemBuilder:
                                                         (context, bowler) {

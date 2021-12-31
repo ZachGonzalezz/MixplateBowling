@@ -5,6 +5,7 @@ import 'package:lois_bowling_website/TeamSearch/team_scores.dart';
 import 'package:lois_bowling_website/TeamsCreate/team_brain.dart';
 import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/team.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
@@ -12,7 +13,8 @@ import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TeamSearchScreen extends StatefulWidget {
-  TeamSearchScreen({Key? key, this.isCreatingNewBowler = true}) : super(key: key);
+  TeamSearchScreen({Key? key, this.isCreatingNewBowler = true})
+      : super(key: key);
 
   bool isCreatingNewBowler;
 
@@ -24,6 +26,9 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
   String teamsize = '';
+  int outOf = 200;
+  int percent = 100;
+  int game = 1;
 
   List<String> divisions = ['No Division'];
 
@@ -51,6 +56,9 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         teamsize = (basicSettings['Team Size'] ?? 1).toInt().toString();
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+       game = (basicSettings['Games'] ?? 1).toInt();
       });
     });
     //loads all the divisions and squads
@@ -65,16 +73,12 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
     TeamBrain().loadTeamsFromDb().then((teamsDb) {
       setState(() {
         bowlers = teamsDb;
-
-          
       });
       bowlers.forEach((element) {
         element.loadBowlers().then((value) {
-          setState(() {
-            
-          });
-           results = TeamBrain.filterTeams(
-                                        teams: bowlers, search: '');
+          setState(() {});
+          results = TeamBrain.filterTeams(
+              teams: bowlers, search: '', outOf: outOf, percent: percent);
         });
       });
     });
@@ -114,6 +118,15 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                     Navigator.pop(context);
                                   },
                                   icon: Icon(MdiIcons.chevronLeft)),
+                            ),
+                             Align(
+                              alignment: Alignment.topRight,
+                              child: TextButton(
+                                child: Text('Save Pdf'),
+                                onPressed: (){
+                                  PDFBrain().createTeamsPdf(results, game, outOf, percent);
+                                },
+                              )
                             ),
                             Align(
                               alignment: Alignment.topRight,
@@ -162,7 +175,10 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = TeamBrain.filterTeams(
-                                        teams: bowlers, search: text);
+                                        teams: bowlers,
+                                        search: text,
+                                        outOf: outOf,
+                                        percent: percent);
                                   });
                                 }),
                             SizedBox(
@@ -175,60 +191,67 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                   itemBuilder: (context, index) {
                                     return ListTile(
                                       onTap: () {
-                                        if(widget.isCreatingNewBowler){
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TeamCreateScreen(
-                                                      teamData: results[index],
-                                                    )));
-                                        }
-                                        else{
-                                            Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TeamScoreScreen(
-                                                      team: results[index],
-                                                    )));
+                                        if (widget.isCreatingNewBowler) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TeamCreateScreen(
+                                                        teamData:
+                                                            results[index],
+                                                      )));
+                                        } else {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TeamScoreScreen(
+                                                        team: results[index],
+                                                      )));
                                         }
                                       },
                                       leading: SizedBox(
                                         width: 500,
                                         child: Row(
                                           children: [
-                                            Text(results[index].name +
-                                                '     ' +
-                                                results[index]
-                                                    .bowlerIDs
-                                                    .values
-                                                    .toList()
-                                                    .length
-                                                    .toString() +
-                                                '/' +
-                                                teamsize, style: TextStyle(fontWeight: FontWeight.w700, )),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Text(results[index].division),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                 Text(results[index].squad),
-                                                  SizedBox(
-                                                  width: 20,
-                                                ),
+                                            Text(
+                                                results[index].name +
+                                                    '     ' +
+                                                    results[index]
+                                                        .bowlerIDs
+                                                        .values
+                                                        .toList()
+                                                        .length
+                                                        .toString() +
+                                                    '/' +
+                                                    teamsize,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                )),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(results[index].division),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(results[index].squad),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
 
-                                                //this is the score for the team
-                                                widget.isCreatingNewBowler == false ? Text(results[index].findTeamTotal().toString()) : SizedBox()
+                                            //this is the score for the team
+                                            widget.isCreatingNewBowler == false
+                                                ? Text(results[index]
+                                                    .findTeamTotal(
+                                                        outOf, percent)
+                                                    .toString())
+                                                : SizedBox()
                                           ],
                                         ),
                                       ),
                                       trailing: IconButton(
-                                          onPressed: () {
-                                          
-                                          },
+                                          onPressed: () {},
                                           icon: Icon(
                                             MdiIcons.chevronRight,
                                             color:

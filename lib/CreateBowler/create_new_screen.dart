@@ -4,6 +4,7 @@ import 'package:lois_bowling_website/CreateBowler/create_bowler_brain.dart';
 import 'package:lois_bowling_website/CreateBowler/gender_picker.dart';
 import 'package:lois_bowling_website/CreateBowler/input_textfield.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
+import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepot_brain.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/TeamSearch/team_search.dart';
 import 'package:lois_bowling_website/bowler.dart';
@@ -25,6 +26,7 @@ class CreateNewBowlerScreen extends StatefulWidget {
 
 class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
   CreateBowlerBrain brain = CreateBowlerBrain();
+  List<Map<String, dynamic>> sidepots = [];
   int amountOfSquads = 1;
 
   List<String> divisions = ['No Division'];
@@ -36,13 +38,23 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
 
   String teamsSelectedSquad = 'A';
 
+  String sideSpotSelected = 'A';
+
   Map<String, String> selectedDivisions = {};
 
   @override
   void initState() {
     super.initState();
     loadTournamentSettings();
-  
+    callSidePots();
+  }
+
+  void callSidePots() {
+    SidePotBrain().getSidePots().then((value) {
+      setState(() {
+        sidepots = value;
+      });
+    });
   }
 
 //loads the number of squads in the current tournament (based on name held in local storage)
@@ -58,7 +70,6 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
         divisions = divisionFromDB;
         //if the the bowler is passing over data set the data here
         if (widget.bowlerInfo != null) {
- 
           brain.averageController.text = widget.bowlerInfo!.average.toString();
           brain.firstNameController.text =
               widget.bowlerInfo!.firstName.toString();
@@ -67,11 +78,10 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
           brain.selectedSinglesDivisions = widget.bowlerInfo!.divisions;
           selectedDivisions = widget.bowlerInfo!.divisions;
 
-
           brain.doublePartner = widget.bowlerInfo!.doublePartners;
-                   widget.bowlerInfo!.findDoublePartners();
-          
-          
+          widget.bowlerInfo!.findDoublePartners();
+
+          brain.sidePotsUser = widget.bowlerInfo!.sidepots;
         }
       });
     });
@@ -290,6 +300,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                               ],
                             ),
                             SizedBox(height: 30),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -345,6 +356,70 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                             ),
                             SizedBox(height: 30),
                             Center(
+                              child: SquadPicker(
+                                  brain: null,
+                                  numberOfSquads: amountOfSquads,
+                                  //when picker is change changes the selected squad whichd determines which division are shown
+                                  chnageSquads: (squad) {
+                                    setState(() {
+                                      sideSpotSelected = squad;
+                                    });
+                                  }),
+                            ),
+                            SizedBox(height: 30),
+                            SizedBox(
+                              height: (75 * sidepots.length).toDouble(),
+                              child: ListView.builder(
+                                  itemCount: sidepots.length,
+                                  itemBuilder: (context, index) {
+                                    String sidePotName =
+                                        sidepots[index].keys.first.toString();
+
+                                    //this is the list of side pots user has entered for that squad
+                                    List<dynamic> sidePotsSelected =
+                                        brain.sidePotsUser[sideSpotSelected] ??
+                                            [];
+                                    return ListTile(
+                                      leading: Text(
+                                        sidePotName,
+                                        style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      trailing: SizedBox(
+                                        width: 100,
+                                        height: 75,
+                                        child: Checkbox(
+                                            value: sidePotsSelected
+                                                .contains(sidePotName),
+                                            onChanged: (isChecked) {
+                                              setState(() {
+                                                if (sidePotsSelected
+                                                    .contains(sidePotName)) {
+                                                  //add the side pot to the list of side pots for the squad
+                                                  sidePotsSelected
+                                                      .remove(sidePotName);
+                                                  //sends it to be saved
+                                                  brain.sidePotsUser[
+                                                          sideSpotSelected] =
+                                                      sidePotsSelected;
+                                                } else {
+                                                  //add the side pot to the list of side pots for the squad
+                                                  sidePotsSelected
+                                                      .add(sidePotName);
+                                                  //sends it to be saved
+                                                  brain.sidePotsUser[
+                                                          sideSpotSelected] =
+                                                      sidePotsSelected;
+                                                }
+                                              });
+                                            }),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            SizedBox(height: 30),
+                            Center(
                               child: CustomButton(
                                 buttonTitle: widget.bowlerInfo == null
                                     ? 'Save New Bowler'
@@ -365,6 +440,8 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                     else {
                                       brain.saveNewBowler();
                                     }
+                                    Navigator.popAndPushNamed(
+                                        context, Constants.createNewBowler);
                                   } else {
                                     BasicPopUp(text: error)
                                         .showBasicDialog(context, error);
