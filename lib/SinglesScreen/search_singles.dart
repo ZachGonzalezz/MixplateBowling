@@ -6,6 +6,7 @@ import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -53,7 +54,8 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
             search: '',
             squad: 'A',
             outOf: outOf,
-            percent: percent);
+            percent: percent,
+            type: 'Singles');
       });
     });
   }
@@ -65,7 +67,7 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
         outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
-         games = (basicSettings['Games'] ?? 0).toInt();
+        games = (basicSettings['Games'] ?? 0).toInt();
       });
     });
     //loads all the divisions and squads
@@ -104,14 +106,14 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Align(
-                              alignment: Alignment.topRight,
-                              child: TextButton(
-                                child: Text('Save Pdf'),
-                                onPressed: (){
-                                  PDFBrain().createSinglesPdf(results, games, outOf, percent);
-                                },
-                              )
-                            ),
+                                alignment: Alignment.topRight,
+                                child: TextButton(
+                                  child: Text('Save Pdf'),
+                                  onPressed: () {
+                                    PDFBrain().createSinglesPdf(
+                                        results, games, outOf, percent);
+                                  },
+                                )),
                             // Padding(padding: EdgeInsets.all(8),
                             // child: IconButton(onPressed: (){
                             //   Navigator.pop(context);
@@ -123,14 +125,26 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 //this picks which division the user is in
-                                // DivisionPicker(
-                                //   division: divisions,
-                                //   selectedSquad: selectedSquad,
-                                //   selectedDivision: selectedDivisions,
-                                //   onDivisionChange: (newDivision){
-                                //     selectedDivisions[selectedSquad] = newDivision;
-                                //   },
-                                // ),
+                                DivisionPicker(
+                                  division: divisions,
+                                  selectedSquad: selectedSquad,
+                                  selectedDivision: selectedDivisions,
+                                  onDivisionChange: (newDivision) {
+                                    setState(() {
+                                      selectedDivisions[selectedSquad] =
+                                          newDivision;
+                                      results = DoublePartner.filterBowlers(
+                                          bowlers: bowlers,
+                                          search: '',
+                                          outOf: outOf,
+                                          type: 'Singles',
+                                          percent: percent,
+                                          divison:
+                                              selectedDivisions[selectedSquad],
+                                          squad: selectedSquad);
+                                    });
+                                  },
+                                ),
                                 SizedBox(
                                   width: 30,
                                 ),
@@ -155,7 +169,11 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                         bowlers: bowlers,
                                         search: text,
                                         outOf: outOf,
-                                        percent: percent);
+                                        percent: percent,
+                                        type: 'Singles',
+                                        divison:
+                                            selectedDivisions[selectedSquad],
+                                        squad: selectedSquad);
                                   });
                                 }),
                             SizedBox(

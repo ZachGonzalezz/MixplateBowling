@@ -83,8 +83,6 @@ class TeamBrain {
         String squad = data['Squad'] ?? ' ';
         Map<String, String> memberIds = Map.from(data['Members'] ?? {});
 
-        print(memberIds);
-
         teams.add(Team(
             division: division,
             name: name,
@@ -98,31 +96,30 @@ class TeamBrain {
     return teams;
   }
 
-
- static List<Team> filterTeams({required List<Team> teams, required String? search, required int outOf, required int percent}){
+  static List<Team> filterTeams(
+      {required List<Team> teams,
+      required String? search,
+      required int outOf,
+      required int percent}) {
     List<Team> filtered = [];
 
-
-    
     //if the search bar is empty send them back to default
-    if(search == '' || search == null || search == ' '){
+    if (search == '' || search == null || search == ' ') {
       filtered = teams;
-    }
-    else{
-    //search through the names of all the bowlers and see which one contains the search text
-    for(Team team in teams){
-      //completely lowercases so removes that out of the equation
-      if(team.name.toLowerCase().contains(search.toLowerCase())){
-        filtered.add(team);
+    } else {
+      //search through the names of all the bowlers and see which one contains the search text
+      for (Team team in teams) {
+        //completely lowercases so removes that out of the equation
+        if (team.name.toLowerCase().contains(search.toLowerCase())) {
+          filtered.add(team);
+        }
       }
     }
-    }
-    
-     filtered.sort((a, b) => b.findTeamTotal(outOf, percent).compareTo(a.findTeamTotal(outOf, percent)));
+
+    filtered.sort((a, b) => b
+        .findTeamTotal(outOf, percent)
+        .compareTo(a.findTeamTotal(outOf, percent)));
     //returns results of bowlers
     return filtered;
   }
-  
-
-
 }

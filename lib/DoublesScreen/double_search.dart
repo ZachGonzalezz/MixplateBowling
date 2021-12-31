@@ -7,6 +7,7 @@ import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -21,7 +22,7 @@ class SearchDoublesScreen extends StatefulWidget {
 class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
-  
+
   int outOf = 200;
   int percent = 100;
   int game = 1;
@@ -36,7 +37,7 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
   //this this the list returned
   List<Bowler> results = [];
 
-    //this this the list returned
+  //this this the list returned
   List<DoublePartners> resultsPartners = [];
 
   //this is the list of double partners the user has selected
@@ -53,22 +54,21 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
       setState(() {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
-          resultsPartners = DoubleSearchBrain().findDoublePartnes(bowlers, results);
-                      resultsPartners.sort((a, b) =>  b.findTeamTotal(outOf, percent).compareTo(a.findTeamTotal(outOf, percent)));
-
-        
+        resultsPartners =
+            DoubleSearchBrain().findDoublePartnes(bowlers, results);
+        resultsPartners.sort((a, b) => b
+            .findTeamTotal(outOf, percent)
+            .compareTo(a.findTeamTotal(outOf, percent)));
       });
     });
   }
-
-  
 
 //loads the number of squads in the current tournament (based on name held in local storage)
   void loadTournamentSettings() {
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
-             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
         outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
         game = (basicSettings['Games'] ?? 1).toInt();
       });
@@ -108,15 +108,15 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                               Align(
-                              alignment: Alignment.topRight,
-                              child: TextButton(
-                                child: Text('Save Pdf'),
-                                onPressed: (){
-                                  PDFBrain().createDoublesPdf(resultsPartners, game, outOf, percent);
-                                },
-                              )
-                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: TextButton(
+                                  child: Text('Save Pdf'),
+                                  onPressed: () {
+                                    PDFBrain().createDoublesPdf(
+                                        resultsPartners, game, outOf, percent);
+                                  },
+                                )),
                             // Padding(padding: EdgeInsets.all(8),
                             // child: IconButton(onPressed: (){
                             //   Navigator.pop(context);
@@ -128,14 +128,15 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 //this picks which division the user is in
-                                // DivisionPicker(
-                                //   division: divisions,
-                                //   selectedSquad: selectedSquad,
-                                //   selectedDivision: selectedDivisions,
-                                //   onDivisionChange: (newDivision){
-                                //     selectedDivisions[selectedSquad] = newDivision;
-                                //   },
-                                // ),
+                                DivisionPicker(
+                                  division: divisions,
+                                  selectedSquad: selectedSquad,
+                                  selectedDivision: selectedDivisions,
+                                  onDivisionChange: (newDivision) {
+                                    selectedDivisions[selectedSquad] =
+                                        newDivision;
+                                  },
+                                ),
                                 SizedBox(
                                   width: 30,
                                 ),
@@ -157,9 +158,16 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers, search: text, outOf: outOf, percent: percent);
-                                      resultsPartners = DoubleSearchBrain().findDoublePartnes(bowlers, results);
-                                      resultsPartners.sort((a, b) =>  b.findTeamTotal(outOf, percent).compareTo(a.findTeamTotal(outOf, percent)));
+                                        bowlers: bowlers,
+                                        search: text,
+                                        outOf: outOf,
+                                        percent: percent);
+                                    resultsPartners = DoubleSearchBrain()
+                                        .findDoublePartnes(bowlers, results);
+                                    resultsPartners.sort((a, b) => b
+                                        .findTeamTotal(outOf, percent)
+                                        .compareTo(
+                                            a.findTeamTotal(outOf, percent)));
                                   });
                                 }),
                             SizedBox(
@@ -170,32 +178,47 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                               child: ListView.builder(
                                   itemCount: resultsPartners.length,
                                   itemBuilder: (context, index) {
-                                    
                                     return ListTile(
                                       onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder:(context) => DoubleScoreScreen(bowler: resultsPartners[index])));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DoubleScoreScreen(
+                                                        bowler: resultsPartners[
+                                                            index])));
                                       },
                                       leading: SizedBox(
-                                        width: 700,
-                                        child: Row(
-                                          children: [
-                                            Text(resultsPartners[index].returnFirstName()),
-                                            SizedBox(width: 20,),
-                                            Icon(MdiIcons.arrowRightBold),
-                                             SizedBox(width: 20,),
-                                               Text(resultsPartners[index].returnSecondName()),
-                                                SizedBox(width: 20,),
-                                                    Text(resultsPartners[index].squad),
-                                                     SizedBox(width: 20,),
-                                                           
-
-
-
-                                            SizedBox(width: 20,),
-                                            Text(resultsPartners[index].findTeamTotal(outOf, percent).toString())
-
-                                          ],
-                                        )),
+                                          width: 700,
+                                          child: Row(
+                                            children: [
+                                              Text(resultsPartners[index]
+                                                  .returnFirstName()),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Icon(MdiIcons.arrowRightBold),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(resultsPartners[index]
+                                                  .returnSecondName()),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(
+                                                  resultsPartners[index].squad),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(resultsPartners[index]
+                                                  .findTeamTotal(outOf, percent)
+                                                  .toString())
+                                            ],
+                                          )),
                                       trailing: IconButton(
                                           onPressed: () {},
                                           icon: Icon(

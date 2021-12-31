@@ -3,14 +3,14 @@ import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 
 class DoublePartner {
-  static List<Bowler> filterBowlers({
-    required List<Bowler> bowlers,
-    required String? search,
-    required int outOf,
-    required int percent,
-    String? divison,
-    String? squad,
-  }) {
+  static List<Bowler> filterBowlers(
+      {required List<Bowler> bowlers,
+      required String? search,
+      required int outOf,
+      required int percent,
+      String? divison,
+      String? squad,
+      String? type}) {
     List<Bowler> filtered = [];
 
     //if the search bar is empty send them back to default
@@ -23,19 +23,24 @@ class DoublePartner {
         if (bowler.firstName.toLowerCase().contains(search.toLowerCase()) ||
             bowler.lastName.toLowerCase().contains(search.toLowerCase())) {
           filtered.add(bowler);
+          print(bowler.divisions);
         }
       }
     }
 
     //if division if not null only return those bowlers who meet search have division requirement
-    if (divison != null) {
-      filtered = filtered
-          .where((element) => element.divisions[squad] == divison)
-          .toList();
-    }
+
     filtered.sort((a, b) => b
         .findScoreForSquad(squad ?? '', outOf, percent, true)
         .compareTo(a.findScoreForSquad(squad ?? '', outOf, percent, true)));
+
+    if (divison?.contains('No Division') != true &&
+        divison != null &&
+        type != null) {
+      filtered = filtered
+          .where((element) => element.divisions[(squad! + type)] == divison)
+          .toList();
+    }
     //returns results of bowlers
     return filtered;
   }
@@ -62,7 +67,7 @@ class DoublePartner {
         bool isMale = data['IsMale'] ?? false;
         Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
         Map<String, dynamic> sidepotsDB = Map.from(data['userSidePots'] ?? {});
-         Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
+        Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
 
         Map<String, Map<String, int>> scores = {};
 

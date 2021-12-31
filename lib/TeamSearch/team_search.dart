@@ -8,6 +8,7 @@ import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/team.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -58,7 +59,7 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
         teamsize = (basicSettings['Team Size'] ?? 1).toInt().toString();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
         outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
-       game = (basicSettings['Games'] ?? 1).toInt();
+        game = (basicSettings['Games'] ?? 1).toInt();
       });
     });
     //loads all the divisions and squads
@@ -119,15 +120,15 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                   },
                                   icon: Icon(MdiIcons.chevronLeft)),
                             ),
-                             Align(
-                              alignment: Alignment.topRight,
-                              child: TextButton(
-                                child: Text('Save Pdf'),
-                                onPressed: (){
-                                  PDFBrain().createTeamsPdf(results, game, outOf, percent);
-                                },
-                              )
-                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: TextButton(
+                                  child: Text('Save Pdf'),
+                                  onPressed: () {
+                                    PDFBrain().createTeamsPdf(
+                                        results, game, outOf, percent);
+                                  },
+                                )),
                             Align(
                               alignment: Alignment.topRight,
                               child: TextButton(
@@ -144,16 +145,16 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                //this picks which division the user is in
-                                // DivisionPicker(
-                                //   division: divisions,
-                                //   selectedSquad: selectedSquad,
-                                //   selectedDivision: selectedDivisions,
-                                //   onDivisionChange: (newDivision) {
-                                //     selectedDivisions[selectedSquad] =
-                                //         newDivision;
-                                //   },
-                                // ),
+                                // this picks which division the user is in
+                                DivisionPicker(
+                                  division: divisions,
+                                  selectedSquad: selectedSquad,
+                                  selectedDivision: selectedDivisions,
+                                  onDivisionChange: (newDivision) {
+                                    selectedDivisions[selectedSquad] =
+                                        newDivision;
+                                  },
+                                ),
                                 SizedBox(
                                   width: 30,
                                 ),

@@ -38,7 +38,6 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
     super.initState();
     loadTournamentSettings();
     loadBowlers();
- 
 
     selectedSquad = widget.team.squad;
   }
@@ -59,12 +58,10 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
     });
   }
 
-  void loadBowlers(){
+  void loadBowlers() {
     widget.team.loadBowlers().then((value) {
       setState(() {
-           scoreBrain.bowlers = widget.team.bowlers.values.toList();
-               print(scoreBrain.bowlers);
-        
+        scoreBrain.bowlers = widget.team.bowlers.values.toList();
       });
     });
   }
@@ -97,12 +94,18 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             BackButton(),
-                             Align(
+                            Align(
                               alignment: Alignment.topRight,
                               child: TextButton(
                                 child: Text('Edit Team'),
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => TeamCreateScreen(teamData: widget.team,)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TeamCreateScreen(
+                                                teamData: widget.team,
+                                              )));
                                 },
                               ),
                             ),
@@ -151,10 +154,7 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                                 buttonTitle: 'Update Info',
                                 length: 300,
                                 onClicked: () {
-                     
-
                                   scoreBrain.saveScores();
-                       
                                 },
                               ),
                             ),

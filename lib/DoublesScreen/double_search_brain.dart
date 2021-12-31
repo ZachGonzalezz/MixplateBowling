@@ -3,7 +3,6 @@ import 'package:lois_bowling_website/bowler.dart';
 class DoubleSearchBrain {
   List<DoublePartners> findDoublePartnes(
       List<Bowler> allBowlers, List<Bowler> results) {
-    print(results.length);
     List<DoublePartners> doublePartners = [];
     List<DoublePartners> temp = [];
 
@@ -65,7 +64,6 @@ class DoublePartners {
   String returnSecondName() {
     //TODO: known error if you make yourself a double partner
     if (bowlers.length > 1) {
-
       String secondBowler = bowlers[1].firstName + ' ' + bowlers[1].lastName;
 
       return secondBowler;
@@ -73,49 +71,44 @@ class DoublePartners {
 
     return '';
   }
-  int findTeamTotal(int outOf, int percent){
-   int total = 0;
-    for(Bowler bowler in bowlers){
+
+  int findTeamTotal(int outOf, int percent) {
+    int total = 0;
+    for (Bowler bowler in bowlers) {
       total += bowler.findScoreForSquad(squad, outOf, percent, true);
     }
     return total;
   }
- 
-  
-   int findDoublesScratchTotal(int outOf, int percent){
-   int total = 0;
-    for(Bowler bowler in bowlers){
+
+  int findDoublesScratchTotal(int outOf, int percent) {
+    int total = 0;
+    for (Bowler bowler in bowlers) {
       total += bowler.findScoreForSquad(squad, outOf, percent, false);
     }
     return total;
   }
 
-  int findDoublesTotalAverage(){
-   int total = 0;
-   for(Bowler bowler in bowlers){
-     total += bowler.average.toInt();
-
-   }
-   return total;
+  int findDoublesTotalAverage() {
+    int total = 0;
+    for (Bowler bowler in bowlers) {
+      total += bowler.average.toInt();
+    }
+    return total;
   }
 
-    int findDoublesTotalHandicap(int outOf, int percent){
-   int total = 0;
-   for(Bowler bowler in bowlers){
-     total += bowler.findHandicap(outOf, percent);
-
-   }
-   return total;
+  int findDoublesTotalHandicap(int outOf, int percent) {
+    int total = 0;
+    for (Bowler bowler in bowlers) {
+      total += bowler.findHandicap(outOf, percent);
+    }
+    return total;
   }
 
-  int findDoublesGameTOtal(String squad, int game){
-     int total = 0;
-   for(Bowler bowler in bowlers){
-     total += bowler.findScoreForGame(squad, game);
-
-   }
-   return total;
+  int findDoublesGameTOtal(String squad, int game) {
+    int total = 0;
+    for (Bowler bowler in bowlers) {
+      total += bowler.findScoreForGame(squad, game);
+    }
+    return total;
   }
-
-
 }

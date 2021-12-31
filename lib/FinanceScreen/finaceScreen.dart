@@ -17,7 +17,7 @@ class FinanceScreen extends StatefulWidget {
 
 class _FinanceScreenState extends State<FinanceScreen> {
   SettingsBrain brain = SettingsBrain();
-    List<Map<String, dynamic>> sidepots = [];
+  List<Map<String, dynamic>> sidepots = [];
   int amountOfSquads = 1;
   int outOf = 200;
   int percent = 100;
@@ -52,6 +52,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
       });
     });
   }
+
   void callSidePots() {
     SidePotBrain().getSidePots().then((value) {
       setState(() {
@@ -59,7 +60,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
       });
     });
   }
-
 
 //loads the number of squads in the current tournament (based on name held in local storage)
   void loadTournamentSettings() {
@@ -113,32 +113,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                //this picks which division the user is in
-                                // DivisionPicker(
-                                //   division: divisions,
-                                //   selectedSquad: selectedSquad,
-                                //   selectedDivision: selectedDivisions,
-                                //   onDivisionChange: (newDivision){
-                                //     selectedDivisions[selectedSquad] = newDivision;
-                                //   },
-                                // ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                SquadPicker(
-                                    brain: null,
-                                    numberOfSquads: amountOfSquads,
-                                    //when picker is change changes the selected squad whichd determines which division are shown
-                                    chnageSquads: (squad) {
-                                      setState(() {
-                                        selectedSquad = squad;
-                                      });
-                                    }),
-                              ],
-                            ),
+
                             SizedBox(height: 30),
                             CustomSearchBar(
                                 backTo: Constants.createNewBowler,
@@ -186,7 +161,12 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                 FontWeight
                                                                     .w700),
                                                       )
-                                                    : Text('\$' + results[index - 1].findAmountOwed(entreeFee, sidepots).toString()),
+                                                    : Text('\$' +
+                                                        results[index - 1]
+                                                            .findAmountOwed(
+                                                                entreeFee,
+                                                                sidepots)
+                                                            .toString()),
                                                 SizedBox(
                                                   width: 30,
                                                 ),
@@ -218,39 +198,51 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                             itemBuilder:
                                                                 (context,
                                                                     indexBox) {
-                                                                      TextEditingController paidText = TextEditingController(text:  (results[index -1].financesPaid['Entree Fee'] ?? 0).toString());
+                                                              TextEditingController
+                                                                  paidText =
+                                                                  TextEditingController(
+                                                                      text: (results[index - 1].financesPaid['Entree Fee'] ??
+                                                                              0)
+                                                                          .toString());
                                                               return SizedBox(
                                                                   width: 100,
                                                                   child: indexBox ==
                                                                           0
                                                                       ? TextField(
-                                                                        controller: paidText,
-                                                                        onChanged: (text){
-                                                                            if(text == ''){
-                                                                             text = '0';
-                                                                           }
-                                                                            if(int.tryParse(text) != null){
-                                                                          results[index -1].financesPaid['Entree Fee'] = int.parse(text);
-                                                                          results[index -1].updateBowlerFinances();
+                                                                          controller:
+                                                                              paidText,
+                                                                          onChanged:
+                                                                              (text) {
+                                                                            if (text ==
+                                                                                '') {
+                                                                              text = '0';
                                                                             }
-
-                                                                        },
+                                                                            if (int.tryParse(text) !=
+                                                                                null) {
+                                                                              results[index - 1].financesPaid['Entree Fee'] = int.parse(text);
+                                                                              results[index - 1].updateBowlerFinances();
+                                                                            }
+                                                                          },
                                                                           decoration: InputDecoration(
                                                                               label: Text('Entree Fee'),
-                                                                              
                                                                               floatingLabelBehavior: FloatingLabelBehavior.always),
                                                                         )
                                                                       : TextField(
-                                                                                 controller: paidText..text =  (results[index -1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] ?? 0).toString(),
-                                                                         onChanged: (text){
-                                                                           if(text == ''){
-                                                                             text = '0';
-                                                                           }
-                                                                           if(int.tryParse(text) != null){
-                                                                          results[index -1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] = int.parse(text);
-                                                                            results[index -1].updateBowlerFinances();
-                                                                           }
-                                                                        },
+                                                                          controller: paidText
+                                                                            ..text =
+                                                                                (results[index - 1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] ?? 0).toString(),
+                                                                          onChanged:
+                                                                              (text) {
+                                                                            if (text ==
+                                                                                '') {
+                                                                              text = '0';
+                                                                            }
+                                                                            if (int.tryParse(text) !=
+                                                                                null) {
+                                                                              results[index - 1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] = int.parse(text);
+                                                                              results[index - 1].updateBowlerFinances();
+                                                                            }
+                                                                          },
                                                                           decoration: InputDecoration(
                                                                               label: Text(results[index - 1].findFinaceSidePots()[indexBox - 1]),
                                                                               floatingLabelBehavior: FloatingLabelBehavior.always),
