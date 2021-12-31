@@ -46,7 +46,7 @@ app.*.map.json
 /android/app/release
 
 #apikeys hidden for firebase
-/web/index.html
+# /web/index.html
 
 
 
