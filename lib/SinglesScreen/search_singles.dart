@@ -111,7 +111,8 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                   child: Text('Save Pdf'),
                                   onPressed: () {
                                     PDFBrain().createSinglesPdf(
-                                        results, games, outOf, percent);
+                                        results, games, outOf, percent,     
+                                              selectedDivisions[selectedSquad] ?? 'No Division',);
                                   },
                                 )),
                             // Padding(padding: EdgeInsets.all(8),

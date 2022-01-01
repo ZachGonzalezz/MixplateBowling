@@ -15,7 +15,15 @@ class PDFBrain {
       bottom: PdfPen.fromBrush(PdfBrushes.white));
 
   Future createSinglesPdf(
-      List<Bowler> bowlers, int games, int outof, int percent) async {
+      List<Bowler> bowlers, int games, int outof, int percent, String division) async {
+
+      bool isSidePot = false;
+      // int columnsAdded = 0;
+
+      if(division.contains('No Division') != true){
+        isSidePot = true;
+        // columnsAdded = games;
+      }
     //start sa documenting
     PdfDocument document = PdfDocument();
     //adds a page which we can start writting on
@@ -30,6 +38,8 @@ class PDFBrain {
 
     //this is the header row
     PdfGridRow header = grid.headers[0];
+
+
 
     //header values for row 1 and 2
     header.cells[0].value = 'Name';
@@ -46,11 +56,15 @@ class PDFBrain {
     header.cells[4 + games].style.borders = borderStyle;
 
     for (int i = 0; i < games; i++) {
-      header.cells[3 + i].value = ('Game' + (i + 1).toString());
+
+   header.cells[3 + i].value = ('Game' + (i + 1).toString());
+     
+   
       header.cells[3 + i].style =
           PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
             ..borders = borderStyle;
     }
+
 
     //goes through every bowler adding name average
     for (Bowler bowler in bowlers) {
@@ -68,12 +82,48 @@ class PDFBrain {
 
       //goes through every game and adds the score
       for (int i = 0; i < games; i++) {
+
+         
+       
         row.cells[3 + i].value =
             (bowler.scores['A']?[(i + 1).toString()] ?? 0).toString();
+        
+
 
         row.cells[3 + i].style =
             PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
               ..borders = borderStyle;
+      }
+      if(isSidePot){
+          
+           //goes through every game and adds the score
+            PdfGridRow handicapRow = grid.rows.add();
+              handicapRow.cells[0].style =
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              ..borders = borderStyle;
+              handicapRow.cells[1].style =
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              ..borders = borderStyle;
+                 handicapRow.cells[2].style =
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              ..borders = borderStyle;
+                  handicapRow.cells[games + 3].style =
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              ..borders = borderStyle;
+                handicapRow.cells[games + 4].style =
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              ..borders = borderStyle;
+      for (int i = 0; i < games; i++) {
+  
+        
+  handicapRow.cells[3 + i].value =
+            ((bowler.scores['A']?[(i + 1).toString()] ?? 0) +     (bowler.findHandicap(outof, percent))).toString();
+
+       handicapRow.cells[3 + i].style =
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              ..borders = borderStyle;
+      }
+      makeSpace(grid, games);
       }
 
       row.cells[3 + games].value =
@@ -104,7 +154,7 @@ class PDFBrain {
     PdfGrid grid = PdfGrid();
 
     //how many columns are in a row
-    grid.columns.add(count: 5 + games);
+    grid.columns.add(count: 5 + games );
     //how many headers
     grid.headers.add(1);
 

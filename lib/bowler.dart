@@ -152,6 +152,7 @@ class Bowler {
   int findHandicap(int outOf, int percent){
  int handicapBasedOff = ((percent / 100) * outOf).toInt();
     int handicap = handicapBasedOff - average.toInt();
+    this.handicap = handicap.toDouble();
     return handicap;
   }
 
