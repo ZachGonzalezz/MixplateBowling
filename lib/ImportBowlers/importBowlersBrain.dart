@@ -3,19 +3,24 @@ import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/team.dart';
 
-class ImportBrain{
+class ImportBrain {
+  void importBowlers(String tournId, bool IncludeScores, bool includeDivisions,
+      bool includeDoubles, bool includeTeams) async {
+    await Future.delayed(Duration(milliseconds: 500));
 
-  void importBowlers(String tournId, bool IncludeScores, bool includeDivisions, bool includeDoubles, bool includeTeams) async{
+    List<Bowler> bowlers = [];
 
-  await Future.delayed(Duration(milliseconds: 500));
-
-  List<Bowler> bowlers = []; 
-
-   await Constants.dataBase.collection('Users').doc(Constants.currentSignedInEmail).collection('Tournaments').doc(tournId).collection('Bowlers').get().then((querySnapshot) {
-
-     querySnapshot.docs.forEach((doc) {
-       Map<String, dynamic> data = doc.data();
-      num average = data['average'] ?? 0;
+    await Constants.dataBase
+        .collection('Users')
+        .doc(Constants.currentSignedInEmail)
+        .collection('Tournaments')
+        .doc(tournId)
+        .collection('Bowlers')
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        Map<String, dynamic> data = doc.data();
+        num average = data['average'] ?? 0;
         num handicap = data['handicap'] ?? 0;
         String firstName = data['firstName'] ?? ' ';
         String lastName = data['lastName'] ?? ' ';
@@ -54,53 +59,53 @@ class ImportBrain{
             financesPaid: financesDB,
             laneNUm: lanenNum,
             uscbNum: usbcNum));
-      
-        
-     });
-
+      });
     });
     addBowlersToTourn(bowlers);
-    if(includeTeams){
-     List<Team> teams = await getTeams(tournId);
+    if (includeTeams) {
+      List<Team> teams = await getTeams(tournId);
 
-     for(Team team in teams){
-       saveNewTeam(team);
-     }
-
+      for (Team team in teams) {
+        saveNewTeam(team);
       }
+    }
   }
 
-
   void addBowlersToTourn(List<Bowler> bowlers) async {
-
-    for(Bowler bowler in bowlers){
+    for (Bowler bowler in bowlers) {
       saveNewBowler(bowler);
     }
   }
 
-  Future<void> saveNewBowler(Bowler bowler) async{
+  Future<void> saveNewBowler(Bowler bowler) async {
     await Constants.getTournamentId();
-    DocumentReference newDoc = FirebaseFirestore.instance.collection(Constants.currentIdForTournament + '/Bowlers').doc(bowler.uniqueId);
+    DocumentReference newDoc = FirebaseFirestore.instance
+        .collection(Constants.currentIdForTournament + '/Bowlers')
+        .doc(bowler.uniqueId);
     await newDoc.set({
-      'firstName' : bowler.firstName,
-      'lastName' : bowler.lastName,
-      'average' : bowler.average,
+      'firstName': bowler.firstName,
+      'lastName': bowler.lastName,
+      'average': bowler.average,
       // 'handicap' : int.parse(handicapController.text),
-      'divisions' : bowler.divisions,
-      'doublePartners' : bowler.doublePartners,
-      'id' : newDoc.id,
-      'isMale' : bowler.isMale,
-      'userSidePots' : bowler.sidepots,
-      'usbcNum' : bowler.uscbNum,
-      'laneNum' : bowler.laneNUm
+      'divisions': bowler.divisions,
+      'doublePartners': bowler.doublePartners,
+      'id': newDoc.id,
+      'isMale': bowler.isMale,
+      'userSidePots': bowler.sidepots,
+      'usbcNum': bowler.uscbNum,
+      'laneNum': bowler.laneNUm
     });
   }
 
-  Future<List<Team>> getTeams(String id) async{
+  Future<List<Team>> getTeams(String id) async {
     List<Team> teams = [];
-      await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 500));
     await FirebaseFirestore.instance
-        .collection('Users').doc(Constants.currentSignedInEmail).collection('Tournaments').doc(id).collection('Teams')
+        .collection('Users')
+        .doc(Constants.currentSignedInEmail)
+        .collection('Tournaments')
+        .doc(id)
+        .collection('Teams')
         .get()
         .then((documents) {
       for (DocumentSnapshot doc in documents.docs) {
@@ -119,22 +124,59 @@ class ImportBrain{
             id: doc.id,
             bowlers: {}));
       }
-
     });
     return teams;
-  } 
+  }
 
-   Future<void> saveNewTeam(Team team) async{
+  Future<void> saveNewTeam(Team team) async {
     await Constants.getTournamentId();
-    DocumentReference newDoc = FirebaseFirestore.instance.collection(Constants.currentIdForTournament + '/Teams').doc(team.id);
+    DocumentReference newDoc = FirebaseFirestore.instance
+        .collection(Constants.currentIdForTournament + '/Teams')
+        .doc(team.id);
     await newDoc.set({
-     'Name': team.name,
+      'Name': team.name,
       'Members': team.bowlerIDs,
       'Division': team.division,
       'Squad': team.squad,
     });
   }
 
+  void importSettings(String tournId, bool includeBasics, bool includeDivisions,
+      bool includeSidepots) async {
+          await Constants.getTournamentId();
+    await Future.delayed(Duration(milliseconds: 500));
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(Constants.currentSignedInEmail)
+        .collection('Tournaments')
+        .doc(tournId)
+        .get()
+        .then((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
+      List<String> divisions = List<String>.from(data['Divisions'] ?? []);
+      List<String> greyOutBoxed =
+          List<String>.from(data['GreyedOutDivsions'] ?? []);
+      List<Map<String, dynamic>> sidepots = List.from(data['sidepots'] ?? []);
+      Map<String, double> mainSettings =
+          Map<String, double>.from(data['Basic Settings'] ?? {});
+      Map<String, dynamic> importedSettings = {};
 
+      if (includeDivisions) {
+        importedSettings['Divisions'] = divisions;
+        importedSettings['GreyedOutDivsions'] = greyOutBoxed;
+      }
+      if (includeSidepots) {
+        importedSettings['sidepots'] = sidepots;
+      }
+      if(includeBasics){
+        importedSettings['Basic Settings'] = mainSettings;
+      }
+
+    DocumentReference newDoc = FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament);
+ newDoc.update(importedSettings);
+
+    });
+  }
 }

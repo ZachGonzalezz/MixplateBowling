@@ -17,6 +17,9 @@ class _ImportBowlersPopUpState extends State<ImportBowlersPopUp> {
   bool includeBowlersTeams = false;
   bool includeBowlersDoublesPartners = false;
   bool includeBowlersDivisions = false;
+  bool includeBasicSettings = false;
+  bool includeDivisions = false;
+  bool includeSidePots = false;
   String selectedTournament = "";
 
   @override
@@ -106,12 +109,49 @@ class _ImportBowlersPopUpState extends State<ImportBowlersPopUp> {
               })
             ],
           ),
+            Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Include Basic Settings'),
+              SizedBox(width: 20,),
+              Checkbox(value: includeBasicSettings, onChanged: (newValue){
+                setState(() {
+                 includeBasicSettings = newValue ?? false;
+                });
+              })
+            ],
+          ),
+            Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Include Divisions'),
+              SizedBox(width: 20,),
+              Checkbox(value: includeDivisions, onChanged: (newValue){
+                setState(() {
+               includeDivisions = newValue ?? false;
+                });
+              })
+            ],
+          ),
+            Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Include Sidepots'),
+              SizedBox(width: 20,),
+              Checkbox(value: includeSidePots, onChanged: (newValue){
+                setState(() {
+                 includeSidePots = newValue ?? false;
+                });
+              })
+            ],
+          ),
           SizedBox(
             height: 20
           ),
 
           CustomButton(length: 200, buttonTitle: 'Import Bowlers', onClicked: (){
             ImportBrain().importBowlers(selectedTournament, includeScore, includeBowlersDivisions, includeBowlersDoublesPartners, includeBowlersTeams);
+             ImportBrain().importSettings(selectedTournament, includeBasicSettings, includeDivisions, includeSidePots);
             Navigator.pop(context);
 
           })
