@@ -63,6 +63,12 @@ String nameOfTournament = '';
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: IconButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, icon: Icon(Icons.chevron_left, size: 50)),
+                              ),
                               TextFieldCustom(
                                 
                                   ontyped: (text) {
@@ -139,7 +145,7 @@ SchedulerBinding.instance?.addPostFrameCallback((_) async{
                               CustomButton(buttonTitle: 'Create', onClicked: (){
                                String errorCode =  TournamentCreateBrain.isGoodtoCreate(nameOfTournament, to, from);
                                if(errorCode == ''){
-                                 TournamentCreateBrain.createCourse(nameOfTournament, to, from, emailsToSendTo);
+                                 TournamentCreateBrain.createCourse(nameOfTournament, to, from, emailsToSendTo, context);
                                }
                                else{
                                  showDialog(context: context, builder: (context) => AlertDialog(title: Text(errorCode),));

@@ -16,7 +16,8 @@ class Bowler {
       this.sidepots = const {},
       this.financesPaid = const {},
       this.laneNUm = '',
-      this.uscbNum = ''
+      this.uscbNum = '',
+      this.uniqueNum = ''
       });
 
   double average;
@@ -33,6 +34,7 @@ class Bowler {
   Map<String, dynamic> financesPaid;
   String uscbNum;
   String laneNUm;
+  String uniqueNum;
 
   void updateBowlerScores() async {
     await Constants.getTournamentId();

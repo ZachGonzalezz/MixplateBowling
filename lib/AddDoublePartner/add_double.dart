@@ -36,6 +36,9 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
   //this this the list returned
   List<Bowler> results = [];
 
+//if selected then every single bowler is their double partner
+  bool isAll = false;
+
   //this is the list of double partners the user has selected
   Map<String, dynamic> doublePartner = {};
   @override
@@ -118,6 +121,7 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
                                 //     selectedDivisions[selectedSquad] = newDivision;
                                 //   },
                                 // ),
+
                                 SizedBox(
                                   width: 30,
                                 ),
@@ -130,6 +134,25 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
                                         selectedSquad = squad;
                                       });
                                     }),
+                                Checkbox(
+                                    value: isAll,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        isAll = true;
+                                      });
+                                      doublePartner[selectedSquad] = [];
+                                      results.forEach((element) {
+                                        setState(() {
+                                            (doublePartner[selectedSquad] ??
+                                                        [])
+                                                    .add(element
+                                                        .uniqueId);
+                                                   
+                                        });
+                                      });
+                                      print(doublePartner[selectedSquad]);
+                                    }),
+                                Text('All')
                               ],
                             ),
                             SizedBox(height: 30),

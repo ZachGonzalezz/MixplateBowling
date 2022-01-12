@@ -7,6 +7,8 @@ class DoubleSearchBrain {
     List<DoublePartners> doublePartners = [];
     List<DoublePartners> temp = [];
 
+    
+
     //goes through each of the bowlers find the double partners and make a list
     for (Bowler bowler in allBowlers) {
       bowler.doublePartners.forEach((key, value) {
@@ -38,7 +40,8 @@ class DoubleSearchBrain {
 
 
     //ensures that each doubles has atleast 2 people and matches the results for
-doublePartners
+
+ doublePartners = doublePartners
         .where((element) =>
             element.bowlers.length > 1 &&
                 results.contains(element.bowlers[1]) ||

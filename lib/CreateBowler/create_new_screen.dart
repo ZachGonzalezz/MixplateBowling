@@ -53,6 +53,8 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
     SidePotBrain().getSidePots().then((value) {
       setState(() {
         sidepots = value;
+        //makes sure that only shows when there are values in the map
+        sidepots = sidepots.where((element) => element.isNotEmpty).toList();
       });
     });
   }
@@ -79,10 +81,10 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
           brain.laneNum.text = widget.bowlerInfo!.laneNUm;
           brain.usbcNumController.text = widget.bowlerInfo!.uscbNum;
           selectedDivisions = widget.bowlerInfo!.divisions;
+          brain.uniqueNum.text = widget.bowlerInfo!.uniqueNum;
 
           brain.doublePartner = widget.bowlerInfo!.doublePartners;
           widget.bowlerInfo!.findDoublePartners();
-          
 
           brain.sidePotsUser = widget.bowlerInfo!.sidepots;
         }
@@ -193,17 +195,31 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
 
                             Row(
                               children: [
-                                 SpecialTextField(
-                                item: 'USBC Num',
-                                controller: brain.usbcNumController,
-                              ),
-                               SizedBox(
-                                width: 60,
-                              ),
-                               SpecialTextField(
-                                item: 'Lane Num',
-                                controller: brain.laneNum
-                              ),
+                                SpecialTextField(
+                                  item: 'USBC Num',
+                                  controller: brain.usbcNumController,
+                                ),
+                                SizedBox(
+                                  width: 60,
+                                ),
+                                SpecialTextField(
+                                    item: 'Lane Num',
+                                    controller: brain.laneNum),
+                              ],
+                            ),
+                               SizedBox(height: 30),
+                              Row(
+                              children: [
+                                SpecialTextField(
+                                  item: 'Unique Id',
+                                  controller: brain.uniqueNum,
+                                ),
+                                SizedBox(
+                                  width: 60,
+                                ),
+                                // SpecialTextField(
+                                //     item: 'Lane Num',
+                                //     controller: brain.laneNum),
                               ],
                             ),
                             SizedBox(height: 30),

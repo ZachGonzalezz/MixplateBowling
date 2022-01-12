@@ -184,6 +184,7 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                         .findTeamTotal(outOf, percent)
                                         .compareTo(
                                             a.findTeamTotal(outOf, percent)));
+                                    
                                   });
                                 }),
                             SizedBox(

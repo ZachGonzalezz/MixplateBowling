@@ -9,6 +9,7 @@ class CreateBowlerBrain{
   TextEditingController averageController = TextEditingController();
   TextEditingController usbcNumController = TextEditingController();
   TextEditingController laneNum = TextEditingController();
+  TextEditingController uniqueNum = TextEditingController();
 
     Map<String, dynamic> sidePotsUser = {};
   // TextEditingController handicapController = TextEditingController();
@@ -60,7 +61,8 @@ class CreateBowlerBrain{
       'isMale' : isMale,
       'userSidePots' : sidePotsUser,
       'usbcNum' : usbcNumController.text,
-      'laneNum' : laneNum.text
+      'laneNum' : laneNum.text,
+      'uniqueId' : uniqueNum.text
     });
   }
 
@@ -77,7 +79,8 @@ class CreateBowlerBrain{
       'isMale' : isMale,
       'userSidePots' : sidePotsUser,
       'usbcNum' : usbcNumController.text,
-      'laneNum' : laneNum.text
+      'laneNum' : laneNum.text,
+       'uniqueId' : uniqueNum.text
 
     });
   }

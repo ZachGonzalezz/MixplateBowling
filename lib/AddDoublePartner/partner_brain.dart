@@ -22,8 +22,8 @@ class DoublePartner {
         //completely lowercases so removes that out of the equation
         if (bowler.firstName.toLowerCase().contains(search.toLowerCase()) ||
             bowler.lastName.toLowerCase().contains(search.toLowerCase())) {
+          
           filtered.add(bowler);
-      
         }
       }
     }
@@ -41,6 +41,8 @@ class DoublePartner {
           .where((element) => element.divisions[(squad! + type)] == divison)
           .toList();
     }
+
+   
     //returns results of bowlers
     return filtered;
   }
@@ -70,6 +72,7 @@ class DoublePartner {
         Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
         String lanenNum = data['laneNum'] ?? '';
         String usbcNum = data['usbcNum'] ?? '';
+        String uniqueId = data[ 'uniqueId'] ?? '';
 
         Map<String, Map<String, int>> scores = {};
 
@@ -94,10 +97,69 @@ class DoublePartner {
             sidepots: sidepotsDB,
             financesPaid: financesDB,
             laneNUm: lanenNum,
-            uscbNum: usbcNum));
+            uscbNum: usbcNum,
+            uniqueNum: uniqueId));
       }
     });
 
     return bowlers;
+  }
+
+  void allBolwers(String squad) async {
+    //load all the bowlers
+    List<Bowler> bowlers = await DoublePartner.loadBowlers();
+    //this holds id to ensure no duplicates example lois and gary / gary and lois are same poeple do not add them too
+    List<List<String>> idsOfPartners = [];
+    //goes through every bowler
+    
+    bowlers.forEach((bowler) {
+      Map<String, dynamic> doublePartner = {};
+      doublePartner[squad] = [];
+      //for each bowler add everyh other bowler to be their double partner
+      bowlers.forEach((element) {
+        List<String> tempIds = [];
+        tempIds.add(element.uniqueId);
+        tempIds.add(bowler.uniqueId);
+        tempIds.sort((a, b) => a.compareTo(b));
+        bool doesContainerAlready = false;
+
+        idsOfPartners.forEach((bowlIdPairs) {
+            if(bowlIdPairs.contains(element.uniqueId) && bowlIdPairs.contains(bowler.uniqueId)){
+              doesContainerAlready = true;
+            }
+        });
+    
+        //does not add themselves to their double partners
+        if(element.uniqueId != bowler.uniqueId && doesContainerAlready != true){
+        doublePartner[squad].add(element.uniqueId);
+            idsOfPartners.add(tempIds);
+        }
+
+
+      });
+      saveAllDobulePartnerForBowler(bowler.uniqueId,  doublePartner);
+    });
+  }
+
+  void removeAllBowler(String squad) async{
+       //load all the bowlers
+    List<Bowler> bowlers = await DoublePartner.loadBowlers();
+    //goes through every bowler
+    bowlers.forEach((bowler) {
+      Map<String, dynamic> doublePartner = {};
+      doublePartner[squad] = [];
+
+    
+
+
+
+      saveAllDobulePartnerForBowler(bowler.uniqueId,  doublePartner);
+    });
+  }
+
+  void saveAllDobulePartnerForBowler(String id, Map<String, dynamic> partners){
+    FirebaseFirestore.instance.doc(Constants.currentIdForTournament).collection('Bowlers').doc(id).update({
+      'doublePartners' : partners
+    });
   }
 }

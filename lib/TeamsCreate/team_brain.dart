@@ -80,7 +80,7 @@ class TeamBrain {
 
         String division = data['Division'] ?? ' ';
         String name = data['Name'] ?? ' ';
-        String squad = data['Squad'] ?? ' ';
+        String squad = data['Squad'] ?? 'A';
         Map<String, String> memberIds = Map.from(data['Members'] ?? {});
 
         teams.add(Team(
@@ -104,7 +104,7 @@ class TeamBrain {
       required String squad, 
       String division = 'No Division'}) {
     List<Team> filtered = [];
-    print(division);
+
 
     //if the search bar is empty send them back to default
     if (search == '' || search == null || search == ' ') {
@@ -115,19 +115,25 @@ class TeamBrain {
         //completely lowercases so removes that out of the equation
         if (team.name.toLowerCase().contains(search.toLowerCase())) {
           filtered.add(team);
+          print(team.squad + 'Squad');
         }
       }
     }
 
+
     filtered.sort((a, b) => b
         .findTeamTotal(outOf, percent)
         .compareTo(a.findTeamTotal(outOf, percent)));
+         
 
       filtered = filtered.where((element) => element.squad == squad).toList();
       
-      if(division.contains('No Division') == false){
-        filtered = filtered.where((element) => element.division == division).toList();
-      }
+      //TODO: Error getting trigger even when division == nodivison
+      // print(division);
+      // print(division.length);
+      // if(division != 'No Division'){
+      //   filtered = filtered.where((element) => element.division == division).toList();
+      // }
 
 
     //returns results of bowlers

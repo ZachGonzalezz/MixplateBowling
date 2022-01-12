@@ -198,7 +198,7 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                         outOf: outOf,
                                         percent: percent,
                                         squad: selectedSquad,
-                                          division: selectedDivisions[selectedSquad] ?? 'A');
+                                          division: selectedDivisions[selectedSquad] ?? 'No Divsion');
                                   });
                                 }),
                             SizedBox(
