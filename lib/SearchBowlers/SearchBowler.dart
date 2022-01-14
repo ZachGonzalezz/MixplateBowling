@@ -19,7 +19,7 @@ class SearchBowlerScreen extends StatefulWidget {
 class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
-    int outOf = 200;
+  int outOf = 200;
   int percent = 100;
 
   List<String> divisions = ['No Division'];
@@ -56,7 +56,7 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
     SettingsBrain().getMainSettings().then((basicSettings) {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
-             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
         outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
       });
     });
@@ -135,8 +135,10 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                   //when user types in search bar automatically changes who pops up
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
-                                       outOf: outOf, percent: percent,
-                                        bowlers: bowlers, search: text);
+                                        outOf: outOf,
+                                        percent: percent,
+                                        bowlers: bowlers,
+                                        search: text);
                                   });
                                 }),
                             SizedBox(
@@ -147,6 +149,11 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                               child: ListView.builder(
                                   itemCount: results.length,
                                   itemBuilder: (context, index) {
+                                    results[index].averageController.text =
+                                        results[index]
+                                            .average
+                                            .toInt()
+                                            .toString();
                                     return ListTile(
                                       onTap: () {
                                         Navigator.push(
@@ -158,9 +165,38 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                                           results[index],
                                                     )));
                                       },
-                                      leading: Text(results[index].firstName +
-                                          ' ' +
-                                          results[index].lastName),
+                                      leading: SizedBox(
+                                        width: 250,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(results[index].firstName +
+                                                ' ' +
+                                                results[index].lastName),
+
+                                            //this textfield allows us to change the average of the bowlers
+                                            SizedBox(
+                                              width: 50,
+                                              child: TextField(
+                                                controller: results[index]
+                                                    .averageController,
+                                                onChanged: (newAverage) {
+                                                  //makes sure average is a number so no issues if so saves it
+                                                  if (double.tryParse(
+                                                          newAverage) !=
+                                                      null) {
+                                                    results[index]
+                                                        .saveNewAverage(
+                                                            double.parse(
+                                                                newAverage));
+                                                  }
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                       trailing: IconButton(
                                           onPressed: () {},
                                           icon: Icon(

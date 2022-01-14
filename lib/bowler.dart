@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
 import 'package:lois_bowling_website/constants.dart';
 
@@ -17,8 +18,7 @@ class Bowler {
       this.financesPaid = const {},
       this.laneNUm = '',
       this.uscbNum = '',
-      this.uniqueNum = ''
-      });
+      this.uniqueNum = ''});
 
   double average;
   Map<String, String> divisions;
@@ -35,6 +35,7 @@ class Bowler {
   String uscbNum;
   String laneNUm;
   String uniqueNum;
+  TextEditingController averageController = TextEditingController();
 
   void updateBowlerScores() async {
     await Constants.getTournamentId();
@@ -46,7 +47,7 @@ class Bowler {
         .update({'scores': scores});
   }
 
-   void updateBowlerFinances() async {
+  void updateBowlerFinances() async {
     await Constants.getTournamentId();
 
     await FirebaseFirestore.instance
@@ -54,7 +55,6 @@ class Bowler {
         .collection('Bowlers')
         .doc(uniqueId)
         .update({'financesPaid': financesPaid});
-        
   }
 
   void findDoublePartners() async {
@@ -132,27 +132,30 @@ class Bowler {
     });
   }
 
-  int findScoreForSquad(String squad, int outOf, int percent, bool isHandicap) {
+  int findScoreForSquad(String squad, int outOf, int percent, bool isHandicap,
+      List<int> gamesIncluded) {
     int total = 0;
-   
+
     int handicap = findHandicap(outOf, percent);
 
     scores[squad]?.forEach((game, score) {
-      total += score;
-      if (isHandicap) {
-        total += handicap;
+      if (gamesIncluded.isEmpty || gamesIncluded.contains(int.parse(game))) {
+        total += score;
+        if (isHandicap) {
+          total += handicap;
+        }
       }
     });
 
     return total;
   }
 
-  int findScoreForGame(String squad, int game){
+  int findScoreForGame(String squad, int game) {
     return scores[squad]?[game.toString()] ?? 0;
   }
 
-  int findHandicap(int outOf, int percent){
- int handicapBasedOff = ((percent / 100) * outOf).toInt();
+  int findHandicap(int outOf, int percent) {
+    int handicapBasedOff = ((percent / 100) * outOf).toInt();
     int handicap = handicapBasedOff - average.toInt();
     this.handicap = handicap.toDouble();
     return handicap;
@@ -186,7 +189,8 @@ class Bowler {
     return sidePotsReturned;
   }
 
-  int findAmountOwed(int entreeFee, List<Map<String, dynamic>> tournamentSidePots) {
+  int findAmountOwed(
+      int entreeFee, List<Map<String, dynamic>> tournamentSidePots) {
     int sidePotAmount = 0;
 
 //goes through all the sidepots the user is in which is stored in {squad, [sidepots]}
@@ -201,7 +205,7 @@ class Bowler {
           tournamentSidePot.forEach((key, value) {
             //once you find the sidepot finds the price then adds onto price
             if (key == sidePot) {
-              sidePotAmount +=  value as int;
+              sidePotAmount += value as int;
             }
           });
         });
@@ -212,32 +216,40 @@ class Bowler {
     return sidePotAmount + entreeFee;
   }
 
-  int findAmountNeededForSidepot(String sidePotName, List<Map<String, dynamic>> tournamentSidePots){
+  int findAmountNeededForSidepot(
+      String sidePotName, List<Map<String, dynamic>> tournamentSidePots) {
     int valueReturned = 0;
- 
-     tournamentSidePots.forEach((tournamentSidePot) {
-          //goes through the list trying to find the name of sidepot the user is in
-          tournamentSidePot.forEach((key, value) {
 
-            //once you find the sidepot finds the price then return amount cost
-            if (key == sidePotName.substring(2, sidePotName.length)) {
-            
-              valueReturned =  value;
-            }
-          });
-        });
-  return valueReturned;
+    tournamentSidePots.forEach((tournamentSidePot) {
+      //goes through the list trying to find the name of sidepot the user is in
+      tournamentSidePot.forEach((key, value) {
+        //once you find the sidepot finds the price then return amount cost
+        if (key == sidePotName.substring(2, sidePotName.length)) {
+          valueReturned = value;
+        }
+      });
+    });
+    return valueReturned;
   }
 
-  int findAmountOwedStill(int entreeFee, List<Map<String, dynamic>> tournamentSidePots ){
-  int amountOwed =  findAmountOwed(entreeFee, tournamentSidePots);
+  int findAmountOwedStill(
+      int entreeFee, List<Map<String, dynamic>> tournamentSidePots) {
+    int amountOwed = findAmountOwed(entreeFee, tournamentSidePots);
 
-  int amountPaid = 0;
-  financesPaid.forEach((key, value) { 
-    amountPaid += value as int;
-  });
-  return amountOwed - amountPaid;
+    int amountPaid = 0;
+    financesPaid.forEach((key, value) {
+      amountPaid += value as int;
+    });
+    return amountOwed - amountPaid;
   }
 
+  void saveNewAverage(double newAverage) async {
+    await Constants.getTournamentId();
 
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .collection('Bowlers')
+        .doc(uniqueId)
+        .update({'average': newAverage});
+  }
 }

@@ -7,6 +7,7 @@ import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
+import 'package:lois_bowling_website/universal_ui.dart/pdf_popup.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -110,9 +111,20 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                 child: TextButton(
                                   child: Text('Save Pdf'),
                                   onPressed: () {
-                                    PDFBrain().createSinglesPdf(
-                                        results, games, outOf, percent,     
-                                              selectedDivisions[selectedSquad] ?? 'No Division',);
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => PDFGamePopUp(
+                                              numOfGames: games,
+                                              outOf: outOf,
+                                              percent: percent,
+                                              division: selectedDivisions[
+                                                      selectedSquad] ??
+                                                  'No Division',
+                                              singles: results,
+                                            ));
+                                    // PDFBrain().createSinglesPdf(
+                                    //     results, games, outOf, percent,
+                                    //           ,);
                                   },
                                 )),
                             // Padding(padding: EdgeInsets.all(8),
@@ -223,8 +235,7 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                                     selectedSquad,
                                                     outOf,
                                                     percent,
-                                                    true)
-                                                .toString())
+                                                    true, []).toString())
                                           ],
                                         ),
                                       ),

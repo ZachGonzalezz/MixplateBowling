@@ -9,6 +9,7 @@ import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/team.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
+import 'package:lois_bowling_website/universal_ui.dart/pdf_popup.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -79,7 +80,11 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
         element.loadBowlers().then((value) {
           setState(() {});
           results = TeamBrain.filterTeams(
-              teams: bowlers, search: '', outOf: outOf, percent: percent, squad: 'A');
+              teams: bowlers,
+              search: '',
+              outOf: outOf,
+              percent: percent,
+              squad: 'A');
         });
       });
     });
@@ -125,8 +130,17 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                 child: TextButton(
                                   child: Text('Save Pdf'),
                                   onPressed: () {
-                                    PDFBrain().createTeamsPdf(
-                                        results, game, outOf, percent);
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => PDFGamePopUp(
+                                              numOfGames: game,
+                                              outOf: outOf,
+                                              percent: percent,
+                                              division: selectedDivisions[
+                                                      selectedSquad] ??
+                                                  'No Division',
+                                              teams: results,
+                                            ));
                                   },
                                 )),
                             Align(
@@ -154,15 +168,17 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                   onDivisionChange: (newDivision) {
                                     selectedDivisions[selectedSquad] =
                                         newDivision;
-                                          setState(() {
-                                    results = TeamBrain.filterTeams(
-                                        teams: bowlers,
-                                        search: '',
-                                        outOf: outOf,
-                                        percent: percent,
-                                        squad: selectedSquad,
-                                        division: selectedDivisions[selectedSquad] ?? 'A');
-                                  });
+                                    setState(() {
+                                      results = TeamBrain.filterTeams(
+                                          teams: bowlers,
+                                          search: '',
+                                          outOf: outOf,
+                                          percent: percent,
+                                          squad: selectedSquad,
+                                          division: selectedDivisions[
+                                                  selectedSquad] ??
+                                              'A');
+                                    });
                                   },
                                 ),
                                 SizedBox(
@@ -175,13 +191,15 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                     chnageSquads: (squad) {
                                       setState(() {
                                         selectedSquad = squad;
-                                              results = TeamBrain.filterTeams(
-                                        teams: bowlers,
-                                        search: '',
-                                        outOf: outOf,
-                                        percent: percent,
-                                        squad: selectedSquad,
-                                          division: selectedDivisions[selectedSquad] ?? 'A');
+                                        results = TeamBrain.filterTeams(
+                                            teams: bowlers,
+                                            search: '',
+                                            outOf: outOf,
+                                            percent: percent,
+                                            squad: selectedSquad,
+                                            division: selectedDivisions[
+                                                    selectedSquad] ??
+                                                'A');
                                       });
                                     }),
                               ],
@@ -198,7 +216,9 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                         outOf: outOf,
                                         percent: percent,
                                         squad: selectedSquad,
-                                          division: selectedDivisions[selectedSquad] ?? 'No Divsion');
+                                        division:
+                                            selectedDivisions[selectedSquad] ??
+                                                'No Divsion');
                                   });
                                 }),
                             SizedBox(
@@ -263,9 +283,8 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                                             //this is the score for the team
                                             widget.isCreatingNewBowler == false
                                                 ? Text(results[index]
-                                                    .findTeamTotal(
-                                                        outOf, percent)
-                                                    .toString())
+                                                    .findTeamTotal(outOf,
+                                                        percent, []).toString())
                                                 : SizedBox()
                                           ],
                                         ),

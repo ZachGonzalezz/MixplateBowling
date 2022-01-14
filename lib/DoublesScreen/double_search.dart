@@ -10,6 +10,7 @@ import 'package:lois_bowling_website/pdf.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_popup.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
+import 'package:lois_bowling_website/universal_ui.dart/pdf_popup.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -58,9 +59,8 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
         results = bowlersFromDB;
         resultsPartners =
             DoubleSearchBrain().findDoublePartnes(bowlers, results, null, null);
-        resultsPartners.sort((a, b) => b
-            .findTeamTotal(outOf, percent)
-            .compareTo(a.findTeamTotal(outOf, percent)));
+        resultsPartners.sort((a, b) => b.findTeamTotal(
+            outOf, percent, []).compareTo(a.findTeamTotal(outOf, percent, [])));
       });
     });
   }
@@ -115,8 +115,17 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                 child: TextButton(
                                   child: Text('Save Pdf'),
                                   onPressed: () {
-                                    PDFBrain().createDoublesPdf(
-                                        resultsPartners, game, outOf, percent);
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => PDFGamePopUp(
+                                              numOfGames: game,
+                                              outOf: outOf,
+                                              percent: percent,
+                                              division: selectedDivisions[
+                                                      selectedSquad] ??
+                                                  'No Division',
+                                              doubles: resultsPartners,
+                                            ));
                                   },
                                 )),
                             // Padding(padding: EdgeInsets.all(8),
@@ -138,19 +147,23 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                   onDivisionChange: (newDivision) {
                                     selectedDivisions[selectedSquad] =
                                         newDivision;
-                                         setState(() {
-                                    results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers,
-                                        search: '',
-                                        outOf: outOf,
-                                        percent: percent);
-                                    resultsPartners = DoubleSearchBrain()
-                                        .findDoublePartnes(bowlers, results, selectedSquad, selectedDivisions[selectedSquad]);
-                                    resultsPartners.sort((a, b) => b
-                                        .findTeamTotal(outOf, percent)
-                                        .compareTo(
-                                            a.findTeamTotal(outOf, percent)));
-                                  });
+                                    setState(() {
+                                      results = DoublePartner.filterBowlers(
+                                          bowlers: bowlers,
+                                          search: '',
+                                          outOf: outOf,
+                                          percent: percent);
+                                      resultsPartners = DoubleSearchBrain()
+                                          .findDoublePartnes(
+                                              bowlers,
+                                              results,
+                                              selectedSquad,
+                                              selectedDivisions[selectedSquad]);
+                                      resultsPartners.sort((a, b) => b
+                                          .findTeamTotal(outOf, percent, []).compareTo(
+                                              a.findTeamTotal(
+                                                  outOf, percent, [])));
+                                    });
                                   },
                                 ),
                                 SizedBox(
@@ -179,12 +192,15 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                         outOf: outOf,
                                         percent: percent);
                                     resultsPartners = DoubleSearchBrain()
-                                        .findDoublePartnes(bowlers, results, selectedSquad, selectedDivisions[selectedSquad]);
+                                        .findDoublePartnes(
+                                            bowlers,
+                                            results,
+                                            selectedSquad,
+                                            selectedDivisions[selectedSquad]);
                                     resultsPartners.sort((a, b) => b
-                                        .findTeamTotal(outOf, percent)
-                                        .compareTo(
-                                            a.findTeamTotal(outOf, percent)));
-                                    
+                                        .findTeamTotal(outOf, percent, []).compareTo(
+                                            a.findTeamTotal(
+                                                outOf, percent, [])));
                                   });
                                 }),
                             SizedBox(
@@ -232,12 +248,26 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                                 width: 20,
                                               ),
                                               Text(resultsPartners[index]
-                                                  .findTeamTotal(outOf, percent)
-                                                  .toString()),
-                                             resultsPartners[index].isNoError(selectedSquad) == '' ? SizedBox() : IconButton(onPressed: (){
-                                               BasicPopUp().showBasicDialog(context, resultsPartners[index].isNoError(selectedSquad));
-
-                                              }, icon: Icon(Icons.warning,color: Colors.red,))
+                                                  .findTeamTotal(outOf, percent,
+                                                      []).toString()),
+                                              resultsPartners[index].isNoError(
+                                                          selectedSquad) ==
+                                                      ''
+                                                  ? SizedBox()
+                                                  : IconButton(
+                                                      onPressed: () {
+                                                        BasicPopUp()
+                                                            .showBasicDialog(
+                                                                context,
+                                                                resultsPartners[
+                                                                        index]
+                                                                    .isNoError(
+                                                                        selectedSquad));
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.warning,
+                                                        color: Colors.red,
+                                                      ))
                                             ],
                                           )),
                                       trailing: IconButton(
