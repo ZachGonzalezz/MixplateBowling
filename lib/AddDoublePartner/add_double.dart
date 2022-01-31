@@ -67,7 +67,7 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
-        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
       });
     });
     //loads all the divisions and squads
@@ -143,11 +143,8 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
                                       doublePartner[selectedSquad] = [];
                                       results.forEach((element) {
                                         setState(() {
-                                            (doublePartner[selectedSquad] ??
-                                                        [])
-                                                    .add(element
-                                                        .uniqueId);
-                                                   
+                                          (doublePartner[selectedSquad] ?? [])
+                                              .add(element.uniqueId);
                                         });
                                       });
                                       print(doublePartner[selectedSquad]);

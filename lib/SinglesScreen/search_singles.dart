@@ -67,7 +67,7 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
-        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
         games = (basicSettings['Games'] ?? 0).toInt();
       });
     });

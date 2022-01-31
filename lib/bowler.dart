@@ -18,7 +18,11 @@ class Bowler {
       this.financesPaid = const {},
       this.laneNUm = '',
       this.uscbNum = '',
-      this.uniqueNum = ''});
+      this.uniqueNum = '',
+      this.address = '',
+      this.phoneNum = '',
+      this.paymentType = '',
+      this.email = ''});
 
   double average;
   Map<String, String> divisions;
@@ -35,6 +39,10 @@ class Bowler {
   String uscbNum;
   String laneNUm;
   String uniqueNum;
+  String phoneNum;
+  String email;
+  String address;
+  String paymentType;
   TextEditingController averageController = TextEditingController();
 
   void updateBowlerScores() async {

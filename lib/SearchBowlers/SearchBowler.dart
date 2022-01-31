@@ -47,6 +47,7 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
       setState(() {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
+        results.sort((a, b) => a.firstName.compareTo(b.firstName));
       });
     });
   }
@@ -57,7 +58,7 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
-        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
       });
     });
     //loads all the divisions and squads
@@ -139,6 +140,8 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                         percent: percent,
                                         bowlers: bowlers,
                                         search: text);
+                                    results.sort((a, b) =>
+                                        a.firstName.compareTo(b.firstName));
                                   });
                                 }),
                             SizedBox(

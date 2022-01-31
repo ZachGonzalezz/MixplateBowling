@@ -32,7 +32,7 @@ class _SettingsHomeState extends State<SettingsHome> {
       setState(() {
         brain.miscSettings = value;
         //if 1 then is means user selected it so make box checked so user cant click it again
-        if(value['isAllDoubles'] == 1){
+        if (value['isAllDoubles'] == 1) {
           isAll = true;
         }
       });
@@ -108,12 +108,12 @@ class _SettingsHomeState extends State<SettingsHome> {
                             brain: brain,
                           ),
                           InputValueTileSettings(
-                            title: 'Entrees Fee',
+                            title: 'Entry Fee',
                             brain: brain,
                             miscSettings: brain.miscSettings,
                           ),
                           InputValueTileSettings(
-                            title: 'Handicapt Amount',
+                            title: 'Handicap Amount',
                             brain: brain,
                             miscSettings: brain.miscSettings,
                           ),
@@ -163,7 +163,7 @@ class _SettingsHomeState extends State<SettingsHome> {
                                           .removeAllBowler(squadsForDoubleAll);
                                       brain.miscSettings['isAllDoubles'] = 0;
                                     }
-                                             brain.saveHomeSettings();
+                                    brain.saveHomeSettings();
                                   }),
                               Text('All Doubles'),
                               SizedBox(

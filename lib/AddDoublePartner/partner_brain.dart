@@ -71,6 +71,10 @@ class DoublePartner {
         String lanenNum = data['laneNum'] ?? '';
         String usbcNum = data['usbcNum'] ?? '';
         String uniqueId = data['uniqueId'] ?? '';
+        String email = data['email'] ?? '';
+        String phone = data['phone'] ?? '';
+        String address = data['address'] ?? ' ';
+        String paymentType = data['paymentType'] ?? ' ';
 
         Map<String, Map<String, int>> scores = {};
 
@@ -83,20 +87,25 @@ class DoublePartner {
         });
 
         bowlers.add(Bowler(
-            uniqueId: doc.id,
-            average: average.toDouble(),
-            handicap: handicap.toDouble(),
-            firstName: firstName,
-            lastName: lastName,
-            divisions: divisions,
-            scores: scores,
-            isMale: isMale,
-            doublePartners: partners,
-            sidepots: sidepotsDB,
-            financesPaid: financesDB,
-            laneNUm: lanenNum,
-            uscbNum: usbcNum,
-            uniqueNum: uniqueId));
+          uniqueId: doc.id,
+          average: average.toDouble(),
+          handicap: handicap.toDouble(),
+          firstName: firstName,
+          lastName: lastName,
+          divisions: divisions,
+          scores: scores,
+          isMale: isMale,
+          doublePartners: partners,
+          sidepots: sidepotsDB,
+          financesPaid: financesDB,
+          laneNUm: lanenNum,
+          uscbNum: usbcNum,
+          uniqueNum: uniqueId,
+          email: email,
+          paymentType: paymentType,
+          phoneNum: phone,
+          address: address,
+        ));
       }
     });
 

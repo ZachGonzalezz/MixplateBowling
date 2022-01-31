@@ -59,7 +59,7 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         teamsize = (basicSettings['Team Size'] ?? 1).toInt().toString();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
-        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
         game = (basicSettings['Games'] ?? 1).toInt();
       });
     });

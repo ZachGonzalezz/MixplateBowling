@@ -22,7 +22,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
   int amountOfSquads = 1;
   int outOf = 200;
   int percent = 100;
-  int entreeFee = 0;
+  int entryFee = 0;
 
   List<String> divisions = ['No Division'];
 
@@ -68,8 +68,8 @@ class _FinanceScreenState extends State<FinanceScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
-        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
-        entreeFee = (basicSettings['Entrees Fee'] ?? 0).toInt();
+        outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
+        entryFee = (basicSettings['Entrys Fee'] ?? 0).toInt();
       });
     });
     //loads all the divisions and squads
@@ -144,12 +144,24 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w700),
                                             )
-                                          : Text(results[index - 1].firstName +
-                                              ' ' +
-                                              results[index - 1].lastName + ' \$' +results[index - 1].findAmountOwedStill(entreeFee, sidepots).toString(),
+                                          : Text(
+                                              results[index - 1].firstName +
+                                                  ' ' +
+                                                  results[index - 1].lastName +
+                                                  ' \$' +
+                                                  results[index - 1]
+                                                      .findAmountOwedStill(
+                                                          entryFee, sidepots)
+                                                      .toString(),
                                               style: TextStyle(
-                                                color: results[index - 1].findAmountOwedStill(entreeFee, sidepots) > 0 ? Colors.red : null
-                                              ),),
+                                                  color: results[index - 1]
+                                                              .findAmountOwedStill(
+                                                                  entryFee,
+                                                                  sidepots) >
+                                                          0
+                                                      ? Colors.red
+                                                      : null),
+                                            ),
                                       trailing: SizedBox(
                                           width: 600,
                                           child: Row(
@@ -168,7 +180,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                     : Text('\$' +
                                                         results[index - 1]
                                                             .findAmountOwed(
-                                                                entreeFee,
+                                                                entryFee,
                                                                 sidepots)
                                                             .toString()),
                                                 SizedBox(
@@ -205,7 +217,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                               TextEditingController
                                                                   paidText =
                                                                   TextEditingController(
-                                                                      text: (results[index - 1].financesPaid['Entree Fee'] ??
+                                                                      text: (results[index - 1].financesPaid['Entry Fee'] ??
                                                                               '')
                                                                           .toString());
                                                               return SizedBox(
@@ -217,21 +229,21 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                               paidText,
                                                                           onChanged:
                                                                               (text) {
-                                                                            if (text ==
-                                                                                '' || paidText.text == '0') {
+                                                                            if (text == '' ||
+                                                                                paidText.text == '0') {
                                                                               text = '';
                                                                             }
                                                                             if (int.tryParse(text) !=
                                                                                 null) {
-                                                                              results[index - 1].financesPaid['Entree Fee'] = int.parse(text);
+                                                                              results[index - 1].financesPaid['Entry Fee'] = int.parse(text);
                                                                               results[index - 1].updateBowlerFinances();
                                                                             }
                                                                           },
-                                                                          style: TextStyle(color: Colors.green),
+                                                                          style:
+                                                                              TextStyle(color: Colors.green),
                                                                           decoration: InputDecoration(
-                                                                              label: Text('Entree Fee'),
-                                                                              
-                                                                              hintText: entreeFee.toString(),
+                                                                              label: Text('Entry Fee'),
+                                                                              hintText: entryFee.toString(),
                                                                               hintStyle: TextStyle(color: Colors.red),
                                                                               floatingLabelBehavior: FloatingLabelBehavior.always),
                                                                         )
@@ -241,8 +253,8 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                                 (results[index - 1].financesPaid[results[index - 1].findFinaceSidePots()[indexBox - 1]] ?? '').toString(),
                                                                           onChanged:
                                                                               (text) {
-                                                                            if (text ==
-                                                                                '' || text == '0') {
+                                                                            if (text == '' ||
+                                                                                text == '0') {
                                                                               text = '';
                                                                             }
                                                                             if (int.tryParse(text) !=
@@ -251,9 +263,10 @@ class _FinanceScreenState extends State<FinanceScreen> {
                                                                               results[index - 1].updateBowlerFinances();
                                                                             }
                                                                           },
-                                                                         style: TextStyle(color: Colors.green),
+                                                                          style:
+                                                                              TextStyle(color: Colors.green),
                                                                           decoration: InputDecoration(
-                                                                                 hintText: results[index - 1].findAmountNeededForSidepot(results[index - 1].findFinaceSidePots()[indexBox - 1], sidepots).toString(),
+                                                                              hintText: results[index - 1].findAmountNeededForSidepot(results[index - 1].findFinaceSidePots()[indexBox - 1], sidepots).toString(),
                                                                               hintStyle: TextStyle(color: Colors.red),
                                                                               label: Text(results[index - 1].findFinaceSidePots()[indexBox - 1]),
                                                                               floatingLabelBehavior: FloatingLabelBehavior.always),

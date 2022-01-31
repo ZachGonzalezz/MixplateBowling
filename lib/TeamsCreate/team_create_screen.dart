@@ -24,7 +24,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
   SettingsBrain brain = SettingsBrain();
   int amountOfSquads = 1;
   int teamSize = 1;
-    int outOf = 200;
+  int outOf = 200;
   int percent = 100;
 
   List<String> divisions = ['  No Division'];
@@ -53,7 +53,6 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
     if (widget.teamData != null) {
       widget.teamData!.loadBowlers().then((value) {
         setState(() {
-         
           teamMates = widget.teamData!.bowlers;
         });
       });
@@ -75,8 +74,8 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
       setState(() {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         teamSize = (basicSettings['Team Size'] ?? 1).toInt();
-             percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
-        outOf = (basicSettings['Handicapt Amount'] ?? 200).toInt();
+        percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
+        outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
         if (widget.teamData != null) {
           teamName.text = widget.teamData!.name;
           selectedDivisions[widget.teamData!.squad] = widget.teamData!.division;
@@ -184,7 +183,9 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                                       return DoublePartner
                                                           .filterBowlers(
                                                               bowlers: bowlers,
-                                                              search: text, outOf: outOf, percent: percent);
+                                                              search: text,
+                                                              outOf: outOf,
+                                                              percent: percent);
                                                     },
                                                     itemBuilder:
                                                         (context, bowler) {
@@ -282,29 +283,29 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                     : 'Update Info',
                                 length: 300,
                                 onClicked: () {
-                                  if(teamName.text != ''){
-                                  if (widget.teamData == null) {
-                                    TeamBrain().saveNewTeam(
-                                        name: teamName.text,
-                                        teamMembers: teamMates,
-                                        division:
-                                            selectedDivisions[selectedSquad] ??
-                                                '',
-                                        squad: selectedSquad);
+                                  if (teamName.text != '') {
+                                    if (widget.teamData == null) {
+                                      TeamBrain().saveNewTeam(
+                                          name: teamName.text,
+                                          teamMembers: teamMates,
+                                          division: selectedDivisions[
+                                                  selectedSquad] ??
+                                              '',
+                                          squad: selectedSquad);
+                                    } else {
+                                      TeamBrain().updateATeam(
+                                          name: teamName.text,
+                                          teamMembers: teamMates,
+                                          division: selectedDivisions[
+                                                  selectedSquad] ??
+                                              '',
+                                          squad: selectedSquad,
+                                          id: widget.teamData!.id);
+                                    }
+                                    Navigator.pop(context);
                                   } else {
-                                    TeamBrain().updateATeam(
-                                        name: teamName.text,
-                                        teamMembers: teamMates,
-                                        division:
-                                            selectedDivisions[selectedSquad] ??
-                                                '',
-                                        squad: selectedSquad,
-                                        id: widget.teamData!.id);
-                                  }
-                                  Navigator.pop(context);
-                                  }
-                                  else{
-                                    BasicPopUp().showBasicDialog(context, 'Ensure that the team has a name');
+                                    BasicPopUp().showBasicDialog(context,
+                                        'Ensure that the team has a name');
                                   }
                                 },
                               ),

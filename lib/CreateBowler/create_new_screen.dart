@@ -12,6 +12,7 @@ import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_popup.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
+import 'package:lois_bowling_website/universal_ui.dart/payment_info.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -39,6 +40,8 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
   String teamsSelectedSquad = 'A';
 
   String sideSpotSelected = 'A';
+
+  String paymentMethod = 'Cash';
 
   Map<String, String> selectedDivisions = {};
 
@@ -82,9 +85,13 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
           brain.usbcNumController.text = widget.bowlerInfo!.uscbNum;
           selectedDivisions = widget.bowlerInfo!.divisions;
           brain.uniqueNum.text = widget.bowlerInfo!.uniqueNum;
-
+          brain.address.text = widget.bowlerInfo!.address;
+          brain.email.text = widget.bowlerInfo!.email;
+          brain.phoneNum.text = widget.bowlerInfo!.phoneNum;
+          brain.paymentMethod = widget.bowlerInfo!.paymentType;
           brain.doublePartner = widget.bowlerInfo!.doublePartners;
           widget.bowlerInfo!.findDoublePartners();
+          paymentMethod = widget.bowlerInfo!.paymentType;
 
           brain.sidePotsUser = widget.bowlerInfo!.sidepots;
         }
@@ -207,8 +214,8 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                     controller: brain.laneNum),
                               ],
                             ),
-                               SizedBox(height: 30),
-                              Row(
+                            SizedBox(height: 30),
+                            Row(
                               children: [
                                 SpecialTextField(
                                   item: 'Unique Id',
@@ -217,15 +224,26 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                 SizedBox(
                                   width: 60,
                                 ),
-                                // SpecialTextField(
-                                //     item: 'Lane Num',
-                                //     controller: brain.laneNum),
+                                SpecialTextField(
+                                    item: 'Address', controller: brain.address),
                               ],
                             ),
                             SizedBox(height: 30),
-
+                            Row(
+                              children: [
+                                SpecialTextField(
+                                  item: 'Email',
+                                  controller: brain.email,
+                                ),
+                                SizedBox(
+                                  width: 60,
+                                ),
+                                SpecialTextField(
+                                    item: 'Phone', controller: brain.phoneNum),
+                              ],
+                            ),
                             SizedBox(
-                              height: 20,
+                              height: 50,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -455,6 +473,17 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                             ),
                             SizedBox(height: 30),
                             Center(
+                                child: PaymentPicker(
+                              chnagePayment: (newMethod) {
+                                setState(() {
+                                  paymentMethod = newMethod;
+                                  brain.paymentMethod = newMethod;
+                                });
+                              },
+                              selected: paymentMethod,
+                            )),
+                            SizedBox(height: 30),
+                            Center(
                               child: CustomButton(
                                 buttonTitle: widget.bowlerInfo == null
                                     ? 'Save New Bowler'
@@ -484,8 +513,60 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                 },
                               ),
                             ),
+                            widget.bowlerInfo == null
+                                ? SizedBox()
+                                : SizedBox(
+                                    height: 40,
+                                  ),
+                            widget.bowlerInfo == null
+                                ? SizedBox()
+                                : Center(
+                                    child: TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                    content: Text(
+                                                        'Are you sure you want to delete this bowler?'),
+                                                    actionsAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                              'Nevermind')),
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            brain.deleteBowler(
+                                                                widget
+                                                                    .bowlerInfo!
+                                                                    .uniqueId);
+                                                            Navigator
+                                                                .popAndPushNamed(
+                                                                    context,
+                                                                    Constants
+                                                                        .searchBowlers);
+                                                          },
+                                                          child: Text(
+                                                            'Delete',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          ))
+                                                    ],
+                                                  ));
+                                        },
+                                        child: Text(
+                                          'Delete',
+                                          style: TextStyle(color: Colors.red),
+                                        )),
+                                  ),
                             SizedBox(
-                              height: 40,
+                              height: 80,
                             ),
                           ]),
                     )),
