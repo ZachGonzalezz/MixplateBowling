@@ -7,6 +7,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart';
 
 class PDFBrain {
+  double fontsize = 15;
   //this border makers black lines on the grid go white
   var borderStyle = PdfBorders(
       left: PdfPen.fromBrush(PdfBrushes.white),
@@ -46,28 +47,38 @@ class PDFBrain {
     header.cells[4 + games].value = 'HdTotal';
 
     //ensures borders are white
-    header.cells[0].style.borders = borderStyle;
-    header.cells[1].style.borders = borderStyle;
-    header.cells[2].style.borders = borderStyle;
-    header.cells[3 + games].style.borders = borderStyle;
-    header.cells[4 + games].style.borders = borderStyle;
+    header.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders  = borderStyle;
 
     for (int i = 0; i < games; i++) {
       header.cells[3 + i].value = ('Game' + (i + 1).toString());
 
       header.cells[3 + i].style =
-          PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+          PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
             ..borders = borderStyle;
     }
 
     //goes through every bowler adding name average
     for (Bowler bowler in bowlers) {
       PdfGridRow row = grid.rows.add();
-      row.cells[0].style.borders = borderStyle;
-      row.cells[1].style.borders = borderStyle;
-      row.cells[2].style.borders = borderStyle;
-      row.cells[3 + games].style.borders = borderStyle;
-      row.cells[4 + games].style.borders = borderStyle;
+      row.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
       row.cells[0].value = (bowlers.indexOf(bowler) + 1).toString() +
           ' ' +
           (bowler.firstName + ' ' + bowler.lastName);
@@ -79,28 +90,29 @@ class PDFBrain {
         if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
           row.cells[3 + i].value =
               (bowler.scores['A']?[(i + 1).toString()] ?? 0).toString();
+       
         }
         row.cells[3 + i].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
       }
       if (isSidePot || gamesSelected.isNotEmpty) {
         //goes through every game and adds the score
         PdfGridRow handicapRow = grid.rows.add();
         handicapRow.cells[0].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
         handicapRow.cells[1].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
         handicapRow.cells[2].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
         handicapRow.cells[games + 3].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
         handicapRow.cells[games + 4].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
         for (int i = 0; i < games; i++) {
           if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
@@ -110,8 +122,8 @@ class PDFBrain {
                     .toString();
           }
 
-          handicapRow.cells[3 + i].style =
-              PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+          handicapRow.cells[3 + i].style = 
+              PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
                 ..borders = borderStyle;
         }
         makeSpace(grid, games);
@@ -162,16 +174,21 @@ class PDFBrain {
     header.cells[4 + games].value = 'HdTotal';
 
     //ensures borders are white
-    header.cells[0].style.borders = borderStyle;
-    header.cells[1].style.borders = borderStyle;
-    header.cells[2].style.borders = borderStyle;
-    header.cells[3 + games].style.borders = borderStyle;
-    header.cells[4 + games].style.borders = borderStyle;
+  header.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
     for (int i = 0; i < games; i++) {
       header.cells[3 + i].value = ('Game' + (i + 1).toString());
       header.cells[3 + i].style =
-          PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+          PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
             ..borders = borderStyle;
     }
 
@@ -179,11 +196,16 @@ class PDFBrain {
     for (Team team in teams) {
       for (Bowler bowler in team.bowlers.values) {
         PdfGridRow row = grid.rows.add();
-        row.cells[0].style.borders = borderStyle;
-        row.cells[1].style.borders = borderStyle;
-        row.cells[2].style.borders = borderStyle;
-        row.cells[3 + games].style.borders = borderStyle;
-        row.cells[4 + games].style.borders = borderStyle;
+       row.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
         row.cells[0].value = (teams.indexOf(team) + 1).toString() +
             ' ' +
@@ -199,7 +221,7 @@ class PDFBrain {
           }
 
           row.cells[3 + i].style =
-              PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
                 ..borders = borderStyle;
         }
 
@@ -215,9 +237,12 @@ class PDFBrain {
       totalRow.cells[1].value = team.findTeamTotalAverage().toString();
       totalRow.cells[2].value =
           team.findTeamTotalHandicap(outof, percent).toString();
-      totalRow.cells[1].style.borders = borderStyle;
-      totalRow.cells[2].style.borders = borderStyle;
-      totalRow.cells[0].style.borders = borderStyle;
+      totalRow.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      totalRow.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      totalRow.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
       //goes through every game and adds the score
       for (int i = 0; i < games; i++) {
@@ -227,7 +252,7 @@ class PDFBrain {
         }
 
         totalRow.cells[3 + i].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
       }
 
@@ -235,8 +260,10 @@ class PDFBrain {
           team.findTeamScratchTotal(outof, percent, gamesSelected).toString();
       totalRow.cells[4 + games].value =
           team.findTeamTotal(outof, percent, gamesSelected).toString();
-      totalRow.cells[3 + games].style.borders = borderStyle;
-      totalRow.cells[4 + games].style.borders = borderStyle;
+      totalRow.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      totalRow.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
       //adds space in between teams
       makeSpace(grid, games);
@@ -282,16 +309,21 @@ class PDFBrain {
     header.cells[4 + games].value = 'HdTotal';
 
     //ensures borders are white
-    header.cells[0].style.borders = borderStyle;
-    header.cells[1].style.borders = borderStyle;
-    header.cells[2].style.borders = borderStyle;
-    header.cells[3 + games].style.borders = borderStyle;
-    header.cells[4 + games].style.borders = borderStyle;
+header.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+    header.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
     for (int i = 0; i < games; i++) {
       header.cells[3 + i].value = ('Game' + (i + 1).toString());
       header.cells[3 + i].style =
-          PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+          PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
             ..borders = borderStyle;
     }
 
@@ -299,11 +331,16 @@ class PDFBrain {
     for (DoublePartners doubleTeam in doubles) {
       for (Bowler bowler in doubleTeam.bowlers) {
         PdfGridRow row = grid.rows.add();
-        row.cells[0].style.borders = borderStyle;
-        row.cells[1].style.borders = borderStyle;
-        row.cells[2].style.borders = borderStyle;
-        row.cells[3 + games].style.borders = borderStyle;
-        row.cells[4 + games].style.borders = borderStyle;
+      row.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders= borderStyle;
+      row.cells[1].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[2].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[3 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      row.cells[4 + games].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
         row.cells[0].value = (doubles.indexOf(doubleTeam) + 1).toString() +
             ' ' +
@@ -319,7 +356,7 @@ class PDFBrain {
           }
 
           row.cells[3 + i].style =
-              PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+              PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
                 ..borders = borderStyle;
         }
 
@@ -335,9 +372,12 @@ class PDFBrain {
       totalRow.cells[1].value = doubleTeam.findDoublesTotalAverage().toString();
       totalRow.cells[2].value =
           doubleTeam.findDoublesTotalHandicap(outof, percent).toString();
-      totalRow.cells[1].style.borders = borderStyle;
-      totalRow.cells[2].style.borders = borderStyle;
-      totalRow.cells[0].style.borders = borderStyle;
+      totalRow.cells[1].style = PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      totalRow.cells[2].style = PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      totalRow.cells[0].style = PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
       //goes through every game and adds the score
       for (int i = 0; i < games; i++) {
@@ -347,7 +387,7 @@ class PDFBrain {
         }
 
         totalRow.cells[3 + i].style =
-            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0))
+            PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
       }
 
@@ -356,8 +396,10 @@ class PDFBrain {
           .toString();
       totalRow.cells[4 + games].value =
           doubleTeam.findTeamTotal(outof, percent, gamesSelected).toString();
-      totalRow.cells[3 + games].style.borders = borderStyle;
-      totalRow.cells[4 + games].style.borders = borderStyle;
+      totalRow.cells[3 + games].style = PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
+      totalRow.cells[4 + games].style = PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
 
       //adds space in between teams
       makeSpace(grid, games);
@@ -381,7 +423,8 @@ class PDFBrain {
     PdfGridRow row = grid.rows.add();
     row.height = 20;
     for (int i = 0; i < games + 5; i++) {
-      row.cells[i].style.borders = borderStyle;
+      row.cells[i].style = PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, right: 0), font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+            ..borders = borderStyle;
     }
   }
 

@@ -15,6 +15,7 @@ class ShareWithTile extends StatelessWidget {
 
       child:  Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        
        children: [
          Row(
            children:  [

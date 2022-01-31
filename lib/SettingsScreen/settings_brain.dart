@@ -64,6 +64,24 @@ class SettingsBrain {
     return returnData;
   }
 
+  //pulls the main settings from
+  Future<Map<String, dynamic>> getOtherSettings() async {
+    Map<String, dynamic> returnData = {};
+    await Constants.getTournamentId();
+
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .get()
+        .then((doc) {
+     
+      Map<String, dynamic> dataReturned = doc.data() as Map<String, dynamic>;
+      dataReturned['id'] = doc.id;
+      returnData = dataReturned;
+    });
+
+    return returnData;
+  }
+
 //use to find whether the division is in singles/teams or doubles
   String findDivision(String title) {
     if (title.contains('Singles')) {
@@ -784,4 +802,34 @@ class SettingsBrain {
       greyOutBoxed.remove(title);
     });
   }
+
+  void shareWithBowlers(List<String> emails, String name, DateTime to, DateTime from, String docId) async{
+      
+
+       
+       await Future.forEach(emails, (String email)  async {
+
+
+
+DocumentReference id =  FirebaseFirestore.instance.collection('Users').doc(email.replaceAll(' ', '')).collection('Tournaments').doc(docId);
+
+          print(id.id);
+     //     Users/loistsunoda2@gmail.com/Tournaments/Users/1@2.com/Tournaments/NbgWklKFMz8IdWbhcoGT
+
+
+          id.set({
+        'to': to,
+        'from': from,
+        'name': name,
+        'sharedWith': emails,
+        'sidepots': [{}],
+        //this will be used to see if it is shared with someone
+        'isShared': true,
+        //if it is shared then we will use this email in doucment address user/thisId/tourn/thisTournId (can do this bc we made them identical)
+        'owner': Constants.currentSignedInEmail
+      });
+
+      
+    });
+}
 }

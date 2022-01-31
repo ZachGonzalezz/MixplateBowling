@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
 import 'package:lois_bowling_website/ImportBowlers/importBowlersPopup.dart';
@@ -5,6 +6,7 @@ import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/SettingsScreen/setting_section_tile.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_input_value_tile.dart';
+import 'package:lois_bowling_website/TournamentCreateNewScreen/share_popup.dart';
 import 'package:lois_bowling_website/constants.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
@@ -19,6 +21,11 @@ class SettingsHome extends StatefulWidget {
 class _SettingsHomeState extends State<SettingsHome> {
   SettingsBrain brain = SettingsBrain();
   bool isAll = false;
+  String name = '';
+  DateTime to = DateTime.now();
+  DateTime from = DateTime.now();
+  List<String> sharedWith = [];
+  String tournId = '';
   String squadsForDoubleAll = 'A';
   @override
   void initState() {
@@ -35,7 +42,20 @@ class _SettingsHomeState extends State<SettingsHome> {
         if (value['isAllDoubles'] == 1) {
           isAll = true;
         }
+     
       });
+    });
+
+    await brain.getOtherSettings().then((value) {
+      name = value['name'] ?? '';
+      Timestamp toStamp = value['to'] ?? Timestamp.now();
+      Timestamp fromStamp = value['from'] ?? Timestamp.now();
+      sharedWith = List.from(value['sharedWith'] ?? []);
+
+      to = toStamp.toDate();
+      from = fromStamp.toDate();
+      tournId = value['id'] ?? '';
+      
     });
     return;
   }
@@ -180,6 +200,9 @@ class _SettingsHomeState extends State<SettingsHome> {
                                           .toInt())
                             ],
                           ),
+                          SizedBox(
+                            height: 30
+                          ),
                           TextButton(
                             onPressed: () {
                               showDialog(
@@ -187,7 +210,21 @@ class _SettingsHomeState extends State<SettingsHome> {
                                   builder: (context) => ImportBowlersPopUp());
                             },
                             child: Text('Import Bowlers'),
-                          )
+                          ),
+                          SizedBox(
+                            height: 30
+                          ),
+                            TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => SharePopUp(emailsToSendTo: sharedWith, name:  name, to:  to, from: from, isTournamnetCreatedAlready: true, id: tournId,));
+                            },
+                            child: Text('Share'),
+                          ),
+                            SizedBox(
+                            height: 30
+                          ),
                         ])),
                   ),
                 ),

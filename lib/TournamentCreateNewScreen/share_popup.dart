@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
+import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/TournamentCreateNewScreen/shared_with_tile.dart';
 
 
 class SharePopUp extends StatefulWidget {
-   SharePopUp({ Key? key, required this.emailsToSendTo }) : super(key: key);
+   SharePopUp({ Key? key, required this.emailsToSendTo, this.isTournamnetCreatedAlready = false, this.name = '', this.to, this.from, this.id = ''}) : super(key: key);
 
   List<String> emailsToSendTo;
+  bool isTournamnetCreatedAlready;
+  String name;
+  DateTime? to;
+  DateTime? from;
+  String id;
 
   @override
   State<SharePopUp> createState() => _SharePopUpState();
@@ -38,7 +44,7 @@ class _SharePopUpState extends State<SharePopUp> {
             const SizedBox(height: 30,),
           SizedBox(
             height: 200,
-            width: 200,
+            width: MediaQuery.of(context).size.width / 2,
             child: ListView.builder(
               itemCount: widget.emailsToSendTo.length,
               itemBuilder: (context, index){
@@ -57,6 +63,9 @@ class _SharePopUpState extends State<SharePopUp> {
            const SizedBox(height: 30,),
           CustomButton(buttonTitle: 'Invite', onClicked: (){
             Navigator.pop(context, widget.emailsToSendTo);
+            if(widget.isTournamnetCreatedAlready){
+              SettingsBrain().shareWithBowlers(widget.emailsToSendTo, widget.name, widget.to ?? DateTime.now(), widget.from ?? DateTime.now(), widget.id);
+            }
           })
         ],
       ),
