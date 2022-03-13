@@ -1,9 +1,8 @@
-import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import "package:universal_html/html.dart" as html;
 class Constants {
   static Color lightBlue = const Color(0xFFEEF4FF);
   static Gradient mainGradient = LinearGradient(

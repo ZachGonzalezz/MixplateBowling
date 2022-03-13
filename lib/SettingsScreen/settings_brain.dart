@@ -57,8 +57,14 @@ class SettingsBrain {
         .get()
         .then((doc) {
       Map<String, dynamic> mainSettings = doc.data() as Map<String, dynamic>;
-      returnData =
-          Map<String, double>.from(mainSettings['Basic Settings'] ?? {});
+      returnData = {};
+       Map<String, int>  intReturn =  Map<String, int>.from(mainSettings['Basic Settings'] ?? {});
+
+       intReturn.forEach((key, value) {
+         returnData[key] = value.toDouble();
+       });
+
+          
     });
 
     return returnData;

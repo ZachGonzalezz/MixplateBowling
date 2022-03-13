@@ -1,11 +1,18 @@
+import 'dart:convert';
+import 'dart:io' as io;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
+import 'package:lois_bowling_website/InputScores/image_to_scores.dart';
 import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
 import 'package:lois_bowling_website/InputScores/scoreboard.dart';
 import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
 import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
 import 'package:lois_bowling_website/bowler.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/responsive.dart';
 import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
 import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
 import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
@@ -21,9 +28,12 @@ class InputScoreScreen extends StatefulWidget {
 class _InputScoreScreenState extends State<InputScoreScreen> {
   @override
   SettingsBrain brain = SettingsBrain();
+  ImageToScores picBrain = ImageToScores();
   int amountOfSquads = 1;
   int nmOfGames = 1;
   InputScoreBrain scoreBrain = InputScoreBrain();
+  String finalText = '';
+  bool isLoading = false;
 
   List<String> divisions = ['No Division'];
 
@@ -49,7 +59,9 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
     DoublePartner.loadBowlers().then((bowlersFromDB) {
       setState(() {
         bowlers = bowlersFromDB;
-        results = bowlersFromDB;
+        if (Responsive.isMobileOs(context) != true) {
+          results = bowlersFromDB;
+        }
         scoreBrain.bowlers = bowlersFromDB;
       });
     });
@@ -81,11 +93,13 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
         child: SingleChildScrollView(
           child: Center(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  MediaQuery.of(context).size.width * 0.15,
-                  MediaQuery.of(context).size.height * 0.15,
-                  MediaQuery.of(context).size.width * 0.15,
-                  0),
+              padding: Responsive.isMobileOs(context)
+                  ? EdgeInsets.zero
+                  : EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width * 0.15,
+                      MediaQuery.of(context).size.height * 0.15,
+                      MediaQuery.of(context).size.width * 0.15,
+                      0),
               child: Container(
                 decoration: BoxDecoration(
                     color: Constants.lightBlue,
@@ -108,7 +122,14 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                 buttonTitle: 'Save Scores',
                                 length: 300,
                                 onClicked: () {
+                                  if(Responsive.isMobileOs(context) != true){
                                   scoreBrain.saveScores();
+                                  }
+                                  else {
+                                            List<Bowler> bowlersNotInDB = results.where((element) => element.bowlerDoesExistInDB != true).toList();
+        List<Bowler> bowlersInDb = results.where((element) => element.bowlerDoesExistInDB).toList();
+        picBrain.checkIfAllBowlersExists(bowlersInDb, bowlersNotInDB, context);
+                                  }
                                 },
                               ),
                             ),
@@ -161,6 +182,17 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                               ],
                             ),
                             SizedBox(height: 30),
+                            Responsive.isMobileOs(context)
+                                ? Center(
+                                  child: TextButton(
+                                      onPressed: isLoading
+                                          ? null
+                                          : () {
+                                              getImage();
+                                            },
+                                      child: Text('Import Scores Through Photo')),
+                                )
+                                : SizedBox(),
                             CustomSearchBar(
                                 backTo: Constants.settingsHome,
                                 onChange: (text) {
@@ -183,7 +215,20 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                 nmOfGames: nmOfGames,
                                 results: results,
                                 scoreBrain: scoreBrain,
-                                selectedSquad: selectedSquad),
+                                selectedSquad: selectedSquad,
+                                moveOneDown: (index, game){
+                                  setState(() {
+                                    results = ImageToScores().moveOneDown(results, index, game);
+                                  });
+                                  
+                                },
+                                moveOneUp: (index, game){
+                                  //  setState(() {
+                                  //   results = ImageToScores().moveOneUp(results, index, game);
+                                  // });
+
+                                },
+                                ),
                           ])),
                 ),
               ),
@@ -192,5 +237,84 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
         ),
       ),
     );
+  }
+
+  // this is for getting the image form the gallery
+  void getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery, maxWidth: 2000, maxHeight: 2000);
+    if (image != null) {
+      // getText(image.path);
+      var bytes = io.File(image.path).readAsBytesSync();
+      String img64 = base64Encode(bytes);
+      var url = Uri.parse('https://api.ocr.space/parse/image');
+      var payload = {
+        "base64Image": "data:image/jpg;base64,${img64.toString()}"
+      };
+      var header = {"apikey": 'K89597926388957'};
+
+      setState(() {
+        isLoading = true;
+      });
+      var post = await http.post(url, body: payload, headers: header);
+      var result = jsonDecode(post.body);
+      print('image found');
+      setState(() {
+        isLoading = false;
+      });
+      setState(() {
+        // finalText = '';
+        // finalText = result.toString();
+        print(result.toString());
+        finalText = result['ParsedResults'][0]['ParsedText'];
+      });
+      List<String> blocks = finalText.split('\n');
+      for (int i = 0; i < blocks.length; i++) {
+        blocks[i] = blocks[i]
+            .replaceAll(' ', '')
+            .replaceAll(',', '')
+            .replaceAll('\n', '')
+            .replaceAll('\t', '')
+            .replaceAll('\b', '')
+            .replaceAll('\r', '')
+            .toString();
+      }
+
+      setState(() {
+        finalText = blocks.toString();
+        isLoading = false;
+      });
+      if (picBrain.isGoodToContinue(blocks) == '') {
+        blocks.remove('(CompletedGamesOnly)');
+        blocks.remove('\b');
+        blocks.remove('\t');
+        blocks.remove('\r');
+        blocks.remove('');
+        blocks.remove('');
+        blocks.remove('');
+        blocks.remove('Scratch');
+        blocks.remove('Gold');
+        blocks.remove('GoldCoast');
+        blocks.remove('GoldCoastLanes');
+        // blocks.remove('Handicap');
+
+        blocks.remove('');
+        blocks.remove('ScoresRecap');
+        // blocks.removeRange(blocks.indexOf('Average'), blocks.indexOf('Game'));
+        // blocks.removeRange(blocks.indexOf('Lane'), blocks.indexOf('Name'));
+        // blocks.removeRange(blocks.indexOf('Series'), blocks.length -1);
+        // blocks.removeRange(blocks.indexOf('HDCP'), blocks.length -1);
+        // blocks.removeRange(blocks.indexOf('Handicap'), (blocks.indexOf('Handicap') + findNames(blocks).length));
+        setState(() {
+          results = picBrain.makeTable(blocks, bowlers);
+        });
+
+      } else {
+        print(picBrain.isGoodToContinue(blocks));
+      }
+    } else {
+      print('no image');
+    }
   }
 }

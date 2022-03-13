@@ -89,7 +89,7 @@ class PDFBrain {
       for (int i = 0; i < games; i++) {
         if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
           row.cells[3 + i].value =
-              (bowler.scores['A']?[(i + 1).toString()] ?? 0).toString();
+              (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
        
         }
         row.cells[3 + i].style =
@@ -117,7 +117,7 @@ class PDFBrain {
         for (int i = 0; i < games; i++) {
           if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
             handicapRow.cells[3 + i].value =
-                ((bowler.scores['A']?[(i + 1).toString()] ?? 0) +
+                ((bowler.scores!['A']?[(i + 1).toString()] ?? 0) +
                         (bowler.findHandicap(outof, percent)))
                     .toString();
           }
@@ -217,7 +217,7 @@ class PDFBrain {
         for (int i = 0; i < games; i++) {
           if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
             row.cells[3 + i].value =
-                (bowler.scores['A']?[(i + 1).toString()] ?? 0).toString();
+                (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
           }
 
           row.cells[3 + i].style =
@@ -352,7 +352,7 @@ header.cells[0].style =   PdfGridCellStyle(cellPadding: PdfPaddings(left: 0, rig
         for (int i = 0; i < games; i++) {
           if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
             row.cells[3 + i].value =
-                (bowler.scores['A']?[(i + 1).toString()] ?? 0).toString();
+                (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
           }
 
           row.cells[3 + i].style =

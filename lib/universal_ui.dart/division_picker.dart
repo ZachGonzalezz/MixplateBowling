@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/responsive.dart';
 
 class DivisionPicker extends StatefulWidget {
   DivisionPicker(
@@ -57,6 +58,7 @@ class _DivisionPickerState extends State<DivisionPicker> {
 
     }
     return Container(
+      width: Responsive.isMobileOs(context) ? 150 : null,
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(width: 1),

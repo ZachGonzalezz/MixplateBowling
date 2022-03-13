@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lois_bowling_website/responsive.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
  CustomCircleAvatar({ Key? key, this.radius = 80, this.iconSize = 100}) : super(key: key);
@@ -11,7 +12,7 @@ class CustomCircleAvatar extends StatelessWidget {
       backgroundColor: Colors.white,
    
       child:  Padding(
-        padding:const EdgeInsets.all(8.0),
+        padding:EdgeInsets.all(Responsive.isMobile(context) ? 0 : 8.0),
         child: Icon(Icons.account_circle_sharp, size: iconSize, color: Colors.grey,),
       ),
       

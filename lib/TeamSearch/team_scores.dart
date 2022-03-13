@@ -144,7 +144,13 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                                 nmOfGames: numOfGames,
                                 results: widget.team.bowlers.values.toList(),
                                 scoreBrain: scoreBrain,
-                                selectedSquad: selectedSquad),
+                                selectedSquad: selectedSquad,
+                                 moveOneDown: (index, game){
+
+                                },
+                                moveOneUp: (index, game){
+                                  
+                                },),
 
                             SizedBox(
                               height: 20,

@@ -5,6 +5,7 @@ import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_sele
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_tile.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/responsive.dart';
 class SelectTournamentScreen extends StatefulWidget {
  SelectTournamentScreen({ Key? key }) : super(key: key);
 
@@ -43,7 +44,7 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
           children: [
             Positioned.fill(child: Image.asset('images/background.png', fit: BoxFit.fill,)),
             Padding(
-              padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.2, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.2, 0),
+              padding: Responsive.isMobileOs(context) ?  EdgeInsets.zero : EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.2, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.2, 0),
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -58,21 +59,21 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
                   padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                   child: Column(
                       children:  [
-                        const Text('Welcome User', style: TextStyle( fontSize: 36, fontWeight: FontWeight.w800)),
-                       const Text('Here are your avaliable tournaments', style: TextStyle( fontSize: 30, fontWeight: FontWeight.w500)),
-                       const SizedBox(
+                      Responsive.isMobileOs(context) ? const SizedBox() :  const Text('Welcome User', style: TextStyle( fontSize: 36, fontWeight: FontWeight.w800)),
+                           Responsive.isMobileOs(context) ? const SizedBox() :   const Text('Here are your avaliable tournaments', style: TextStyle( fontSize: 30, fontWeight: FontWeight.w500)),
+                           Responsive.isMobileOs(context) ? const SizedBox() :   const SizedBox(
                           height: 30,
                         ),
-                        CustomButton(buttonTitle: 'Create New', onClicked: ()async {
+                           Responsive.isMobileOs(context) ? const SizedBox() :   CustomButton(buttonTitle: 'Create New', onClicked: ()async {
                           
        Navigator.pushNamed(context, Constants.tournamentCreate);
                          
                         }, ),
-                        const SizedBox(
+                          Responsive.isMobileOs(context) ? const SizedBox() :    const SizedBox(
                           height: 30,
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.65,
+                          height:     Responsive.isMobileOs(context) ?  MediaQuery.of(context).size.height * 1 :   MediaQuery.of(context).size.height * 0.65,
                           child: ListView.builder(
                      
                             itemCount: usersTournaments.length,

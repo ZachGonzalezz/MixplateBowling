@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/NavigationBar/navigation_bar.dart';
+import 'package:lois_bowling_website/responsive.dart';
 
 class ScreenLayout extends StatelessWidget {
   ScreenLayout(
@@ -22,16 +23,16 @@ class ScreenLayout extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-                left: MediaQuery.of(context).size.width * 0.15,
+                left: Responsive.isMobileOs(context) ? 0 : MediaQuery.of(context).size.width * 0.15,
                 child: Image.asset(
                   'images/background.png',
                   fit: BoxFit.fill,
                 )),
-            CustomNavigationBar(
+            Responsive.isMobileOs(context) ? const SizedBox() : CustomNavigationBar(
               selected: selected,
             ),
             Positioned.fill(
-                left: MediaQuery.of(context).size.width * 0.15,
+                left:  Responsive.isMobileOs(context) ? 0 : MediaQuery.of(context).size.width * 0.15,
                 child: SizedBox(
                   child: child,
                 ))

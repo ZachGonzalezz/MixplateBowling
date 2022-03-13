@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TournamentTile extends StatelessWidget {
@@ -25,11 +26,17 @@ class TournamentTile extends StatelessWidget {
         final prefs = await SharedPreferences.getInstance();
 
         prefs.setString('tournamentId', Constants.currentIdForTournament);
+        if(Responsive.isMobileOs(context)){
+Navigator.pushNamed(context, Constants.inputScores);
+        }
+        else {
         Navigator.pushNamed(context, Constants.settingsHome);
+        }
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: Responsive.isMobileOs(context) ? 5 : 40),
         child: Column(
+
           children: [
             Material(
               elevation: 10,
@@ -44,9 +51,9 @@ class TournamentTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(tournament.name,
-                          style: const TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.w800)),
-                      Row(
+                          style: TextStyle(
+                              fontSize: Responsive.isMobileOs(context) ? 21 : 26, fontWeight: FontWeight.w800)),
+                   Responsive.isMobileOs(context) ? SizedBox() :   Row(
                         children: [
                           Text(dateFormat.format(tournament.start)),
                           const SizedBox(

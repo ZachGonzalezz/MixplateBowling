@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "276175805543",
+    "project_id": "bowling-app-70561",
+    "storage_bucket": "bowling-app-70561.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276175805543:android:f2048449bfaa5e78ac48c2",
+        "android_client_info": {
+          "package_name": "com.example.lois_bowling_website"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276175805543-oh0l4h8dr5di36vl7sl49th8v9pakn5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7GgzeDRUS_-oPSUe-R2HDEQw01it0JKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276175805543-oh0l4h8dr5di36vl7sl49th8v9pakn5g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "276175805543-k750utknpnmthu9shp7ogkkmfb4p131s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zacharygonzalez.BowlingApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

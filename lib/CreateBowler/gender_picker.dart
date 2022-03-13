@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lois_bowling_website/CreateBowler/create_bowler_brain.dart';
 import 'package:lois_bowling_website/constants.dart';
+import 'package:lois_bowling_website/responsive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class GenderPicker extends StatefulWidget {
@@ -21,10 +22,10 @@ class _GenderPickerState extends State<GenderPicker> {
     Color selectedColor = Constants.lightBlue.withOpacity(0.6);
 
     if(widget.brain.isMale == true && widget.isMale == true) {
-      selectedColor = Colors.white;
+   selectedColor = Responsive.isMobileOs(context) ? Colors.blue.withOpacity(0.5) : Colors.white;
     }
     if(widget.brain.isMale == false && widget.isMale == false){
-      selectedColor = Colors.white;
+        selectedColor = Responsive.isMobileOs(context) ? Colors.blue.withOpacity(0.5) : Colors.white;
     }
 
     return GestureDetector(

@@ -116,7 +116,13 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                                 nmOfGames: numOfGames,
                                 results: widget.bowler.bowlers,
                                 scoreBrain: scoreBrain,
-                                selectedSquad: selectedSquad),
+                                selectedSquad: selectedSquad,
+                                 moveOneDown: (index, game){
+
+                                },
+                                moveOneUp: (index, game){
+                                  
+                                },),
 
                             SizedBox(
                               height: 20,

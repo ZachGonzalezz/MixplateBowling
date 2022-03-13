@@ -122,7 +122,13 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                                 nmOfGames: numOfGames,
                                 results: [widget.bowler],
                                 scoreBrain: scoreBrain,
-                                selectedSquad: selectedSquad),
+                                selectedSquad: selectedSquad,
+                                 moveOneDown: (index, game){
+
+                                },
+                                moveOneUp: (index, game){
+                                  
+                                },),
 
                             SizedBox(
                               height: 20,

@@ -11,11 +11,12 @@ class Bowler {
       required this.uniqueId,
       this.firstName = '',
       this.divisions = const {},
-      this.scores = const {},
+      this.scores,
       this.doublePartners = const {},
       this.isMale = false,
       this.sidepots = const {},
       this.financesPaid = const {},
+      this.bowlerDoesExistInDB = true,
       this.laneNUm = '',
       this.uscbNum = '',
       this.uniqueNum = '',
@@ -30,7 +31,7 @@ class Bowler {
   String lastName;
   double handicap;
   String uniqueId;
-  Map<String, Map<String, int>> scores;
+  Map<String, Map<String, int>>? scores;
   Map<String, dynamic> doublePartners;
   bool isMale;
   int bestscore = 0;
@@ -44,6 +45,7 @@ class Bowler {
   String address;
   String paymentType;
   TextEditingController averageController = TextEditingController();
+  bool bowlerDoesExistInDB;
 
   void updateBowlerScores() async {
     await Constants.getTournamentId();
@@ -146,7 +148,7 @@ class Bowler {
 
     int handicap = findHandicap(outOf, percent);
 
-    scores[squad]?.forEach((game, score) {
+    scores![squad]?.forEach((game, score) {
       if (gamesIncluded.isEmpty || gamesIncluded.contains(int.parse(game))) {
         total += score;
         if (isHandicap) {
@@ -159,7 +161,7 @@ class Bowler {
   }
 
   int findScoreForGame(String squad, int game) {
-    return scores[squad]?[game.toString()] ?? 0;
+    return scores![squad]?[game.toString()] ?? 0;
   }
 
   int findHandicap(int outOf, int percent) {
@@ -171,7 +173,7 @@ class Bowler {
 
   findBestSquadScore() {
     int best = 0;
-    scores.forEach((squad, scoreMap) {
+    scores!.forEach((squad, scoreMap) {
       int total = 0;
       scoreMap.forEach((game, score) {
         total += score;
