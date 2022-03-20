@@ -499,13 +499,14 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                     if (widget.bowlerInfo != null) {
                                       brain.updateBowler(
                                           widget.bowlerInfo!.uniqueId);
+                                        
                                     }
                                     //this means they are saving a new bowler to db
                                     else {
                                       brain.saveNewBowler();
                                     }
                                     Navigator.popAndPushNamed(
-                                        context, Constants.createNewBowler);
+                                        context, Constants.searchBowlers);
                                   } else {
                                     BasicPopUp(text: error)
                                         .showBasicDialog(context, error);

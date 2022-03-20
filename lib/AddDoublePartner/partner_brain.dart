@@ -74,7 +74,7 @@ class DoublePartner {
         String email = data['email'] ?? '';
         String phone = data['phone'] ?? '';
         String address = data['address'] ?? ' ';
-        String paymentType = data['paymentType'] ?? ' ';
+        String paymentType = data['paymentType'] ?? 'Cash';
 
         Map<String, Map<String, int>> scores = {};
 

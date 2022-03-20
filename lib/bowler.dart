@@ -22,7 +22,7 @@ class Bowler {
       this.uniqueNum = '',
       this.address = '',
       this.phoneNum = '',
-      this.paymentType = '',
+      this.paymentType = 'Cash',
       this.email = ''});
 
   double average;

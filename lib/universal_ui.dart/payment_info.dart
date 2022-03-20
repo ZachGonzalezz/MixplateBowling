@@ -10,8 +10,10 @@ class PaymentPicker extends StatefulWidget {
 }
 
 class _PaymentPickerState extends State<PaymentPicker> {
+
   @override
   Widget build(BuildContext context) {
+      print(widget.selected + 'TEESTTT');
     String selected = widget.selected;
     return Container(
       decoration: BoxDecoration(

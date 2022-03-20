@@ -207,75 +207,78 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.5,
-                              child: ListView.builder(
-                                  itemCount: resultsPartners.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DoubleScoreScreen(
-                                                        bowler: resultsPartners[
-                                                            index])));
-                                      },
-                                      leading: SizedBox(
-                                          width: 700,
-                                          child: Row(
-                                            children: [
-                                              Text(resultsPartners[index]
-                                                  .returnFirstName()),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Icon(MdiIcons.arrowRightBold),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text(resultsPartners[index]
-                                                  .returnSecondName()),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text(
-                                                  resultsPartners[index].squad),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Text(resultsPartners[index]
-                                                  .findTeamTotal(outOf, percent,
-                                                      []).toString()),
-                                              resultsPartners[index].isNoError(
-                                                          selectedSquad) ==
-                                                      ''
-                                                  ? SizedBox()
-                                                  : IconButton(
-                                                      onPressed: () {
-                                                        BasicPopUp()
-                                                            .showBasicDialog(
-                                                                context,
-                                                                resultsPartners[
-                                                                        index]
-                                                                    .isNoError(
-                                                                        selectedSquad));
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.warning,
-                                                        color: Colors.red,
-                                                      ))
-                                            ],
-                                          )),
-                                      trailing: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            MdiIcons.chevronRight,
-                                          )),
-                                    );
-                                  }),
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                child: ListView.builder(
+                                    itemCount: resultsPartners.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DoubleScoreScreen(
+                                                          bowler: resultsPartners[
+                                                              index])));
+                                        },
+                                        leading: SizedBox(
+                                            width: 700,
+                                            child: Row(
+                                              children: [
+                                                Text(resultsPartners[index]
+                                                    .returnFirstName()),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Icon(MdiIcons.arrowRightBold),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(resultsPartners[index]
+                                                    .returnSecondName()),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(
+                                                    resultsPartners[index].squad),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(resultsPartners[index]
+                                                    .findTeamTotal(outOf, percent,
+                                                        []).toString()),
+                                                resultsPartners[index].isNoError(
+                                                            selectedSquad) ==
+                                                        ''
+                                                    ? SizedBox()
+                                                    : IconButton(
+                                                        onPressed: () {
+                                                          BasicPopUp()
+                                                              .showBasicDialog(
+                                                                  context,
+                                                                  resultsPartners[
+                                                                          index]
+                                                                      .isNoError(
+                                                                          selectedSquad));
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.warning,
+                                                          color: Colors.red,
+                                                        ))
+                                              ],
+                                            )),
+                                        trailing: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              MdiIcons.chevronRight,
+                                            )),
+                                      );
+                                    }),
+                              ),
                             ),
                           ])),
                 ),

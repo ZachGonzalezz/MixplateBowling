@@ -7,7 +7,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart';
 
 class PDFBrain {
-  double fontsize = 15;
+  double fontsize = 7;
   //this border makers black lines on the grid go white
   var borderStyle = PdfBorders(
       left: PdfPen.fromBrush(PdfBrushes.white),
@@ -268,7 +268,7 @@ class PDFBrain {
       //adds space in between teams
       makeSpace(grid, games);
     }
-
+ 
     // makeSpace(grid, games);
 
     //draws grid on the page

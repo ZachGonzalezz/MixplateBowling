@@ -121,12 +121,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text('This is the mobile version of the application. To create an account go mixedplate.net!',
+                        Responsive.isMobile(context)
+                            ? const Text('This is the mobile version of the application. To create an account go mixedplate.net!',
                         textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600)),
+                                fontWeight: FontWeight.w600))
+                                : SizedBox()
+                                ,
                         const SizedBox(
                           height: 30,
                         ),

@@ -149,64 +149,67 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.5,
-                              child: ListView.builder(
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    results[index].averageController.text =
-                                        results[index]
-                                            .average
-                                            .toInt()
-                                            .toString();
-                                    return ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CreateNewBowlerScreen(
-                                                      bowlerInfo:
-                                                          results[index],
-                                                    )));
-                                      },
-                                      leading: SizedBox(
-                                        width: 250,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(results[index].firstName +
-                                                ' ' +
-                                                results[index].lastName),
-
-                                            //this textfield allows us to change the average of the bowlers
-                                            SizedBox(
-                                              width: 50,
-                                              child: TextField(
-                                                controller: results[index]
-                                                    .averageController,
-                                                onChanged: (newAverage) {
-                                                  //makes sure average is a number so no issues if so saves it
-                                                  if (double.tryParse(
-                                                          newAverage) !=
-                                                      null) {
-                                                    results[index]
-                                                        .saveNewAverage(
-                                                            double.parse(
-                                                                newAverage));
-                                                  }
-                                                },
-                                              ),
-                                            )
-                                          ],
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                child: ListView.builder(
+                                    itemCount: results.length,
+                                    itemBuilder: (context, index) {
+                                      results[index].averageController.text =
+                                          results[index]
+                                              .average
+                                              .toInt()
+                                              .toString();
+                                      return ListTile(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreateNewBowlerScreen(
+                                                        bowlerInfo:
+                                                            results[index],
+                                                      )));
+                                        },
+                                        leading: SizedBox(
+                                          width: 250,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(results[index].firstName +
+                                                  ' ' +
+                                                  results[index].lastName),
+                              
+                                              //this textfield allows us to change the average of the bowlers
+                                              SizedBox(
+                                                width: 50,
+                                                child: TextField(
+                                                  controller: results[index]
+                                                      .averageController,
+                                                  onChanged: (newAverage) {
+                                                    //makes sure average is a number so no issues if so saves it
+                                                    if (double.tryParse(
+                                                            newAverage) !=
+                                                        null) {
+                                                      results[index]
+                                                          .saveNewAverage(
+                                                              double.parse(
+                                                                  newAverage));
+                                                    }
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      trailing: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            MdiIcons.chevronRight,
-                                          )),
-                                    );
-                                  }),
+                                        trailing: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              MdiIcons.chevronRight,
+                                            )),
+                                      );
+                                    }),
+                              ),
                             ),
                           ])),
                 ),

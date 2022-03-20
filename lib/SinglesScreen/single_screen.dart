@@ -141,6 +141,7 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                                   scoreBrain.bowlers = [widget.bowler];
 
                                   scoreBrain.saveScores();
+                                  Navigator.popAndPushNamed(context, Constants.searchSingles);
                                 },
                               ),
                             ),

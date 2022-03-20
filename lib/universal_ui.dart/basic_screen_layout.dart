@@ -10,33 +10,40 @@ class ScreenLayout extends StatelessWidget {
   String selected;
   Widget child;
   double height;
+  ScrollController controller =  ScrollController();
 
   @override
   Widget build(BuildContext context) {
     if (height == 0) {
       height = MediaQuery.of(context).size.height;
     }
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            Positioned.fill(
-                left: Responsive.isMobileOs(context) ? 0 : MediaQuery.of(context).size.width * 0.15,
-                child: Image.asset(
-                  'images/background.png',
-                  fit: BoxFit.fill,
-                )),
-            Responsive.isMobileOs(context) ? const SizedBox() : CustomNavigationBar(
-              selected: selected,
-            ),
-            Positioned.fill(
-                left:  Responsive.isMobileOs(context) ? 0 : MediaQuery.of(context).size.width * 0.15,
-                child: SizedBox(
-                  child: child,
-                ))
-          ],
+    return Scrollbar(
+      isAlwaysShown: true,
+      
+      controller: controller,
+      child: SingleChildScrollView(
+              controller: controller,
+        child: SizedBox(
+          height: height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                  left: Responsive.isMobileOs(context) ? 0 : MediaQuery.of(context).size.width * 0.15,
+                  child: Image.asset(
+                    'images/background.png',
+                    fit: BoxFit.fill,
+                  )),
+              Responsive.isMobileOs(context) ? const SizedBox() : CustomNavigationBar(
+                selected: selected,
+              ),
+              Positioned.fill(
+                  left:  Responsive.isMobileOs(context) ? 0 : MediaQuery.of(context).size.width * 0.15,
+                  child: SizedBox(
+                    child: child,
+                  ))
+            ],
+          ),
         ),
       ),
     );

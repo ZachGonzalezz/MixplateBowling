@@ -83,170 +83,175 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
     return Scaffold(
       body: ScreenLayout(
         selected: 'Singles',
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                  MediaQuery.of(context).size.width * 0.15,
-                  MediaQuery.of(context).size.height * 0.15,
-                  MediaQuery.of(context).size.width * 0.15,
-                  0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Constants.lightBlue,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Align(
-                                alignment: Alignment.topRight,
-                                child: TextButton(
-                                  child: Text('Save Pdf'),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => PDFGamePopUp(
-                                              numOfGames: games,
-                                              outOf: outOf,
-                                              percent: percent,
-                                              division: selectedDivisions[
-                                                      selectedSquad] ??
-                                                  'No Division',
-                                              singles: results,
-                                            ));
-                                    // PDFBrain().createSinglesPdf(
-                                    //     results, games, outOf, percent,
-                                    //           ,);
-                                  },
-                                )),
-                            // Padding(padding: EdgeInsets.all(8),
-                            // child: IconButton(onPressed: (){
-                            //   Navigator.pop(context);
-                            // }, icon: Icon(MdiIcons.chevronLeft)),),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                //this picks which division the user is in
-                                DivisionPicker(
-                                  mustContain: 'Singles',
-                                  division: divisions,
-                                  selectedSquad: selectedSquad,
-                                  selectedDivision: selectedDivisions,
-                                  onDivisionChange: (newDivision) {
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.15,
+                    MediaQuery.of(context).size.height * 0.15,
+                    MediaQuery.of(context).size.width * 0.15,
+                    0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Constants.lightBlue,
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: TextButton(
+                                    child: Text('Save Pdf'),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => PDFGamePopUp(
+                                                numOfGames: games,
+                                                outOf: outOf,
+                                                percent: percent,
+                                                division: selectedDivisions[
+                                                        selectedSquad] ??
+                                                    'No Division',
+                                                singles: results,
+                                              ));
+                                      // PDFBrain().createSinglesPdf(
+                                      //     results, games, outOf, percent,
+                                      //           ,);
+                                    },
+                                  )),
+                              // Padding(padding: EdgeInsets.all(8),
+                              // child: IconButton(onPressed: (){
+                              //   Navigator.pop(context);
+                              // }, icon: Icon(MdiIcons.chevronLeft)),),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  //this picks which division the user is in
+                                  DivisionPicker(
+                                    mustContain: 'Singles',
+                                    division: divisions,
+                                    selectedSquad: selectedSquad,
+                                    selectedDivision: selectedDivisions,
+                                    onDivisionChange: (newDivision) {
+                                      setState(() {
+                                        selectedDivisions[selectedSquad] =
+                                            newDivision;
+                                        results = DoublePartner.filterBowlers(
+                                            bowlers: bowlers,
+                                            search: '',
+                                            outOf: outOf,
+                                            type: 'Singles',
+                                            percent: percent,
+                                            divison:
+                                                selectedDivisions[selectedSquad],
+                                            squad: selectedSquad);
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 30,
+                                  ),
+                                  SquadPicker(
+                                      brain: null,
+                                      numberOfSquads: amountOfSquads,
+                                      //when picker is change changes the selected squad whichd determines which division are shown
+                                      chnageSquads: (squad) {
+                                        setState(() {
+                                          selectedSquad = squad;
+                                        });
+                                      }),
+                                ],
+                              ),
+                              SizedBox(height: 30),
+                              CustomSearchBar(
+                                  backTo: Constants.createNewBowler,
+                                  onChange: (text) {
+                                    //when user types in search bar automatically changes who pops up
                                     setState(() {
-                                      selectedDivisions[selectedSquad] =
-                                          newDivision;
                                       results = DoublePartner.filterBowlers(
                                           bowlers: bowlers,
-                                          search: '',
+                                          search: text,
                                           outOf: outOf,
-                                          type: 'Singles',
                                           percent: percent,
+                                          type: 'Singles',
                                           divison:
                                               selectedDivisions[selectedSquad],
                                           squad: selectedSquad);
                                     });
-                                  },
-                                ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                SquadPicker(
-                                    brain: null,
-                                    numberOfSquads: amountOfSquads,
-                                    //when picker is change changes the selected squad whichd determines which division are shown
-                                    chnageSquads: (squad) {
-                                      setState(() {
-                                        selectedSquad = squad;
-                                      });
-                                    }),
-                              ],
-                            ),
-                            SizedBox(height: 30),
-                            CustomSearchBar(
-                                backTo: Constants.createNewBowler,
-                                onChange: (text) {
-                                  //when user types in search bar automatically changes who pops up
-                                  setState(() {
-                                    results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers,
-                                        search: text,
-                                        outOf: outOf,
-                                        percent: percent,
-                                        type: 'Singles',
-                                        divison:
-                                            selectedDivisions[selectedSquad],
-                                        squad: selectedSquad);
-                                  });
-                                }),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.5,
-                              child: ListView.builder(
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SingleScoreScreen(
-                                                        bowler:
-                                                            results[index])));
-                                      },
-                                      leading: SizedBox(
-                                        width: 500,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              results[index].firstName +
-                                                  ' ' +
-                                                  results[index].lastName,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(results[index].divisions[
-                                                    selectedSquad +
-                                                        'Singles'] ??
-                                                ''),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(results[index]
-                                                .findScoreForSquad(
-                                                    selectedSquad,
-                                                    outOf,
-                                                    percent,
-                                                    true, []).toString())
-                                          ],
-                                        ),
-                                      ),
-                                      trailing: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            MdiIcons.chevronRight,
-                                          )),
-                                    );
                                   }),
-                            ),
-                          ])),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.5,
+                                child: Scrollbar(
+                                  isAlwaysShown: true,
+                                  child: ListView.builder(
+                                      itemCount: results.length,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SingleScoreScreen(
+                                                            bowler:
+                                                                results[index])));
+                                          },
+                                          leading: SizedBox(
+                                            width: 500,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  results[index].firstName +
+                                                      ' ' +
+                                                      results[index].lastName,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(results[index].divisions[
+                                                        selectedSquad +
+                                                            'Singles'] ??
+                                                    ''),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Text(results[index]
+                                                    .findScoreForSquad(
+                                                        selectedSquad,
+                                                        outOf,
+                                                        percent,
+                                                        true, []).toString())
+                                              ],
+                                            ),
+                                          ),
+                                          trailing: IconButton(
+                                              onPressed: () {},
+                                              icon: Icon(
+                                                MdiIcons.chevronRight,
+                                              )),
+                                        );
+                                      }),
+                                ),
+                              ),
+                            ])),
+                  ),
                 ),
               ),
             ),

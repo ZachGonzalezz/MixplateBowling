@@ -98,14 +98,18 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                               alignment: Alignment.topRight,
                               child: TextButton(
                                 child: Text('Edit Team'),
-                                onPressed: () {
-                                  Navigator.push(
+                                onPressed: () async {
+                                Team updatedTeam = await  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               TeamCreateScreen(
                                                 teamData: widget.team,
                                               )));
+                                    setState(() {
+                                      widget.team = updatedTeam;
+                                      scoreBrain.bowlers = updatedTeam.bowlers.values.toList();
+                                    });
                                 },
                               ),
                             ),
@@ -161,6 +165,7 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                                 length: 300,
                                 onClicked: () {
                                   scoreBrain.saveScores();
+                                  Navigator.popAndPushNamed(context, Constants.teamSearch);
                                 },
                               ),
                             ),

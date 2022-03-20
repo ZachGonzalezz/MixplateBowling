@@ -3,6 +3,7 @@ import 'package:loisbowlingwebsite/ImportBowlers/importBowlersBrain.dart';
 import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
 import 'package:loisbowlingwebsite/TournamentSelectScreen.dart/tournament_select_brain.dart';
 import 'package:loisbowlingwebsite/TournamentSelectScreen.dart/tournament_selection_class.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 
 class ImportBowlersPopUp extends StatefulWidget {
   const ImportBowlersPopUp({Key? key}) : super(key: key);
@@ -21,11 +22,22 @@ class _ImportBowlersPopUpState extends State<ImportBowlersPopUp> {
   bool includeDivisions = false;
   bool includeSidePots = false;
   String selectedTournament = "";
+  String email = Constants.currentSignedInEmail;
 
   @override
   void initState() {
     super.initState();
     loadTournamentsForUser();
+  }
+  //if shared the email has to be of that who shared it with us so it find the right place in the databse
+  void findIfShared(TournamentSelection tourn){
+   
+    if(tourn.isShared){
+      email = tourn.ownerEmail;
+    }
+    else {
+      email = Constants.currentSignedInEmail;
+    }
   }
 
   void loadTournamentsForUser() {
@@ -54,7 +66,9 @@ class _ImportBowlersPopUpState extends State<ImportBowlersPopUp> {
                     onTap: () {
                       setState(() {
                         selectedTournament = tournamnets[index].id;
+
                       });
+                      findIfShared( tournamnets[index]);
                     },
                     leading: Text(tournamnets[index].name,
                     style: TextStyle(color: selectedTournament == tournamnets[index].id ? Colors.blue : null),),
@@ -150,8 +164,9 @@ class _ImportBowlersPopUpState extends State<ImportBowlersPopUp> {
           ),
 
           CustomButton(length: 200, buttonTitle: 'Import Bowlers', onClicked: (){
-            ImportBrain().importBowlers(selectedTournament, includeScore, includeBowlersDivisions, includeBowlersDoublesPartners, includeBowlersTeams);
-             ImportBrain().importSettings(selectedTournament, includeBasicSettings, includeDivisions, includeSidePots);
+            
+            ImportBrain().importBowlers(selectedTournament, includeScore, includeBowlersDivisions, includeBowlersDoublesPartners, includeBowlersTeams, email);
+             ImportBrain().importSettings(selectedTournament, includeBasicSettings, includeDivisions, includeSidePots, email);
             Navigator.pop(context);
 
           })

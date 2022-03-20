@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavigationRow extends StatelessWidget {
@@ -6,17 +7,23 @@ class NavigationRow extends StatelessWidget {
       required this.icon,
       required this.screeName,
       required this.sendTo,
-      required this.isSelected})
+      required this.isSelected,
+      this.isLogOut = false})
       : super(key: key);
 
   IconData icon;
   String screeName;
   String sendTo;
   bool isSelected;
+  bool isLogOut;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
+        if(isLogOut){
+         
+         await FirebaseAuth.instance.signOut();
+        }
         Navigator.pushNamed(context, sendTo);
       },
       child: Column(

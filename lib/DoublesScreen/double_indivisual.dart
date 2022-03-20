@@ -136,6 +136,7 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                                   scoreBrain.bowlers = widget.bowler.bowlers;
 
                                   scoreBrain.saveScores();
+                                  Navigator.popAndPushNamed(context, Constants.doublesSearch);
 
 
 

@@ -5,14 +5,14 @@ import 'package:loisbowlingwebsite/team.dart';
 
 class ImportBrain {
   void importBowlers(String tournId, bool IncludeScores, bool includeDivisions,
-      bool includeDoubles, bool includeTeams) async {
+      bool includeDoubles, bool includeTeams, String email) async {
     await Future.delayed(Duration(milliseconds: 500));
 
     List<Bowler> bowlers = [];
 
     await Constants.dataBase
         .collection('Users')
-        .doc(Constants.currentSignedInEmail)
+        .doc(email)
         .collection('Tournaments')
         .doc(tournId)
         .collection('Bowlers')
@@ -142,12 +142,12 @@ class ImportBrain {
   }
 
   void importSettings(String tournId, bool includeBasics, bool includeDivisions,
-      bool includeSidepots) async {
+      bool includeSidepots, String email) async {
           await Constants.getTournamentId();
     await Future.delayed(Duration(milliseconds: 500));
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(Constants.currentSignedInEmail)
+        .doc(email)
         .collection('Tournaments')
         .doc(tournId)
         .get()

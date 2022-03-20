@@ -225,83 +225,86 @@ class _TeamSearchScreenState extends State<TeamSearchScreen> {
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.5,
-                              child: ListView.builder(
-                                  itemCount: results.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        if (widget.isCreatingNewBowler) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TeamCreateScreen(
-                                                        teamData:
-                                                            results[index],
-                                                      )));
-                                        } else {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TeamScoreScreen(
-                                                        team: results[index],
-                                                      )));
-                                        }
-                                      },
-                                      leading: SizedBox(
-                                        width: 500,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                results[index].name +
-                                                    '     ' +
-                                                    results[index]
-                                                        .bowlerIDs
-                                                        .values
-                                                        .toList()
-                                                        .length
-                                                        .toString() +
-                                                    '/' +
-                                                    teamsize,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                )),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(results[index].division),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Text(results[index].squad),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-
-                                            //this is the score for the team
-                                            widget.isCreatingNewBowler == false
-                                                ? Text(results[index]
-                                                    .findTeamTotal(outOf,
-                                                        percent, []).toString())
-                                                : SizedBox()
-                                          ],
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                child: ListView.builder(
+                                    itemCount: results.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        onTap: () {
+                                          if (widget.isCreatingNewBowler) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TeamCreateScreen(
+                                                          teamData:
+                                                              results[index],
+                                                        )));
+                                          } else {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TeamScoreScreen(
+                                                          team: results[index],
+                                                        )));
+                                          }
+                                        },
+                                        leading: SizedBox(
+                                          width: 500,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  results[index].name +
+                                                      '     ' +
+                                                      results[index]
+                                                          .bowlerIDs
+                                                          .values
+                                                          .toList()
+                                                          .length
+                                                          .toString() +
+                                                      '/' +
+                                                      teamsize,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(results[index].division),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(results[index].squad),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                              
+                                              //this is the score for the team
+                                              widget.isCreatingNewBowler == false
+                                                  ? Text(results[index]
+                                                      .findTeamTotal(outOf,
+                                                          percent, []).toString())
+                                                  : SizedBox()
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      trailing: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            MdiIcons.chevronRight,
-                                            color:
-                                                (doublePartner[selectedSquad] ??
-                                                            [])
-                                                        .contains(
-                                                            results[index].id)
-                                                    ? Colors.blue
-                                                    : null,
-                                          )),
-                                    );
-                                  }),
+                                        trailing: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              MdiIcons.chevronRight,
+                                              color:
+                                                  (doublePartner[selectedSquad] ??
+                                                              [])
+                                                          .contains(
+                                                              results[index].id)
+                                                      ? Colors.blue
+                                                      : null,
+                                            )),
+                                      );
+                                    }),
+                              ),
                             ),
                             Center(
                               child: CustomButton(

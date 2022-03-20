@@ -27,6 +27,7 @@ class _SelectTournamentScreenState extends State<SelectTournamentScreen> {
   _loadTournaments(){
     TournamentSelectBrain().getTournaments().then((tournamentsFromDB) {
       setState(() {
+        tournamentsFromDB.sort((a, b) => b.start.compareTo(a.start));
         usersTournaments = tournamentsFromDB;
       });
     });
