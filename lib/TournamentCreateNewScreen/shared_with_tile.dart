@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/circle_avatar.dart';
+import 'package:loisbowlingwebsite/LoginScreen/circle_avatar.dart';
 
 class ShareWithTile extends StatelessWidget {
   ShareWithTile({ Key? key, required this.email, required this.removeEmail }) : super(key: key);

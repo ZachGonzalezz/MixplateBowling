@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepot_brain.dart';
-import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepotnew.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/SidePotScreen/sidepot_brain.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/SidePotScreen/sidepotnew.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class SidePotScreen extends StatefulWidget {

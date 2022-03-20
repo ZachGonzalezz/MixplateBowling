@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/responsive.dart';
+import 'package:loisbowlingwebsite/InputScores/input_score_brain.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/responsive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class InputScoreTile extends StatelessWidget {

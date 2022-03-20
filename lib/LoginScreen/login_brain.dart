@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 
 
 class LoginBrain{

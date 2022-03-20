@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/doubles_divisions_list.dart';
-import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/singles_division_list.dart';
-import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/teams_divisions_list.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
-import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/doubles_divisions_list.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/singles_division_list.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/teams_divisions_list.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
 
 class DivisionSettingsHome extends StatefulWidget {
   DivisionSettingsHome({Key? key, this.brain}) : super(key: key);

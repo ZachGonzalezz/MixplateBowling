@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/NavigationBar/navigation_row.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/NavigationBar/navigation_row.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CustomNavigationBar extends StatelessWidget {

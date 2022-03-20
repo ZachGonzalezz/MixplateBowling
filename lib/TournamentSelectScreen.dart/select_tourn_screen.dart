@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_select_brain.dart';
-import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
-import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_tile.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/responsive.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/TournamentSelectScreen.dart/tournament_select_brain.dart';
+import 'package:loisbowlingwebsite/TournamentSelectScreen.dart/tournament_selection_class.dart';
+import 'package:loisbowlingwebsite/TournamentSelectScreen.dart/tournament_tile.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/responsive.dart';
 class SelectTournamentScreen extends StatefulWidget {
  SelectTournamentScreen({ Key? key }) : super(key: key);
 

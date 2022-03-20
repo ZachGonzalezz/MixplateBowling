@@ -1,4 +1,4 @@
-# lois_bowling_website
+# loisbowlingwebsite
 
 A new Flutter project.
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/responsive.dart';
+import 'package:loisbowlingwebsite/responsive.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
  CustomCircleAvatar({ Key? key, this.radius = 80, this.iconSize = 100}) : super(key: key);

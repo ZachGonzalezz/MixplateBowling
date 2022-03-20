@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/team.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/team.dart';
 
 class TeamBrain {
   Future<void> saveNewTeam(

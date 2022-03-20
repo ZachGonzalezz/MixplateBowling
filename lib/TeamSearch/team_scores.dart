@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
-import 'package:lois_bowling_website/InputScores/scoreboard.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/TeamsCreate/team_create_screen.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/team.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/InputScores/input_score_brain.dart';
+import 'package:loisbowlingwebsite/InputScores/scoreboard.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/TeamsCreate/team_create_screen.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/team.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
 
 class TeamScoreScreen extends StatefulWidget {
   TeamScoreScreen({Key? key, required this.team}) : super(key: key);

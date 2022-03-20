@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lois_bowling_website/TournamentSelectScreen.dart/tournament_selection_class.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/TournamentSelectScreen.dart/tournament_selection_class.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 
 class TournamentSelectBrain {
   Future<List<TournamentSelection>> getTournaments() async {

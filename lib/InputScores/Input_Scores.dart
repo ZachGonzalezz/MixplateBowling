@@ -4,19 +4,20 @@ import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
-import 'package:lois_bowling_website/InputScores/image_to_scores.dart';
-import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
-import 'package:lois_bowling_website/InputScores/scoreboard.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/responsive.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
-import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
-import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
-import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
+import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/InputScores/image_to_scores.dart';
+import 'package:loisbowlingwebsite/InputScores/input_score_brain.dart';
+import 'package:loisbowlingwebsite/InputScores/scoreboard.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/responsive.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/division_picker.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/search_bar.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class InputScoreScreen extends StatefulWidget {
   const InputScoreScreen({Key? key}) : super(key: key);
@@ -106,130 +107,139 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Center(
-                              child: CustomButton(
-                                buttonTitle: 'Save Scores',
-                                length: 300,
-                                onClicked: () {
-                                  if(Responsive.isMobileOs(context) != true){
-                                  scoreBrain.saveScores();
-                                  }
-                                  else {
-                                            List<Bowler> bowlersNotInDB = results.where((element) => element.bowlerDoesExistInDB != true).toList();
-        List<Bowler> bowlersInDb = results.where((element) => element.bowlerDoesExistInDB).toList();
-        picBrain.checkIfAllBowlersExists(bowlersInDb, bowlersNotInDB, context);
-                                  }
-                                },
+                child: SafeArea(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Responsive.isMobileOs(context) ? Align(
+                                alignment: Alignment.centerLeft,
+                                
+                                child: IconButton(onPressed: (){
+                                  Navigator.pop(context);
+                                }, icon: Icon(MdiIcons.chevronLeft)),
+                              ) : SizedBox(),
+                              SizedBox(
+                                height: Responsive.isMobileOs(context) ? 0 : 20,
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                //this picks which division the user is in
-                                DivisionPicker(
-                                  division: divisions,
-                                  selectedSquad: selectedSquad,
-                                  selectedDivision: selectedDivisions,
-                                  onDivisionChange: (newDivision) {
-                                    selectedDivisions[selectedSquad] =
-                                        newDivision;
-
-                                    if (newDivision != '  No Division') {
-                                      setState(() {
-                                        results = DoublePartner.filterBowlers(
-                                          outOf: outOf,
-                                          percent: percent,
-                                          bowlers: bowlers,
-                                          search: '',
-                                          divison:
-                                              selectedDivisions[selectedSquad],
-                                          squad: selectedSquad,
-                                        );
-                                      });
-                                    } else {
-                                      setState(() {
-                                        results = bowlers;
-                                      });
+                              Center(
+                                child: CustomButton(
+                                  buttonTitle: 'Save Scores',
+                                  length: 300,
+                                  onClicked: () {
+                                    if(Responsive.isMobileOs(context) != true){
+                                    scoreBrain.saveScores();
+                                    }
+                                    else {
+                                              List<Bowler> bowlersNotInDB = results.where((element) => element.bowlerDoesExistInDB != true).toList();
+                        List<Bowler> bowlersInDb = results.where((element) => element.bowlerDoesExistInDB).toList();
+                        picBrain.checkIfAllBowlersExists(bowlersInDb, bowlersNotInDB, context);
                                     }
                                   },
                                 ),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                SquadPicker(
-                                    brain: null,
-                                    numberOfSquads: amountOfSquads,
-                                    //when picker is change changes the selected squad whichd determines which division are shown
-                                    chnageSquads: (squad) {
-                                      setState(() {
-                                        selectedSquad = squad;
-                                      });
-                                    }),
-                              ],
-                            ),
-                            SizedBox(height: 30),
-                            Responsive.isMobileOs(context)
-                                ? Center(
-                                  child: TextButton(
-                                      onPressed: isLoading
-                                          ? null
-                                          : () {
-                                              getImage();
-                                            },
-                                      child: Text('Import Scores Through Photo')),
-                                )
-                                : SizedBox(),
-                            CustomSearchBar(
-                                backTo: Constants.settingsHome,
-                                onChange: (text) {
-                                  //when user types in search bar automatically changes who pops up
-                                  setState(() {
-                                    results = DoublePartner.filterBowlers(
-                                        bowlers: bowlers,
-                                        search: text,
-                                        divison:
-                                            selectedDivisions[selectedSquad],
-                                        squad: selectedSquad,
-                                        outOf: outOf,
-                                        percent: percent);
-                                  });
-                                }),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            ScoreBoard(
-                                nmOfGames: nmOfGames,
-                                results: results,
-                                scoreBrain: scoreBrain,
-                                selectedSquad: selectedSquad,
-                                moveOneDown: (index, game){
-                                  setState(() {
-                                    results = ImageToScores().moveOneDown(results, index, game);
-                                  });
-                                  
-                                },
-                                moveOneUp: (index, game){
-                                  //  setState(() {
-                                  //   results = ImageToScores().moveOneUp(results, index, game);
-                                  // });
-
-                                },
-                                ),
-                          ])),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  //this picks which division the user is in
+                                  DivisionPicker(
+                                    division: divisions,
+                                    selectedSquad: selectedSquad,
+                                    selectedDivision: selectedDivisions,
+                                    onDivisionChange: (newDivision) {
+                                      selectedDivisions[selectedSquad] =
+                                          newDivision;
+                
+                                      if (newDivision != '  No Division') {
+                                        setState(() {
+                                          results = DoublePartner.filterBowlers(
+                                            outOf: outOf,
+                                            percent: percent,
+                                            bowlers: bowlers,
+                                            search: '',
+                                            divison:
+                                                selectedDivisions[selectedSquad],
+                                            squad: selectedSquad,
+                                          );
+                                        });
+                                      } else {
+                                        setState(() {
+                                          results = bowlers;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 30,
+                                  ),
+                                  SquadPicker(
+                                      brain: null,
+                                      numberOfSquads: amountOfSquads,
+                                      //when picker is change changes the selected squad whichd determines which division are shown
+                                      chnageSquads: (squad) {
+                                        setState(() {
+                                          selectedSquad = squad;
+                                        });
+                                      }),
+                                ],
+                              ),
+                              SizedBox(height: 30),
+                              Responsive.isMobileOs(context)
+                                  ? Center(
+                                    child: TextButton(
+                                        onPressed: isLoading
+                                            ? null
+                                            : () {
+                                                getImage();
+                                              },
+                                        child: Text('Import Scores Through Photo')),
+                                  )
+                                  : SizedBox(),
+                              CustomSearchBar(
+                                  backTo: Constants.settingsHome,
+                                  onChange: (text) {
+                                    //when user types in search bar automatically changes who pops up
+                                    setState(() {
+                                      results = DoublePartner.filterBowlers(
+                                          bowlers: bowlers,
+                                          search: text,
+                                          divison:
+                                              selectedDivisions[selectedSquad],
+                                          squad: selectedSquad,
+                                          outOf: outOf,
+                                          percent: percent);
+                                    });
+                                  }),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              ScoreBoard(
+                                  nmOfGames: nmOfGames,
+                                  results: results,
+                                  scoreBrain: scoreBrain,
+                                  selectedSquad: selectedSquad,
+                                  moveOneDown: (index, game){
+                                    setState(() {
+                                      results = ImageToScores().moveOneDown(results, index, game);
+                                    });
+                                    
+                                  },
+                                  moveOneUp: (index, game){
+                                    //  setState(() {
+                                    //   results = ImageToScores().moveOneUp(results, index, game);
+                                    // });
+                
+                                  },
+                                  ),
+                            ])),
+                  ),
                 ),
               ),
             ),

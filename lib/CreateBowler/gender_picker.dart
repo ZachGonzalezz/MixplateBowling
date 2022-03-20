@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/CreateBowler/create_bowler_brain.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/responsive.dart';
+import 'package:loisbowlingwebsite/CreateBowler/create_bowler_brain.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/responsive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class GenderPicker extends StatefulWidget {

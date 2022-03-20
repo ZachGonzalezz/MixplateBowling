@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/doublePartner.dart';
-import 'package:lois_bowling_website/team.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/doublePartner.dart';
+import 'package:loisbowlingwebsite/team.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart';
 

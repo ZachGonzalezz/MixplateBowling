@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/LoginScreen/login_screen.dart';
-import 'package:lois_bowling_website/LoginScreen/text_field.dart';
-import 'package:lois_bowling_website/SignupScreen/signup_brain.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/LoginScreen/login_screen.dart';
+import 'package:loisbowlingwebsite/LoginScreen/text_field.dart';
+import 'package:loisbowlingwebsite/SignupScreen/signup_brain.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {

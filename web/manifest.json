@@ -1,6 +1,6 @@
 {
-    "name": "lois_bowling_website",
-    "short_name": "lois_bowling_website",
+    "name": "loisbowlingwebsite",
+    "short_name": "loisbowlingwebsite",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

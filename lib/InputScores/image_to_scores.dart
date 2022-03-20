@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/InputScores/bowlers_not_exist.dart';
-import 'package:lois_bowling_website/InputScores/not_exist_tile.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/InputScores/bowlers_not_exist.dart';
+import 'package:loisbowlingwebsite/InputScores/not_exist_tile.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ImageToScores {

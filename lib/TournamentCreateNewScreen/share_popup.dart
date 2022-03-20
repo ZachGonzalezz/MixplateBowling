@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/TournamentCreateNewScreen/shared_with_tile.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/TournamentCreateNewScreen/shared_with_tile.dart';
 
 
 class SharePopUp extends StatefulWidget {

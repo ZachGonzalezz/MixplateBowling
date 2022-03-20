@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lois_bowling_website/CreateBowler/create_bowler_brain.dart';
-import 'package:lois_bowling_website/CreateBowler/gender_picker.dart';
-import 'package:lois_bowling_website/InputScores/bowlers_not_exist.dart';
-import 'package:lois_bowling_website/InputScores/image_to_scores.dart';
-import 'package:lois_bowling_website/bowler.dart';
+import 'package:loisbowlingwebsite/CreateBowler/create_bowler_brain.dart';
+import 'package:loisbowlingwebsite/CreateBowler/gender_picker.dart';
+import 'package:loisbowlingwebsite/InputScores/bowlers_not_exist.dart';
+import 'package:loisbowlingwebsite/InputScores/image_to_scores.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
 
 class NotExistTile extends StatefulWidget {
   NotExistTile({Key? key, required this.bowler, required this.bowlerBrain, required this.index}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
 
 class CheckBoxTile extends StatefulWidget {
   CheckBoxTile({

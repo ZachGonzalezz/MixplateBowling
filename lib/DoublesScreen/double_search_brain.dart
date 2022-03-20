@@ -1,5 +1,5 @@
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/doublePartner.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/doublePartner.dart';
 
 class DoubleSearchBrain {
   List<DoublePartners> findDoublePartnes(List<Bowler> allBowlers,

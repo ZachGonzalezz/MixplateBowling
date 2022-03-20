@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/pdf.dart';
-import 'package:lois_bowling_website/team.dart';
-import 'package:lois_bowling_website/doublePartner.dart';
-import 'package:lois_bowling_website/DoublesScreen/double_indivisual.dart';
-import 'package:lois_bowling_website/DoublesScreen/double_search_brain.dart';
-import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/doublePartner.dart';
+import 'package:loisbowlingwebsite/pdf.dart';
+import 'package:loisbowlingwebsite/team.dart';
 
 class PDFGamePopUp extends StatefulWidget {
   PDFGamePopUp(

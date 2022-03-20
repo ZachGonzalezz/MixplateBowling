@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/SettingsScreen/DivisionSettings/checkbox_tile.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/checkbox_tile.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
 
 class SinglesDivisionList extends StatefulWidget {
   SinglesDivisionList({Key? key, required this.brain}) : super(key: key);

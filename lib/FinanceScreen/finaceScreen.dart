@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
-import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepot_brain.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
-import 'package:lois_bowling_website/universal_ui.dart/search_bar.dart';
+import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/SidePotScreen/sidepot_brain.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/search_bar.dart';
 
 class FinanceScreen extends StatefulWidget {
   const FinanceScreen({Key? key}) : super(key: key);

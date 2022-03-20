@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 
 class SettingsBrain {
   List<String> divisions = [];

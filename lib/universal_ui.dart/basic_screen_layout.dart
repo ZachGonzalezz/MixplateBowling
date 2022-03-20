@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/NavigationBar/navigation_bar.dart';
-import 'package:lois_bowling_website/responsive.dart';
+import 'package:loisbowlingwebsite/NavigationBar/navigation_bar.dart';
+import 'package:loisbowlingwebsite/responsive.dart';
 
 class ScreenLayout extends StatelessWidget {
   ScreenLayout(

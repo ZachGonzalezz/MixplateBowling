@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 
 class Bowler {
   Bowler(

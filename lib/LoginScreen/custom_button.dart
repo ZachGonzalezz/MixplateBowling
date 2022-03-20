@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/constants.dart';
+import 'package:loisbowlingwebsite/constants.dart';
 
 // ignore: must_be_immutable
 class CustomButton extends StatelessWidget {

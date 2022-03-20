@@ -1,4 +1,4 @@
-package com.example.lois_bowling_website
+package com.zacharygonzalez.loisbowlingwebsite
 
 import io.flutter.embedding.android.FlutterActivity
 

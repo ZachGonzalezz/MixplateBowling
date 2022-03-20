@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/TeamsCreate/team_brain.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/team.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_popup.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
-import 'package:lois_bowling_website/universal_ui.dart/division_picker.dart';
-import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
+import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/TeamsCreate/team_brain.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/team.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_popup.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/division_picker.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
 
 class TeamCreateScreen extends StatefulWidget {
   TeamCreateScreen({Key? key, this.teamData}) : super(key: key);

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
-import 'package:lois_bowling_website/InputScores/scoreboard.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/bowler.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/doublePartner.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/InputScores/input_score_brain.dart';
+import 'package:loisbowlingwebsite/InputScores/scoreboard.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/doublePartner.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
 
 class DoubleScoreScreen extends StatefulWidget {
   DoubleScoreScreen({Key? key, required this.bowler}) : super(key: key);

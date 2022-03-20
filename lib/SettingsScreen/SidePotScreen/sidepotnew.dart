@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/error_popup.dart';
-import 'package:lois_bowling_website/SettingsScreen/SidePotScreen/sidepot_brain.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/SidePotScreen/error_popup.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/SidePotScreen/sidepot_brain.dart';
 
 class SidePotNew extends StatelessWidget {
   SidePotNew({Key? key}) : super(key: key);

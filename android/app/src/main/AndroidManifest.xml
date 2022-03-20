@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.lois_bowling_website">
+    package="com.zacharygonzalez.loisbowlingwebsite">
+    <uses-permission android:name="android.permission.INTERNET" android:maxSdkVersion="31"/>
    <application
-        android:label="lois_bowling_website"
+        android:label="loisbowlingwebsite"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

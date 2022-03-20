@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/InputScores/header_tile.dart';
-import 'package:lois_bowling_website/InputScores/input_score_brain.dart';
-import 'package:lois_bowling_website/InputScores/input_score_tile.dart';
-import 'package:lois_bowling_website/InputScores/name_til.dart';
-import 'package:lois_bowling_website/bowler.dart';
+import 'package:loisbowlingwebsite/InputScores/header_tile.dart';
+import 'package:loisbowlingwebsite/InputScores/input_score_brain.dart';
+import 'package:loisbowlingwebsite/InputScores/input_score_tile.dart';
+import 'package:loisbowlingwebsite/InputScores/name_til.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
 
 class ScoreBoard extends StatelessWidget {
   const ScoreBoard(

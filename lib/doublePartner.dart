@@ -1,4 +1,4 @@
-import 'package:lois_bowling_website/bowler.dart';
+import 'package:loisbowlingwebsite/bowler.dart';
 
 class DoublePartners {
   DoublePartners({required this.bowlersid, required this.squad});

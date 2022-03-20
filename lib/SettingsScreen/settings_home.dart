@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lois_bowling_website/AddDoublePartner/partner_brain.dart';
-import 'package:lois_bowling_website/ImportBowlers/importBowlersPopup.dart';
-import 'package:lois_bowling_website/LoginScreen/custom_button.dart';
-import 'package:lois_bowling_website/SettingsScreen/setting_section_tile.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_brain.dart';
-import 'package:lois_bowling_website/SettingsScreen/settings_input_value_tile.dart';
-import 'package:lois_bowling_website/TournamentCreateNewScreen/share_popup.dart';
-import 'package:lois_bowling_website/constants.dart';
-import 'package:lois_bowling_website/universal_ui.dart/basic_screen_layout.dart';
-import 'package:lois_bowling_website/universal_ui.dart/squad_picker.dart';
+import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/ImportBowlers/importBowlersPopup.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/setting_section_tile.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/settings_input_value_tile.dart';
+import 'package:loisbowlingwebsite/TournamentCreateNewScreen/share_popup.dart';
+import 'package:loisbowlingwebsite/constants.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
 
 class SettingsHome extends StatefulWidget {
   SettingsHome({Key? key}) : super(key: key);

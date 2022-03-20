@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>276175805543-k750utknpnmthu9shp7ogkkmfb4p131s.apps.googleusercontent.com</string>
+	<string>276175805543-4qngvvlnok61n8hrmes5nv7pt6vchau0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.276175805543-k750utknpnmthu9shp7ogkkmfb4p131s</string>
+	<string>com.googleusercontent.apps.276175805543-4qngvvlnok61n8hrmes5nv7pt6vchau0</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAf2qklfkzHUvW82fgw124GIcUPsC1tPWQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.zacharygonzalez.BowlingApp</string>
+	<string>com.zacharygonzalez.loisbowlingwebsite</string>
 	<key>PROJECT_ID</key>
 	<string>bowling-app-70561</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:276175805543:ios:f5a28df1950fc5c3ac48c2</string>
+	<string>1:276175805543:ios:d52df51822ccca00ac48c2</string>
 </dict>
 </plist>
