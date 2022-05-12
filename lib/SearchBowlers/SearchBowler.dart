@@ -159,8 +159,8 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                               .average
                                               .toInt()
                                               .toString();
-                                      return ListTile(
-                                        onTap: () {
+                                      return GestureDetector(
+                                        onTap: (){
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -170,43 +170,57 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                                             results[index],
                                                       )));
                                         },
-                                        leading: SizedBox(
-                                          width: 250,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(results[index].firstName +
-                                                  ' ' +
-                                                  results[index].lastName),
-                              
-                                              //this textfield allows us to change the average of the bowlers
-                                              SizedBox(
-                                                width: 50,
-                                                child: TextField(
-                                                  controller: results[index]
-                                                      .averageController,
-                                                  onChanged: (newAverage) {
-                                                    //makes sure average is a number so no issues if so saves it
-                                                    if (double.tryParse(
-                                                            newAverage) !=
-                                                        null) {
-                                                      results[index]
-                                                          .saveNewAverage(
-                                                              double.parse(
-                                                                  newAverage));
-                                                    }
-                                                  },
-                                                ),
-                                              )
-                                            ],
+                                        child: ListTile(
+                                          // onTap: () {
+                                            
+                                          // },
+                                          leading: SizedBox(
+                                            width: 250,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(results[index].firstName +
+                                                    ' ' +
+                                                    results[index].lastName),
+                                                                    
+                                                //this textfield allows us to change the average of the bowlers
+                                                SizedBox(
+                                                  width: 50,
+                                                  child: TextField(
+                                                    controller: results[index]
+                                                        .averageController,
+                                                    onChanged: (newAverage) {
+                                                      //makes sure average is a number so no issues if so saves it
+                                                      if (double.tryParse(
+                                                              newAverage) !=
+                                                          null) {
+                                                        results[index]
+                                                            .saveNewAverage(
+                                                                double.parse(
+                                                                    newAverage));
+                                                      }
+                                                    },
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
+                                          trailing: IconButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CreateNewBowlerScreen(
+                                                        bowlerInfo:
+                                                            results[index],
+                                                      )));
+                                              },
+                                              icon: Icon(
+                                                MdiIcons.chevronRight,
+                                              )),
                                         ),
-                                        trailing: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              MdiIcons.chevronRight,
-                                            )),
                                       );
                                     }),
                               ),

@@ -164,12 +164,20 @@ class Bowler {
     return scores![squad]?[game.toString()] ?? 0;
   }
 
+
   int findHandicap(int outOf, int percent) {
-    int handicapBasedOff = ((percent / 100) * outOf).toInt();
-    int handicap = handicapBasedOff - average.toInt();
+    
+  
+  
+  double diff = outOf - average;
+  double result = (percent / 100) * diff;
+  
+    int handicap = result.round();
     this.handicap = handicap.toDouble();
+    // print(result);
     return handicap;
   }
+
 
   findBestSquadScore() {
     int best = 0;

@@ -61,6 +61,25 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
     });
   }
 
+  int findBowlers(){
+    int count = 0;
+
+
+    bowlers.forEach((element) {
+      // var test = ;
+     if ( (doublePartner[selectedSquad] ?? []).contains(element.uniqueId) ) {
+count ++;
+      }
+    });
+
+     
+
+     return count;
+
+
+    //  .contains(results[index].uniqueId)
+  }
+
 //loads the number of squads in the current tournament (based on name held in local storage)
   void loadTournamentSettings() {
     SettingsBrain().getMainSettings().then((basicSettings) {
@@ -106,6 +125,11 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             BackButton(),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text((findBowlers().toString()), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700), ),
+                              
+                            ),
                             SizedBox(
                               height: 20,
                             ),
@@ -173,48 +197,57 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
                               child: ListView.builder(
                                   itemCount: results.length,
                                   itemBuilder: (context, index) {
-                                    return ListTile(
-                                      leading: Text(results[index].firstName +
-                                          ' ' +
-                                          results[index].lastName),
-                                      trailing: IconButton(
-                                          onPressed: () {
-                                            //this means person added already and now needs to undo
-                                            if ((doublePartner[selectedSquad] ??
-                                                    [])
-                                                .contains(
-                                                    results[index].uniqueId)) {
-                                              setState(() {
-                                                (doublePartner[selectedSquad] ??
-                                                        [])
-                                                    .remove(results[index]
-                                                        .uniqueId);
-                                              });
-                                            } else {
-                                              if (doublePartner[
-                                                      selectedSquad] ==
-                                                  null) {
-                                                doublePartner[selectedSquad] =
-                                                    [];
-                                              }
-                                              setState(() {
-                                                (doublePartner[selectedSquad] ??
-                                                        [])
-                                                    .add(results[index]
-                                                        .uniqueId);
-                                              });
-                                            }
-                                          },
-                                          icon: Icon(
-                                            MdiIcons.plus,
-                                            color:
-                                                (doublePartner[selectedSquad] ??
+                                    return Container(
+                                      color: (doublePartner[selectedSquad] ??
                                                             [])
                                                         .contains(results[index]
-                                                            .uniqueId)
-                                                    ? Colors.blue
-                                                    : null,
-                                          )),
+                                                            .uniqueId) ? Colors.grey[400] : null,
+                                      child: ListTile(
+                                       
+                                        leading: Text(results[index].firstName +
+                                            ' ' +
+                                            results[index].lastName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+                                        trailing: IconButton(
+                                            onPressed: () {
+                                              //this means person added already and now needs to undo
+                                              if ((doublePartner[selectedSquad] ??
+                                                      [])
+                                                  .contains(
+                                                      results[index].uniqueId)) {
+                                                setState(() {
+                                                  (doublePartner[selectedSquad] ??
+                                                          [])
+                                                      .remove(results[index]
+                                                          .uniqueId);
+                                                });
+                                              } else {
+                                                if (doublePartner[
+                                                        selectedSquad] ==
+                                                    null) {
+                                                  doublePartner[selectedSquad] =
+                                                      [];
+                                                }
+                                                setState(() {
+                                                  (doublePartner[selectedSquad] ??
+                                                          [])
+                                                      .add(results[index]
+                                                          .uniqueId);
+                                                });
+                                              }
+                                            },
+                                            icon: Icon(
+                                              MdiIcons.plus,
+                                              
+                                              color:
+                                                  (doublePartner[selectedSquad] ??
+                                                              [])
+                                                          .contains(results[index]
+                                                              .uniqueId)
+                                                      ? Colors.pink
+                                                      : null,
+                                            ),
+                                            iconSize: 37,),
+                                      ),
                                     );
                                   }),
                             ),
