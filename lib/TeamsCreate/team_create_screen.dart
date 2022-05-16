@@ -216,7 +216,8 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                                     },
                                                     onSuggestionSelected:
                                                         (bowlerSelected) {
-                                                          print(widget.teamData!.bowlerIDs);
+                                                          print('hi');
+                                                          // print(widget.teamData!.bowlerIDs);
                                                       setState(() {
                                                         teamMates[index
                                                                 .toString()] =

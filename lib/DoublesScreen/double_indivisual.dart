@@ -127,20 +127,23 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            Center(
-                              child: CustomButton(
-                                buttonTitle: 'Update Info',
-                                length: 300,
-                                onClicked: () {
-
-                                  scoreBrain.bowlers = widget.bowler.bowlers;
-
-                                  scoreBrain.saveScores();
-                                  Navigator.popAndPushNamed(context, Constants.doublesSearch);
-
-
-
-                                },
+                           Builder(
+                          builder:(ctx) => Center(
+                                child: CustomButton(
+                                  buttonTitle: 'Update Info',
+                                  length: 300,
+                                  onClicked: () {
+                                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                            
+                                    scoreBrain.bowlers = widget.bowler.bowlers;
+                            
+                                    scoreBrain.saveScores();
+                                    Navigator.popAndPushNamed(context, Constants.doublesSearch);
+                            
+                            
+                            
+                                  },
+                                ),
                               ),
                             ),
                             SizedBox(

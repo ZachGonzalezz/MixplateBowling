@@ -159,14 +159,17 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            Center(
-                              child: CustomButton(
-                                buttonTitle: 'Update Info',
-                                length: 300,
-                                onClicked: () {
-                                  scoreBrain.saveScores();
-                                  Navigator.popAndPushNamed(context, Constants.teamSearch);
-                                },
+                          Builder(
+                          builder:(ctx) => Center(
+                                child: CustomButton(
+                                  buttonTitle: 'Update Info',
+                                  length: 300,
+                                  onClicked: () {
+                                    scoreBrain.saveScores();
+                                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                    Navigator.popAndPushNamed(context, Constants.teamSearch);
+                                  },
+                                ),
                               ),
                             ),
                             SizedBox(

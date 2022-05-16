@@ -126,21 +126,25 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                               SizedBox(
                                 height: Responsive.isMobileOs(context) ? 0 : 20,
                               ),
-                              Center(
-                                child: CustomButton(
-                                  buttonTitle: 'Save Scores',
-                                  length: 300,
-                                  onClicked: () {
-                                    if(Responsive.isMobileOs(context) != true){
-                                    scoreBrain.saveScores();
-                                    }
-                                    else {
-                                              List<Bowler> bowlersNotInDB = results.where((element) => element.bowlerDoesExistInDB != true).toList();
-                        List<Bowler> bowlersInDb = results.where((element) => element.bowlerDoesExistInDB).toList();
-                        picBrain.checkIfAllBowlersExists(bowlersInDb, bowlersNotInDB, context);
-                                    }
-                                  },
+                             Builder(
+                          builder:(ctx) => Center(
+                                  child: CustomButton(
+                                    buttonTitle: 'Save Scores',
+                                    length: 300,
+                                    onClicked: () {
+                                      Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                      if(Responsive.isMobileOs(context) != true){
+                                      scoreBrain.saveScores();
+                                      }
+                                      else {
+                                                List<Bowler> bowlersNotInDB = results.where((element) => element.bowlerDoesExistInDB != true).toList();
+                                                      List<Bowler> bowlersInDb = results.where((element) => element.bowlerDoesExistInDB).toList();
+                                                      picBrain.checkIfAllBowlersExists(bowlersInDb, bowlersNotInDB, context);
+                                      }
+                                    },
+                                  ),
                                 ),
+                            
                               ),
                               SizedBox(
                                 height: 20,

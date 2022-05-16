@@ -105,12 +105,17 @@ class _SettingsHomeState extends State<SettingsHome> {
                           const SizedBox(
                             height: 20,
                           ),
-                          CustomButton(
-                            buttonTitle: 'Save Settings',
-                            length: 300,
-                            onClicked: () {
-                              brain.saveHomeSettings();
-                            },
+                          Builder(
+                          builder:(ctx) => CustomButton(
+                              buttonTitle: 'Save Settings',
+                              length: 300,
+                              onClicked: () {
+                               
+                                
+                                 Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                brain.saveHomeSettings();
+                              },
+                            ),
                           ),
                           SettingSelectionTile(
                             title: 'Divisions',

@@ -8,6 +8,7 @@ class DoublePartner {
       required String? search,
       required int outOf,
       required int percent,
+      Map<String, dynamic>? doublePartners,
       String? divison,
       String? squad,
       String? type}) {
@@ -41,7 +42,10 @@ class DoublePartner {
           .toList();
     }
 
-    //returns results of bowlers
+    //alphabetically names
+    filtered.sort((a, b) => a.firstName.compareTo(b.firstName));
+
+    //doublePartner[selectedSquad] ?? []).contains(results[index])
     return filtered;
   }
 

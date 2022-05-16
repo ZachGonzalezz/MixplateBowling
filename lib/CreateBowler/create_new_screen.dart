@@ -12,7 +12,6 @@ import 'package:loisbowlingwebsite/constants.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/basic_popup.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/division_picker.dart';
-import 'package:loisbowlingwebsite/universal_ui.dart/payment_info.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -472,46 +471,54 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                   }),
                             ),
                             SizedBox(height: 30),
-                            Center(
-                                child: PaymentPicker(
-                              chnagePayment: (newMethod) {
-                                setState(() {
-                                  paymentMethod = newMethod;
-                                  brain.paymentMethod = newMethod;
-                                });
-                              },
-                              selected: paymentMethod,
-                            )),
+                            // Center(
+                            //     child: PaymentPicker(
+                            //   chnagePayment: (newMethod) {
+                            //     setState(() {
+                            //       paymentMethod = newMethod;
+                            //       brain.paymentMethod = newMethod;
+                            //     });
+                            //   },
+                            //   selected: paymentMethod,
+                            // )),
                             SizedBox(height: 30),
-                            Center(
-                              child: CustomButton(
-                                buttonTitle: widget.bowlerInfo == null
-                                    ? 'Save New Bowler'
-                                    : 'Update Bowler Info',
-                                length: 300,
-                                onClicked: () {
-                                  //if returns '' no errors else display error code do not save user to db incomplete
-                                  String error = brain.isGoodToSavePerson();
-                                  if (error == '') {
-                                    brain.selectedSinglesDivisions =
-                                        selectedDivisions;
-                                    //this means they are updating bowler info
-                                    if (widget.bowlerInfo != null) {
-                                      brain.updateBowler(
-                                          widget.bowlerInfo!.uniqueId);
-                                        
+                            Builder(
+                          builder:(ctx) => Center(
+                                child: CustomButton(
+                                  buttonTitle: widget.bowlerInfo == null
+                                      ? 'Save New Bowler'
+                                      : 'Update Bowler Info',
+                                  length: 300,
+                                  onClicked: () async{
+
+                                    //if returns '' no errors else display error code do not save user to db incomplete
+                                    String error = brain.isGoodToSavePerson();
+                                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                    await Future.delayed(Duration(milliseconds: 600));
+                                    
+                                    if (error == '') {
+                                      
+                                      
+                                      brain.selectedSinglesDivisions =
+                                          selectedDivisions;
+                                      //this means they are updating bowler info
+                                      if (widget.bowlerInfo != null) {
+                                        brain.updateBowler(
+                                            widget.bowlerInfo!.uniqueId);
+                                          
+                                      }
+                                      //this means they are saving a new bowler to db
+                                      else {
+                                        brain.saveNewBowler();
+                                      }
+                                      Navigator.popAndPushNamed(
+                                          context, Constants.searchBowlers);
+                                    } else {
+                                      BasicPopUp(text: error)
+                                          .showBasicDialog(context, error);
                                     }
-                                    //this means they are saving a new bowler to db
-                                    else {
-                                      brain.saveNewBowler();
-                                    }
-                                    Navigator.popAndPushNamed(
-                                        context, Constants.searchBowlers);
-                                  } else {
-                                    BasicPopUp(text: error)
-                                        .showBasicDialog(context, error);
-                                  }
-                                },
+                                  },
+                                ),
                               ),
                             ),
                             widget.bowlerInfo == null

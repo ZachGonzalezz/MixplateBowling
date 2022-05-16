@@ -133,16 +133,18 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            Center(
-                              child: CustomButton(
-                                buttonTitle: 'Update Info',
-                                length: 300,
-                                onClicked: () {
-                                  scoreBrain.bowlers = [widget.bowler];
-
-                                  scoreBrain.saveScores();
-                                  Navigator.popAndPushNamed(context, Constants.searchSingles);
-                                },
+                            Builder(
+                          builder:(ctx) => Center(
+                                child: CustomButton(
+                                  buttonTitle: 'Update Info',
+                                  length: 300,
+                                  onClicked: () {
+                                    scoreBrain.bowlers = [widget.bowler];
+                            Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                    scoreBrain.saveScores();
+                                    Navigator.popAndPushNamed(context, Constants.searchSingles);
+                                  },
+                                ),
                               ),
                             ),
                             SizedBox(

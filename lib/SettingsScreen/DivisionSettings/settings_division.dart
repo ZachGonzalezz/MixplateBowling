@@ -71,12 +71,15 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                           const SizedBox(
                             height: 20,
                           ),
-                          CustomButton(
-                            buttonTitle: 'Save Settings',
-                            length: 300,
-                            onClicked: () {
-                              widget.brain!.saveDivisionSettings();
-                            },
+                        Builder(
+                          builder:(ctx) =>  CustomButton(
+                              buttonTitle: 'Save Settings',
+                              length: 300,
+                              onClicked: () {
+                                Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                widget.brain!.saveDivisionSettings();
+                              },
+                            ),
                           ),
                           Text(
                             Constants.tournamentName,

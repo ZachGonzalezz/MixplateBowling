@@ -46,6 +46,7 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
     super.initState();
     loadTournamentSettings();
     loadBowlers();
+    
     //if the user already has double partners will pass it over here
     if (widget.partnersSaved != null) {
       doublePartner = widget.partnersSaved!;
@@ -184,6 +185,7 @@ count ++;
                                   setState(() {
                                     results = DoublePartner.filterBowlers(
                                         bowlers: bowlers,
+                                        doublePartners: doublePartner,
                                         search: text,
                                         outOf: outOf,
                                         percent: percent);
@@ -204,9 +206,20 @@ count ++;
                                                             .uniqueId) ? Colors.grey[400] : null,
                                       child: ListTile(
                                        
-                                        leading: Text(results[index].firstName +
-                                            ' ' +
-                                            results[index].lastName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+                                        leading: SizedBox(
+                                          width: 300,
+                                          child: Row(
+                                            children: [
+                                              Text((index + 1).toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                              SizedBox(
+                                                width: 30,
+                                              ),
+                                              Text(results[index].firstName +
+                                                  ' ' +
+                                                  results[index].lastName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+                                            ],
+                                          ),
+                                        ),
                                         trailing: IconButton(
                                             onPressed: () {
                                               //this means person added already and now needs to undo

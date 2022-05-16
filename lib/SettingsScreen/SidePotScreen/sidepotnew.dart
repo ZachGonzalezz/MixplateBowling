@@ -39,27 +39,30 @@ class SidePotNew extends StatelessWidget {
              SizedBox(
               height: 20,
             ),
-            CustomButton(
-                buttonTitle: 'Save',
-                onClicked: () {
-                  //checks to see if everything is good to save if '' comes back then its good
-                  String isError =
-                      SidePotBrain().isGoodToSave(name.text, price.text);
-
-                  //shows error message if there is one
-                  if (isError.isNotEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => ErrorPopUp(error: isError));
-                  } else {
-                    //save to database then send back to update ui on other screen
-                    SidePotBrain().saveToDB(name.text, price.text);
-                    Map<String, dynamic> data = {name.text : int.parse(price.text)};
-                    Navigator.pop(context, 
-                    data
-                    );
-                  }
-                })
+           Builder(
+                          builder:(ctx) =>  CustomButton(
+                  buttonTitle: 'Save',
+                  onClicked: () {
+                    //checks to see if everything is good to save if '' comes back then its good
+                    String isError =
+                        SidePotBrain().isGoodToSave(name.text, price.text);
+            
+                    //shows error message if there is one
+                    if (isError.isNotEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => ErrorPopUp(error: isError));
+                    } else {
+                      Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                      //save to database then send back to update ui on other screen
+                      SidePotBrain().saveToDB(name.text, price.text);
+                      Map<String, dynamic> data = {name.text : int.parse(price.text)};
+                      Navigator.pop(context, 
+                      data
+                      );
+                    }
+                  }),
+            )
           ],
         ),
       ),
