@@ -42,6 +42,8 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
   //this this the list returned
   List<DoublePartners> resultsPartners = [];
 
+  int totalTeams = 0;
+
   //this is the list of double partners the user has selected
   Map<String, List<String>> doublePartner = {};
   @override
@@ -109,24 +111,39 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            Align(
-                                alignment: Alignment.topRight,
-                                child: TextButton(
-                                  child: Text('Save Pdf'),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => PDFGamePopUp(
-                                              numOfGames: game,
-                                              outOf: outOf,
-                                              percent: percent,
-                                              division: selectedDivisions[
-                                                      selectedSquad] ??
-                                                  'No Division',
-                                              doubles: resultsPartners,
-                                            ));
-                                  },
-                                )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+
+                                   Align(
+                                    alignment: Alignment.topRight,
+                                    child: TextButton(
+                                      child: Text(resultsPartners.length.toString() + ' Total Doubles', style: TextStyle(fontSize: 15,)),
+                                      onPressed: () {
+                                        
+                                      },
+                                    )),
+
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: TextButton(
+                                      child: Text('Save Pdf'),
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => PDFGamePopUp(
+                                                  numOfGames: game,
+                                                  outOf: outOf,
+                                                  percent: percent,
+                                                  division: selectedDivisions[
+                                                          selectedSquad] ??
+                                                      'No Division',
+                                                  doubles: resultsPartners,
+                                                ));
+                                      },
+                                    )),
+                              ],
+                            ),
                             // Padding(padding: EdgeInsets.all(8),
                             // child: IconButton(onPressed: (){
                             //   Navigator.pop(context);

@@ -62,16 +62,24 @@ class _ImportBowlersPopUpState extends State<ImportBowlersPopUp> {
             child: ListView.builder(
                 itemCount: tournamnets.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      setState(() {
-                        selectedTournament = tournamnets[index].id;
+                  return SizedBox(
+                    height: 50,
+                    width: 400,
+                    child: ListTile(
+                      onTap: () {
+                        setState(() {
+                          selectedTournament = tournamnets[index].id;
 
-                      });
-                      findIfShared( tournamnets[index]);
-                    },
-                    leading: Text(tournamnets[index].name,
-                    style: TextStyle(color: selectedTournament == tournamnets[index].id ? Colors.blue : null),),
+                        });
+                        findIfShared( tournamnets[index]);
+                      },
+                      leading: SizedBox(
+                        width: 100,
+                        height:  60,
+                        child: Text(tournamnets[index].name,
+                        style: TextStyle(color: selectedTournament == tournamnets[index].id ? Colors.blue : null),),
+                      ),
+                    ),
                   );
                 }),
           ),

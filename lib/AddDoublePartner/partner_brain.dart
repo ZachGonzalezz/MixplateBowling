@@ -9,6 +9,7 @@ class DoublePartner {
       required int outOf,
       required int percent,
       Map<String, dynamic>? doublePartners,
+      List<String>? peopleOnSheet, 
       String? divison,
       String? squad,
       String? type}) {
@@ -45,6 +46,27 @@ class DoublePartner {
     //alphabetically names
     filtered.sort((a, b) => a.firstName.compareTo(b.firstName));
 
+   
+   for(int i = filtered.length - 1; i >= 0; i--) {
+     if(doublePartners?[squad ?? 'A'].contains(filtered[i].uniqueId)){
+       Bowler temp = filtered[i];
+       filtered.removeAt(i);
+       filtered.insert(0, temp);
+       
+     }
+   }
+
+   for(int i = filtered.length - 1; i >= 0; i--) {
+     if(peopleOnSheet!.contains(filtered[i].uniqueId) != true && doublePartners?[squad ?? 'A'].contains(filtered[i].uniqueId)){
+       Bowler temp = filtered[i];
+       filtered.removeAt(i);
+       filtered.insert(0, temp);
+       
+     }
+   }
+
+
+
     //doublePartner[selectedSquad] ?? []).contains(results[index])
     return filtered;
   }
@@ -79,6 +101,9 @@ class DoublePartner {
         String phone = data['phone'] ?? '';
         String address = data['address'] ?? ' ';
         String paymentType = data['paymentType'] ?? 'Cash';
+        List<String> yourSheetDB = List.from(data['yourSheet'] ?? []);
+      List<String> otherSheetDB = List.from(data['otherSheet'] ?? []);
+
 
         Map<String, Map<String, int>> scores = {};
 
@@ -109,6 +134,8 @@ class DoublePartner {
           paymentType: paymentType,
           phoneNum: phone,
           address: address,
+          bowlerSheetIds: yourSheetDB,
+          otherBowlerSheetId: otherSheetDB
         ));
       }
     });

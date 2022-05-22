@@ -10,9 +10,10 @@ import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AddDoublePartnerScreen extends StatefulWidget {
-  AddDoublePartnerScreen({Key? key, this.partnersSaved}) : super(key: key);
+  AddDoublePartnerScreen({Key? key, this.partnersSaved, this.bowler}) : super(key: key);
 
   Map<String, dynamic>? partnersSaved;
+  Bowler? bowler;
 
   @override
   State<AddDoublePartnerScreen> createState() => _AddDoublePartnerScreenState();
@@ -46,11 +47,10 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
     super.initState();
     loadTournamentSettings();
     loadBowlers();
+
     
     //if the user already has double partners will pass it over here
-    if (widget.partnersSaved != null) {
-      doublePartner = widget.partnersSaved!;
-    }
+   
   }
 
   void loadBowlers() {
@@ -59,7 +59,22 @@ class _AddDoublePartnerScreenState extends State<AddDoublePartnerScreen> {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
       });
+        if (widget.partnersSaved != null) {
+      doublePartner = widget.partnersSaved!;
+    }
+       setState(() {
+          results = DoublePartner.filterBowlers(
+                                        bowlers: bowlers,
+                                        doublePartners: doublePartner,
+                                        search: '',
+                                        peopleOnSheet: widget.bowler?.bowlerSheetIds,
+                                        outOf: outOf,
+                                        percent: percent);
     });
+    });
+   
+   
+ 
   }
 
   int findBowlers(){
@@ -128,7 +143,7 @@ count ++;
                             BackButton(),
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text((findBowlers().toString()), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700), ),
+                              child: Text((findBowlers().toString() + ' In Toal ' + widget.bowler!.bowlerSheetIds.length.toString() + ' On this persons Sheet and ' + (findBowlers() - widget.bowler!.bowlerSheetIds.length).toString() + ' On other sheets'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700), ),
                               
                             ),
                             SizedBox(
@@ -186,6 +201,7 @@ count ++;
                                     results = DoublePartner.filterBowlers(
                                         bowlers: bowlers,
                                         doublePartners: doublePartner,
+                                          peopleOnSheet: widget.bowler?.bowlerSheetIds,
                                         search: text,
                                         outOf: outOf,
                                         percent: percent);
@@ -200,7 +216,7 @@ count ++;
                                   itemCount: results.length,
                                   itemBuilder: (context, index) {
                                     return Container(
-                                      color: (doublePartner[selectedSquad] ??
+                                      color: widget.bowler!.bowlerSheetIds.contains(results[index].uniqueId) ? Colors.pink[200] : (doublePartner[selectedSquad] ??
                                                             [])
                                                         .contains(results[index]
                                                             .uniqueId) ? Colors.grey[400] : null,
@@ -232,6 +248,9 @@ count ++;
                                                           [])
                                                       .remove(results[index]
                                                           .uniqueId);
+                                                    widget.bowler?.bowlerSheetIds.remove(results[index].uniqueId);
+                                                    
+                                                    
                                                 });
                                               } else {
                                                 if (doublePartner[
@@ -245,6 +264,7 @@ count ++;
                                                           [])
                                                       .add(results[index]
                                                           .uniqueId);
+                                                widget.bowler?.bowlerSheetIds.add(results[index].uniqueId);
                                                 });
                                               }
                                             },
@@ -269,6 +289,7 @@ count ++;
                                 buttonTitle: 'Finalize',
                                 length: 300,
                                 onClicked: () {
+                                  widget.bowler?.updateBowlerDoubles();
                                   Navigator.pop(context, doublePartner);
                                 },
                               ),

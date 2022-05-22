@@ -391,6 +391,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                                         AddDoublePartnerScreen(
                                                           partnersSaved: brain
                                                               .doublePartner,
+                                                             bowler: widget.bowlerInfo,
                                                         ))) ??
                                             {};
 

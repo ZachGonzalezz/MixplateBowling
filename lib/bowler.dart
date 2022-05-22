@@ -13,6 +13,8 @@ class Bowler {
       this.divisions = const {},
       this.scores,
       this.doublePartners = const {},
+      this.bowlerSheetIds = const [],
+      this.otherBowlerSheetId = const [],
       this.isMale = false,
       this.sidepots = const {},
       this.financesPaid = const {},
@@ -40,14 +42,27 @@ class Bowler {
   String uscbNum;
   String laneNUm;
   String uniqueNum;
+  
   String phoneNum;
   String email;
   String address;
+  List<String> bowlerSheetIds;
+  List<String> otherBowlerSheetId;
   String paymentType;
   TextEditingController averageController = TextEditingController();
   bool bowlerDoesExistInDB;
 
   void updateBowlerScores() async {
+    await Constants.getTournamentId();
+
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .collection('Bowlers')
+        .doc(uniqueId)
+        .update({'scores': scores});
+  }
+
+  void saveDoubles() async {
     await Constants.getTournamentId();
 
     await FirebaseFirestore.instance
@@ -67,6 +82,16 @@ class Bowler {
         .update({'financesPaid': financesPaid});
   }
 
+  void updateBowlerDoubles() async {
+    await Constants.getTournamentId();
+
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .collection('Bowlers')
+        .doc(uniqueId)
+        .update({'yourSheet': bowlerSheetIds,
+        'otherSheet' : otherBowlerSheetId});
+  }
   void findDoublePartners() async {
     await Constants.getTournamentId();
 
@@ -118,6 +143,8 @@ class Bowler {
       Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
       Map<String, dynamic> sidepotsDB = Map.from(data['userSidePots'] ?? {});
       Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
+      List<String> yourSheetDB = List.from(data['yourSheet'] ?? []);
+      List<String> otherSheetDB = List.from(data['otherSheet'] ?? []);
 
       Map<String, Map<String, int>> scores = {};
 
@@ -131,6 +158,8 @@ class Bowler {
 
       average = average.toDouble();
       handicap = handicap.toDouble();
+      bowlerSheetIds = yourSheetDB;
+      otherBowlerSheetId = otherSheetDB;
       firstName = firstName;
       lastName = lastName;
       divisions = divisions;
