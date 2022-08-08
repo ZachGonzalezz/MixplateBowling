@@ -12,6 +12,8 @@ class CreateBowlerBrain {
   TextEditingController address = TextEditingController();
   TextEditingController phoneNum = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController handicapBrackets = TextEditingController();
+  TextEditingController scratchBrackets = TextEditingController();
   String paymentMethod = '';
 
   Map<String, dynamic> sidePotsUser = {};
@@ -69,8 +71,8 @@ class CreateBowlerBrain {
       'phone': phoneNum.text,
       'address': address.text,
       'paymentType': paymentMethod,
-      'numOfHandicapBrackets': 0,
-      'numOfScratchBrackets': 0
+      'numOfHandicapBrackets': int.parse(handicapBrackets.text),
+      'numOfScratchBrackets': int.parse(scratchBrackets.text)
     });
   }
 
@@ -95,8 +97,8 @@ class CreateBowlerBrain {
       'phone': phoneNum.text,
       'address': address.text,
       'paymentType': paymentMethod,
-      'numOfHandicapBrackets': 0,
-      'numOfScratchBrackets': 0
+      'numOfHandicapBrackets': int.parse(handicapBrackets.text),
+      'numOfScratchBrackets': int.parse(scratchBrackets.text)
     });
   }
 

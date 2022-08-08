@@ -100,7 +100,10 @@ class DoublePartner {
         String paymentType = data['paymentType'] ?? 'Cash';
         List<String> yourSheetDB = List.from(data['yourSheet'] ?? []);
         List<String> otherSheetDB = List.from(data['otherSheet'] ?? []);
-
+        int   numOfHandicapBrackets = data['numOfHandicapBrackets'] ?? 0;
+        int numOfScratchBrackets = data['numOfScratchBrackets'] ?? 0;
+      //   'numOfHandicapBrackets': int.parse(handicapBrackets.text),
+      // 'numOfScratchBrackets': int.parse(scratchBrackets.text)
         Map<String, Map<String, int>> scores = {};
 
         scoresDB.forEach((squad, scoreMap) {
@@ -131,7 +134,9 @@ class DoublePartner {
             phoneNum: phone,
             address: address,
             bowlerSheetIds: yourSheetDB,
-            otherBowlerSheetId: otherSheetDB));
+            otherBowlerSheetId: otherSheetDB,
+            numOfHandicapBrackets: numOfHandicapBrackets,
+            numOfScratchBrackets: numOfScratchBrackets));
       }
     });
 

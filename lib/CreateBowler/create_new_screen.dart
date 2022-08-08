@@ -89,6 +89,10 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
           brain.phoneNum.text = widget.bowlerInfo!.phoneNum;
           brain.paymentMethod = widget.bowlerInfo!.paymentType;
           brain.doublePartner = widget.bowlerInfo!.doublePartners;
+          brain.handicapBrackets.text =
+              widget.bowlerInfo!.numOfHandicapBrackets.toString();
+          brain.scratchBrackets.text =
+              widget.bowlerInfo!.numOfScratchBrackets.toString();
           widget.bowlerInfo!.findDoublePartners();
           paymentMethod = widget.bowlerInfo!.paymentType;
 
@@ -108,7 +112,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
             child: Padding(
               padding: EdgeInsets.fromLTRB(
                   MediaQuery.of(context).size.width * 0.15,
-                  MediaQuery.of(context).size.height * 0.15,
+                  MediaQuery.of(context).size.height * 0.01,
                   MediaQuery.of(context).size.width * 0.15,
                   0),
               child: Container(
@@ -239,6 +243,22 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                 ),
                                 SpecialTextField(
                                     item: 'Phone', controller: brain.phoneNum),
+                              ],
+                            ),
+
+                            SizedBox(height: 30),
+                            Row(
+                              children: [
+                                SpecialTextField(
+                                  item: 'Handicap Brackets',
+                                  controller: brain.handicapBrackets,
+                                ),
+                                SizedBox(
+                                  width: 60,
+                                ),
+                                SpecialTextField(
+                                    item: 'Scratch Brackets',
+                                    controller: brain.scratchBrackets),
                               ],
                             ),
                             SizedBox(
@@ -391,7 +411,8 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                                         AddDoublePartnerScreen(
                                                           partnersSaved: brain
                                                               .doublePartner,
-                                                             bowler: widget.bowlerInfo,
+                                                          bowler:
+                                                              widget.bowlerInfo,
                                                         ))) ??
                                             {};
 
@@ -484,29 +505,35 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                             // )),
                             SizedBox(height: 30),
                             Builder(
-                          builder:(ctx) => Center(
+                              builder: (ctx) => Center(
                                 child: CustomButton(
                                   buttonTitle: widget.bowlerInfo == null
                                       ? 'Save New Bowler'
                                       : 'Update Bowler Info',
                                   length: 300,
-                                  onClicked: () async{
-
+                                  onClicked: () async {
                                     //if returns '' no errors else display error code do not save user to db incomplete
                                     String error = brain.isGoodToSavePerson();
-                                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
-                                    await Future.delayed(Duration(milliseconds: 600));
-                                    
+                                    Scaffold.of(ctx).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Saved',
+                                          style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    );
+                                    await Future.delayed(
+                                        Duration(milliseconds: 600));
+
                                     if (error == '') {
-                                      
-                                      
                                       brain.selectedSinglesDivisions =
                                           selectedDivisions;
                                       //this means they are updating bowler info
                                       if (widget.bowlerInfo != null) {
                                         brain.updateBowler(
                                             widget.bowlerInfo!.uniqueId);
-                                          
                                       }
                                       //this means they are saving a new bowler to db
                                       else {

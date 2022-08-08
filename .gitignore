@@ -9,6 +9,8 @@
 .history
 .svn/
 
+.fvm/flutter_sdk
+
 #keystore
 **/android/key.properties
 
