@@ -38,14 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // FirebaseAuth.instance.currentUser.email 
     return Scaffold(
       body: GestureDetector(
-        onTap: (){
-            FocusScopeNode currentFocus = FocusScope.of(context);
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
 
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
         },
         child: SingleChildScrollView(
           child: SizedBox(
@@ -122,14 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 10,
                         ),
                         Responsive.isMobile(context)
-                            ? const Text('This is the mobile version of the application. To create an account go mixedplate.net!',
-                        textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600))
-                                : SizedBox()
-                                ,
+                            ? const Text(
+                                'This is the mobile version of the application. To create an account go mixedplate.net!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600))
+                            : SizedBox(),
                         const SizedBox(
                           height: 30,
                         ),
@@ -140,7 +141,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => SignUpScreen()));
+                                          builder: (context) =>
+                                              SignUpScreen()));
                                 },
                                 child: const Text('Create an Account',
                                     style: TextStyle(
@@ -152,12 +154,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         //         onPressed: isLoading
                         //             ? null
                         //             : () {
-                                     
+
                         //               },
                         //         child: Text('Picture'))
                         //     : const SizedBox(),
                         // names.isNotEmpty && gameScore.isNotEmpty ?  TextButton(onPressed: (){
-      
+
                         // }, child: Text('See Results')) : SizedBox()
                         // SizedBox(
                         //   height: 200,
@@ -176,8 +178,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  
-
- 
 }
