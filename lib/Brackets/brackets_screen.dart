@@ -91,7 +91,9 @@ class _BracketScreenState extends State<BracketScreen> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
-                          children: [])),
+                          children: [
+                            
+                          ])),
                 ),
               ),
             ),

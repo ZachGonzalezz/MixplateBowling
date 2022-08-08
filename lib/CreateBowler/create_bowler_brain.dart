@@ -68,7 +68,9 @@ class CreateBowlerBrain {
       'email': email.text,
       'phone': phoneNum.text,
       'address': address.text,
-      'paymentType': paymentMethod
+      'paymentType': paymentMethod,
+      'numOfHandicapBrackets': 0,
+      'numOfScratchBrackets': 0
     });
   }
 
@@ -92,7 +94,9 @@ class CreateBowlerBrain {
       'email': email.text,
       'phone': phoneNum.text,
       'address': address.text,
-      'paymentType': paymentMethod
+      'paymentType': paymentMethod,
+      'numOfHandicapBrackets': 0,
+      'numOfScratchBrackets': 0
     });
   }
 

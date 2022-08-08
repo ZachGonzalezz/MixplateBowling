@@ -25,7 +25,9 @@ class Bowler {
       this.address = '',
       this.phoneNum = '',
       this.paymentType = 'Cash',
-      this.email = ''});
+      this.email = '',
+      this.numOfHandicapBrackets = 0,
+      this.numOfScratchBrackets = 0});
 
   double average;
   Map<String, String> divisions;
@@ -42,7 +44,7 @@ class Bowler {
   String uscbNum;
   String laneNUm;
   String uniqueNum;
-  
+
   String phoneNum;
   String email;
   String address;
@@ -51,6 +53,9 @@ class Bowler {
   String paymentType;
   TextEditingController averageController = TextEditingController();
   bool bowlerDoesExistInDB;
+
+  int numOfHandicapBrackets;
+  int numOfScratchBrackets;
 
   void updateBowlerScores() async {
     await Constants.getTournamentId();
@@ -89,9 +94,10 @@ class Bowler {
         .doc(Constants.currentIdForTournament)
         .collection('Bowlers')
         .doc(uniqueId)
-        .update({'yourSheet': bowlerSheetIds,
-        'otherSheet' : otherBowlerSheetId});
+        .update(
+            {'yourSheet': bowlerSheetIds, 'otherSheet': otherBowlerSheetId});
   }
+
   void findDoublePartners() async {
     await Constants.getTournamentId();
 
@@ -146,6 +152,11 @@ class Bowler {
       List<String> yourSheetDB = List.from(data['yourSheet'] ?? []);
       List<String> otherSheetDB = List.from(data['otherSheet'] ?? []);
 
+      numOfHandicapBrackets =
+          ((data['numOfHandicapBrackets'] ?? 0) as num).toInt();
+      numOfScratchBrackets =
+          ((data['numOfScratchBrackets'] ?? 0) as num).toInt();
+
       Map<String, Map<String, int>> scores = {};
 
       scoresDB.forEach((squad, scoreMap) {
@@ -193,20 +204,15 @@ class Bowler {
     return scores![squad]?[game.toString()] ?? 0;
   }
 
-
   int findHandicap(int outOf, int percent) {
-    
-  
-  
-  double diff = outOf - average;
-  double result = (percent / 100) * diff;
-  
+    double diff = outOf - average;
+    double result = (percent / 100) * diff;
+
     int handicap = result.round();
     this.handicap = handicap.toDouble();
     // print(result);
     return handicap;
   }
-
 
   findBestSquadScore() {
     int best = 0;
