@@ -527,6 +527,7 @@ class PDFBrain {
 
     //goes through every bowler adding name average
     for (Bracket bracket in brackets) {
+      int personInBracket = 1;
       for (Bowler bowler in bracket.bowlers) {
         PdfGridRow row = grid.rows.add();
         row.cells[0].style = PdfGridCellStyle(
@@ -534,15 +535,41 @@ class PDFBrain {
             font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
           ..borders = borderStyle;
 
-        row.cells[0].value = (brackets.indexOf(bracket) + 1).toString() +
+        row.cells[0].value = (bowler.firstName + ' ' + bowler.lastName) +
             ' ' +
-            (bowler.firstName + ' ' + bowler.lastName);
+            (bowler.scores!['A']?[(1).toString()] ?? 0).toString();
 
         //goes through every game and adds the score
         for (int i = 0; i < games; i++) {
-          if (gamesSelected.isEmpty || gamesSelected.contains(i + 1)) {
-            row.cells[1 + i].value =
-                (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+          if ((gamesSelected.isEmpty || gamesSelected.contains(i + 1))) {
+            if (i == 0) {
+              if (personInBracket == 2 ||
+                  personInBracket == 3 ||
+                  personInBracket == 6 ||
+                  personInBracket == 7) {
+                row.cells[1 + i].value = (bowler.firstName +
+                        ' ' +
+                        bowler.lastName) +
+                    ' ' +
+                    (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+              }
+            } else if (i == 1) {
+              if (personInBracket == 3 || personInBracket == 6) {
+                row.cells[1 + i].value = (bowler.firstName +
+                        ' ' +
+                        bowler.lastName) +
+                    ' ' +
+                    (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+              }
+            } else if (i == 2) {
+              if (personInBracket == 5) {
+                row.cells[1 + i].value = (bowler.firstName +
+                        ' ' +
+                        bowler.lastName) +
+                    ' ' +
+                    (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+              }
+            }
           }
 
           row.cells[1 + i].style = PdfGridCellStyle(
@@ -550,6 +577,7 @@ class PDFBrain {
               font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
             ..borders = borderStyle;
         }
+        personInBracket += 1;
       }
       //this add the lines in between each bracket so multiple fit on a sheet
       PdfGridRow totalRow = grid.rows.add();
