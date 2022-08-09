@@ -103,7 +103,8 @@ class BracketBrain {
 
   void saveBracketToDb(Bracket bracket, int index) {
     final instance = FirebaseFirestore.instance;
-
+    //this randomizes people in the bracket
+    bracket.bowlerIds.shuffle();
     instance
         .collection(Constants.currentIdForTournament + '/Brackets')
         .doc(index.toString())
