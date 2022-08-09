@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/Brackets/bracket.dart';
 import 'package:loisbowlingwebsite/Brackets/bracket_brain.dart';
 import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
@@ -33,6 +34,8 @@ class _BracketScreenState extends State<BracketScreen> {
 
   BracketBrain bracketBrain = BracketBrain();
 
+  List<Bracket> brackets = [];
+
   //this is the list of double partners the user has selected
   Map<String, List<String>> doublePartner = {};
   @override
@@ -47,8 +50,13 @@ class _BracketScreenState extends State<BracketScreen> {
       setState(() {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
-        bracketBrain.getBrackets(bowlers);
+
         results.sort((a, b) => a.firstName.compareTo(b.firstName));
+      });
+      bracketBrain.getBrackets(bowlers).then((value) {
+        setState(() {
+          brackets = value;
+        });
       });
     });
   }
@@ -102,7 +110,32 @@ class _BracketScreenState extends State<BracketScreen> {
                                 onClicked: () {
                                   bracketBrain.generateBrackets(
                                       context, bowlers);
-                                })
+                                }),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              child: ListView.builder(
+                                  itemCount: brackets.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 3),
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: ListTile(
+                                          tileColor: Colors.white,
+                                          title: Text('Bracket: ' +
+                                              (brackets[index].id + 1)
+                                                  .toString() +
+                                              ' ' +
+                                              brackets[index].division),
+                                          subtitle: Text(
+                                              brackets[index].listOutBowlers()),
+                                          isThreeLine: true,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            )
                           ])),
                 ),
               ),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loisbowlingwebsite/Brackets/bracket.dart';
@@ -12,9 +10,13 @@ class BracketBrain {
   int maxBracket = 100;
 
   List<Bracket> generateBrackets(BuildContext context, List<Bowler> bowlers) {
+    bowlers.sort((a, b) => (a.numOfHandicapBrackets + a.numOfScratchBrackets)
+        .compareTo(b.numOfHandicapBrackets + a.numOfScratchBrackets));
+
     List<Bracket> brackets = [];
     for (int i = 0; i < 100; i++) {
-      for (Bowler bowler in bowlers) {
+      // bowlers.shuffle();
+      for (Bowler bowler in bowlers.reversed.toList()) {
         // print(i);
         if (bowler.numOfHandicapBrackets > 0) {
           int addToBracketNum =
@@ -61,7 +63,7 @@ class BracketBrain {
             );
           });
     } else {
-      createBrackets(brackets);
+      saveBracketsDb(brackets);
       showDialog(
           context: context,
           builder: (context) {
@@ -87,7 +89,7 @@ class BracketBrain {
     await batch.commit();
   }
 
-  void createBrackets(List<Bracket> brackets) async {
+  void saveBracketsDb(List<Bracket> brackets) async {
     //delete old one to clear brackets
     await deleteOldBrackets(brackets);
     await Constants.getTournamentId();
@@ -117,9 +119,9 @@ class BracketBrain {
     final instance = FirebaseFirestore.instance;
 
     List<Bracket> brackets = [];
-  
-  //load brackets from firebase
-   await instance
+
+    //load brackets from firebase
+    await instance
         .collection(Constants.currentIdForTournament + '/Brackets')
         .get()
         .then((documents) {
@@ -134,17 +136,15 @@ class BracketBrain {
     });
 
     //add Bowler Object to brackets
-    for(Bracket bracket in brackets){
-      for(String bowlerId in bracket.bowlerIds){
-        for(Bowler bowler in bowlers){
-          if(bowler.uniqueId == bowlerId){
+    for (Bracket bracket in brackets) {
+      for (String bowlerId in bracket.bowlerIds) {
+        for (Bowler bowler in bowlers) {
+          if (bowler.uniqueId == bowlerId) {
             bracket.bowlers.add(bowler);
           }
         }
-
       }
-   
-    }  
+    }
     return brackets;
   }
 
