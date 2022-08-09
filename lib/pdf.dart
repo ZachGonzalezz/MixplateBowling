@@ -543,10 +543,7 @@ class PDFBrain {
         for (int i = 0; i < games; i++) {
           if ((gamesSelected.isEmpty || gamesSelected.contains(i + 1))) {
             if (i == 0) {
-              if (personInBracket == 2 ||
-                  personInBracket == 3 ||
-                  personInBracket == 6 ||
-                  personInBracket == 7) {
+              if (bracket.findWinnersOfGameOne().contains(bowler)) {
                 row.cells[1 + i].value = (bowler.firstName +
                         ' ' +
                         bowler.lastName) +
@@ -554,7 +551,7 @@ class PDFBrain {
                     (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
               }
             } else if (i == 1) {
-              if (personInBracket == 3 || personInBracket == 6) {
+              if (bracket.findWinnersOfGametwo().contains(bowler)) {
                 row.cells[1 + i].value = (bowler.firstName +
                         ' ' +
                         bowler.lastName) +
@@ -562,7 +559,7 @@ class PDFBrain {
                     (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
               }
             } else if (i == 2) {
-              if (personInBracket == 5) {
+              if (bracket.findWinnersOfGamethree().contains(bowler)) {
                 row.cells[1 + i].value = (bowler.firstName +
                         ' ' +
                         bowler.lastName) +
