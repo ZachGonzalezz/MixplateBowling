@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loisbowlingwebsite/Brackets/bracket.dart';
 import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
 import 'package:loisbowlingwebsite/bowler.dart';
 import 'package:loisbowlingwebsite/doublePartner.dart';
@@ -12,6 +13,7 @@ class PDFGamePopUp extends StatefulWidget {
       required this.outOf,
       required this.percent,
       required this.division,
+      this.brackets,
       this.doubles,
       this.singles,
       this.teams})
@@ -21,6 +23,7 @@ class PDFGamePopUp extends StatefulWidget {
   List<Bowler>? singles;
   List<DoublePartners>? doubles;
   List<Team>? teams;
+  List<Bracket>? brackets;
   @override
   _PDFGamePopUpState createState() => _PDFGamePopUpState();
 }
@@ -83,6 +86,13 @@ class _PDFGamePopUpState extends State<PDFGamePopUp> {
                 } else if (widget.teams != null) {
                   PDFBrain().createTeamsPdf(widget.teams!, widget.numOfGames,
                       widget.outOf, widget.percent, gamesThatAreSelected);
+                } else if (widget.brackets != null) {
+                  PDFBrain().createBracketsPdf(
+                      widget.brackets!,
+                      widget.numOfGames,
+                      widget.outOf,
+                      widget.percent,
+                      gamesThatAreSelected);
                 }
                 Navigator.pop(context);
               })

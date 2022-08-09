@@ -7,6 +7,7 @@ import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
 import 'package:loisbowlingwebsite/bowler.dart';
 import 'package:loisbowlingwebsite/constants.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/basic_screen_layout.dart';
+import 'package:loisbowlingwebsite/universal_ui.dart/pdf_popup.dart';
 
 class BracketScreen extends StatefulWidget {
   const BracketScreen({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _BracketScreenState extends State<BracketScreen> {
   String selectedSquad = 'A';
   //this keeps track of which division is selecter per Squad sotred in {"A" : "A Singles (One Division)"}
   Map<String, String> selectedDivisions = {};
+
+  int games = 0;
 
   //this is the original array from the database
   List<Bowler> bowlers = [];
@@ -68,6 +71,7 @@ class _BracketScreenState extends State<BracketScreen> {
         amountOfSquads = (basicSettings['Squads'] ?? 1).toInt();
         percent = (basicSettings['Handicap Percentage'] ?? 100).toInt();
         outOf = (basicSettings['Handicap Amount'] ?? 200).toInt();
+        games = (basicSettings['Games'] ?? 0).toInt();
       });
     });
     //loads all the divisions and squads
@@ -105,6 +109,27 @@ class _BracketScreenState extends State<BracketScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: TextButton(
+                                  child: Text('Save Pdf'),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => PDFGamePopUp(
+                                              numOfGames: games,
+                                              outOf: outOf,
+                                              percent: percent,
+                                              brackets: brackets,
+                                              division: selectedDivisions[
+                                                      selectedSquad] ??
+                                                  'No Division',
+                                            ));
+                                    // PDFBrain().createSinglesPdf(
+                                    //     results, games, outOf, percent,
+                                    //           ,);
+                                  },
+                                )),
                             CustomButton(
                                 buttonTitle: 'Generate',
                                 onClicked: () {
