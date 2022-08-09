@@ -544,39 +544,35 @@ class PDFBrain {
           if ((gamesSelected.isEmpty || gamesSelected.contains(i + 1))) {
             if (i == 0) {
               if (bracket.findWinnersOfGameOne().contains(bowler)) {
-                row.cells[1 + i].value = (bowler.firstName +
+                row.cells[1 + i].value =
+                    (bowler.firstName + ' ' + bowler.lastName) +
                         ' ' +
-                        bowler.lastName) +
-                    ' ' +
-                    (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+                        (bowler.scores!['A']?[(2).toString()] ?? 0).toString();
               }
             } else if (i == 1) {
               if (bracket.findWinnersOfGametwo().contains(bowler)) {
-                row.cells[1 + i].value = (bowler.firstName +
+                row.cells[1 + i].value =
+                    (bowler.firstName + ' ' + bowler.lastName) +
                         ' ' +
-                        bowler.lastName) +
-                    ' ' +
-                    (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+                        (bowler.scores!['A']?[(3).toString()] ?? 0).toString();
               }
             } else if (i == 2) {
               if (bracket.findWinnersOfGamethree().contains(bowler)) {
-                row.cells[1 + i].value = (bowler.firstName +
-                        ' ' +
-                        bowler.lastName) +
-                    ' ' +
-                    (bowler.scores!['A']?[(i + 1).toString()] ?? 0).toString();
+                row.cells[1 + i].value =
+                    (bowler.firstName + ' ' + bowler.lastName);
               }
             }
-          }
 
-          row.cells[1 + i].style = PdfGridCellStyle(
-              cellPadding: PdfPaddings(left: 0, right: 0),
-              font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
-            ..borders = borderStyle;
+            row.cells[1 + i].style = PdfGridCellStyle(
+                cellPadding: PdfPaddings(left: 0, right: 0),
+                font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+              ..borders = borderStyle;
+          }
+          personInBracket += 1;
         }
-        personInBracket += 1;
+        //this add the lines in between each bracket so multiple fit on a sheet
+
       }
-      //this add the lines in between each bracket so multiple fit on a sheet
       PdfGridRow totalRow = grid.rows.add();
     }
 

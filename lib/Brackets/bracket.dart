@@ -55,13 +55,14 @@ class Bracket {
     return bowlersReturn;
   }
 
-    List<Bowler> findWinnersOfGamethree() {
+  List<Bowler> findWinnersOfGamethree() {
     List<Bowler> bowlersReturn = [];
 
     List<Bowler> roundOneWinners = findWinnersOfGametwo();
+    print(roundOneWinners[0].scores!['A']);
     for (int i = 0; i < roundOneWinners.length; i += 2) {
-      int score1 = roundOneWinners[i].scores!['A']?[(2).toString()] ?? 0;
-      int score2 = roundOneWinners[i + 1].scores!['A']?[(2).toString()] ?? 0;
+      int score1 = roundOneWinners[i].scores!['A']?[(3).toString()] ?? 0;
+      int score2 = roundOneWinners[i + 1].scores!['A']?[(3).toString()] ?? 0;
       if (score1 > score2) {
         bowlersReturn.add(roundOneWinners[i]);
       } else {
