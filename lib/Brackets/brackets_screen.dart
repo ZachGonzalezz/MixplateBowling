@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
+import 'package:loisbowlingwebsite/Brackets/bracket_brain.dart';
+import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
 import 'package:loisbowlingwebsite/bowler.dart';
 import 'package:loisbowlingwebsite/constants.dart';
@@ -29,6 +31,8 @@ class _BracketScreenState extends State<BracketScreen> {
   //this this the list returned
   List<Bowler> results = [];
 
+  BracketBrain bracketBrain = BracketBrain();
+
   //this is the list of double partners the user has selected
   Map<String, List<String>> doublePartner = {};
   @override
@@ -43,6 +47,7 @@ class _BracketScreenState extends State<BracketScreen> {
       setState(() {
         bowlers = bowlersFromDB;
         results = bowlersFromDB;
+        bracketBrain.getBrackets(bowlers);
         results.sort((a, b) => a.firstName.compareTo(b.firstName));
       });
     });
@@ -69,7 +74,7 @@ class _BracketScreenState extends State<BracketScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenLayout(
-        selected: 'Bowlers',
+        selected: 'Brackets',
         child: SingleChildScrollView(
           child: Center(
             child: Padding(
@@ -89,10 +94,15 @@ class _BracketScreenState extends State<BracketScreen> {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            
+                            CustomButton(
+                                buttonTitle: 'Generate',
+                                onClicked: () {
+                                  bracketBrain.generateBrackets(
+                                      context, bowlers);
+                                })
                           ])),
                 ),
               ),
