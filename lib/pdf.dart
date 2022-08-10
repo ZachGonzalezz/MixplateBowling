@@ -515,6 +515,7 @@ class PDFBrain {
 
   Future createBracketsPdf(List<Bracket> brackets, int games, int outof,
       int percent, List<int> gamesSelected) async {
+    brackets.sort((a, b) => a.division.compareTo(b.division));
     //start sa documenting
     PdfDocument document = PdfDocument();
     //adds a page which we can start writting on
@@ -524,10 +525,62 @@ class PDFBrain {
 
     //how many columns are in a row
     grid.columns.add(count: 1 + games);
+    // grid.headers.add(1);
+    // PdfGridRow header = grid.headers[0];
+
+    // //header values for row 1 and 2
+    // header.cells[0].value = 'Division';
+
+    // //ensures borders are white
+    // header.cells[0].style = PdfGridCellStyle(
+    //     cellPadding: PdfPaddings(left: 0, right: 0),
+    //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+    //   ..borders = borderStyle;
+    // header.cells[1].style = PdfGridCellStyle(
+    //     cellPadding: PdfPaddings(left: 0, right: 0),
+    //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+    //   ..borders = borderStyle;
+    // header.cells[2].style = PdfGridCellStyle(
+    //     cellPadding: PdfPaddings(left: 0, right: 0),
+    //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+    //   ..borders = borderStyle;
+    // header.cells[3 ].style = PdfGridCellStyle(
+    //     cellPadding: PdfPaddings(left: 0, right: 0),
+    //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+    //   ..borders = borderStyle;
+    //       header.cells[4].style = PdfGridCellStyle(
+    //     cellPadding: PdfPaddings(left: 0, right: 0),
+    //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+    //   ..borders = borderStyle;
 
     //goes through every bowler adding name average
     for (Bracket bracket in brackets) {
       int personInBracket = 1;
+      PdfGridRow row = grid.rows.add();
+      row.cells[0].style = PdfGridCellStyle(
+          cellPadding: PdfPaddings(left: 0, right: 0),
+          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+        ..borders = borderStyle;
+      row.cells[0].value = 'Bracket Num: ' + bracket.id.toString() + ' ' + bracket.division ;
+      row.cells[1].style = PdfGridCellStyle(
+          cellPadding: PdfPaddings(left: 0, right: 0),
+          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+        ..borders = borderStyle;
+
+      row.cells[2].style = PdfGridCellStyle(
+          cellPadding: PdfPaddings(left: 0, right: 0),
+          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+        ..borders = borderStyle;
+
+      row.cells[3].style = PdfGridCellStyle(
+          cellPadding: PdfPaddings(left: 0, right: 0),
+          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+        ..borders = borderStyle;
+      row.cells[4].style = PdfGridCellStyle(
+          cellPadding: PdfPaddings(left: 0, right: 0),
+          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+        ..borders = borderStyle;
+
       for (Bowler bowler in bracket.bowlers) {
         PdfGridRow row = grid.rows.add();
         row.cells[0].style = PdfGridCellStyle(
@@ -567,6 +620,7 @@ class PDFBrain {
                 cellPadding: PdfPaddings(left: 0, right: 0),
                 font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
+    
           }
           personInBracket += 1;
         }

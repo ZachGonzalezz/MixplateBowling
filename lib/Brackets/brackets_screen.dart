@@ -137,6 +137,18 @@ class _BracketScreenState extends State<BracketScreen> {
                                       context, bowlers);
                                 }),
                             SizedBox(
+                              height: 20,
+                            ),
+                            CustomButton(
+                                buttonTitle: 'Find Winners',
+                                onClicked: () {
+                                  bracketBrain.findWinnersOfBrackets(
+                                      brackets, context, bowlers);
+                                }),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
                               height: MediaQuery.of(context).size.height * 0.6,
                               child: ListView.builder(
                                   itemCount: brackets.length,

@@ -9,6 +9,56 @@ class BracketBrain {
   int bracketSize = 8;
   int maxBracket = 100;
 
+  findWinnersOfBrackets(
+      List<Bracket> brackets, BuildContext context, List<Bowler> bowlers) {
+    String winnersString = '';
+
+    brackets.sort((a, b) => a.division.compareTo(b.division));
+    for (Bracket bracket in brackets) {
+      winnersString += '\n';
+      winnersString += '\n';
+      List<Bowler> bowlers = bracket.findWinnersOfGametwo();
+      bowlers.sort(
+          (a, b) => (a.scores!['A']!['3']!).compareTo((b.scores!['A']!['3']!)));
+      int place = 1;
+      for (Bowler bowler in bowlers.reversed.toList()) {
+        if (place == 1) {
+          int indexOfBowler = bowlers.indexOf(bowler);
+          bowlers[indexOfBowler].bracketWinnings += 25;
+
+          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$25\n';
+        } else if (place == 2) {
+          int indexOfBowler = bowlers.indexOf(bowler);
+          bowlers[indexOfBowler].bracketWinnings += 10;
+          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
+        } else if (place == 3) {}
+        place += 1;
+      }
+      winnersString += '\n';
+    }
+
+    winnersString += '\n';
+
+    winnersString += '\n';
+    winnersString += '\n';
+
+    winnersString += 'Totals:';
+    winnersString += '\n';
+    winnersString += '\n';
+
+    for(Bowler bowler in bowlers){
+       winnersString += bowler.firstName + ' ' + bowler.lastName + ':' +  bowler.bracketWinnings.toString() + '\n';
+    }
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return BasicPopUp(
+            text: winnersString,
+          );
+        });
+  }
+
   List<Bracket> generateBrackets(BuildContext context, List<Bowler> bowlers) {
     bowlers.sort((a, b) => (a.numOfHandicapBrackets + a.numOfScratchBrackets)
         .compareTo(b.numOfHandicapBrackets + a.numOfScratchBrackets));

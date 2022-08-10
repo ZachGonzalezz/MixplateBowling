@@ -20,6 +20,7 @@ class Bowler {
       this.financesPaid = const {},
       this.bowlerDoesExistInDB = true,
       this.laneNUm = '',
+      this.bracketWinnings = 0,
       this.uscbNum = '',
       this.uniqueNum = '',
       this.address = '',
@@ -44,6 +45,7 @@ class Bowler {
   String uscbNum;
   String laneNUm;
   String uniqueNum;
+  double bracketWinnings;
 
   String phoneNum;
   String email;
