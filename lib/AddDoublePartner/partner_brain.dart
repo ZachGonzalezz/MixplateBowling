@@ -11,6 +11,7 @@ class DoublePartner {
       Map<String, dynamic>? doublePartners,
       List<String>? peopleOnSheet,
       String? divison,
+      bool sortbyScores = false,
       String? squad,
       String? type}) {
     List<Bowler> filtered = [];
@@ -44,7 +45,9 @@ class DoublePartner {
     }
 
     //alphabetically names
+    if(sortbyScores == false){
     filtered.sort((a, b) => a.firstName.compareTo(b.firstName));
+    }
 
 //this is causing a null but is probably very important
     // for (int i = filtered.length - 1; i >= 0; i--) {

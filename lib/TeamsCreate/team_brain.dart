@@ -34,6 +34,16 @@ class TeamBrain {
     return ids;
   }
 
+  Future<void> deleteTeam(String id) async {
+    await Constants.getTournamentId();
+
+    await FirebaseFirestore.instance
+        .doc(Constants.currentIdForTournament)
+        .collection('Teams')
+        .doc(id)
+        .delete();
+  }
+
   Future<void> updateATeam(
       {required String name,
       required Map<String, Bowler> teamMembers,

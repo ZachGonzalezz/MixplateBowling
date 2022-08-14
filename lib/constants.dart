@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,6 +62,7 @@ class Constants {
     final cachedTournamentId = prefs.getString('tournamentId') ?? ' ';
 
     Constants.currentIdForTournament = cachedTournamentId;
+    log(cachedTournamentId);
     return;
   }
 

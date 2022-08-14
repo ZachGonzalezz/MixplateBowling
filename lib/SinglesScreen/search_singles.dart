@@ -50,6 +50,7 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
       setState(() {
         bowlers = bowlersFromDB;
         results = DoublePartner.filterBowlers(
+            sortbyScores: true,
             bowlers: bowlers,
             search: '',
             squad: 'A',
@@ -148,13 +149,14 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                         selectedDivisions[selectedSquad] =
                                             newDivision;
                                         results = DoublePartner.filterBowlers(
+                                            sortbyScores: true,
                                             bowlers: bowlers,
                                             search: '',
                                             outOf: outOf,
                                             type: 'Singles',
                                             percent: percent,
-                                            divison:
-                                                selectedDivisions[selectedSquad],
+                                            divison: selectedDivisions[
+                                                selectedSquad],
                                             squad: selectedSquad);
                                       });
                                     },
@@ -180,6 +182,7 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                     //when user types in search bar automatically changes who pops up
                                     setState(() {
                                       results = DoublePartner.filterBowlers(
+                                          sortbyScores: true,
                                           bowlers: bowlers,
                                           search: text,
                                           outOf: outOf,
@@ -194,7 +197,8 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                 height: 40,
                               ),
                               SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.5,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
                                 child: Scrollbar(
                                   isAlwaysShown: true,
                                   child: ListView.builder(
@@ -207,8 +211,8 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         SingleScoreScreen(
-                                                            bowler:
-                                                                results[index])));
+                                                            bowler: results[
+                                                                index])));
                                           },
                                           leading: SizedBox(
                                             width: 500,

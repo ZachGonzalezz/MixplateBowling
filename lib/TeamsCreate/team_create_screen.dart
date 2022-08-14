@@ -216,19 +216,24 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                                     },
                                                     onSuggestionSelected:
                                                         (bowlerSelected) {
-                                                          print('hi');
-                                                          // print(widget.teamData!.bowlerIDs);
+                                                      print('hi');
+                                                      // print(widget.teamData!.bowlerIDs);
                                                       setState(() {
                                                         teamMates[index
                                                                 .toString()] =
                                                             bowlerSelected;
-                                                        if(widget.teamData != null){
-                                                          widget.teamData!.bowlerIDs[index
-                                                                .toString()] = bowlerSelected.uniqueId;
+                                                        if (widget.teamData !=
+                                                            null) {
+                                                          widget.teamData!
+                                                                      .bowlerIDs[
+                                                                  index
+                                                                      .toString()] =
+                                                              bowlerSelected
+                                                                  .uniqueId;
                                                         }
-                                                     
                                                       });
-                                                           print(widget.teamData!.bowlerIDs);
+                                                      print(widget
+                                                          .teamData!.bowlerIDs);
                                                     },
                                                     textFieldConfiguration:
                                                         TextFieldConfiguration(
@@ -300,7 +305,8 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                                   selectedSquad] ??
                                               '',
                                           squad: selectedSquad);
-                                        Navigator.pop(context);
+                                      Navigator.pushNamed(
+                                          context, Constants.teamSearch);
                                     } else {
                                       TeamBrain().updateATeam(
                                           name: teamName.text,
@@ -310,16 +316,22 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                               '',
                                           squad: selectedSquad,
                                           id: widget.teamData!.id);
-
-                                           Navigator.pop(context, Team(id: widget.teamData!.id,   name: teamName.text,
-                                          bowlers: teamMates,
-                                          bowlerIDs: widget.teamData!.bowlerIDs,
-                                          division: selectedDivisions[
-                                                  selectedSquad] ??
-                                              '',
-                                          squad: selectedSquad,));
+                                      Navigator.pushNamed(
+                                          context, Constants.teamSearch);
+                                      // Navigator.pop(
+                                      //     context,
+                                      //     Team(
+                                      //       id: widget.teamData!.id,
+                                      //       name: teamName.text,
+                                      //       bowlers: teamMates,
+                                      //       bowlerIDs:
+                                      //           widget.teamData!.bowlerIDs,
+                                      //       division: selectedDivisions[
+                                      //               selectedSquad] ??
+                                      //           '',
+                                      //       squad: selectedSquad,
+                                      //     ));
                                     }
-                            
                                   } else {
                                     BasicPopUp().showBasicDialog(context,
                                         'Ensure that the team has a name');
@@ -327,6 +339,21 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                                 },
                               ),
                             ),
+
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Center(
+                              child: CustomButton(
+                                  buttonTitle: 'Delete',
+                                  onClicked: () async{
+                                  await  TeamBrain()
+                                        .deleteTeam(widget.teamData?.id ?? '');
+                                    Navigator.pushNamed(
+                                        context, Constants.teamSearch);
+                                  }),
+                            ),
+
                             SizedBox(
                               height: 20,
                             ),

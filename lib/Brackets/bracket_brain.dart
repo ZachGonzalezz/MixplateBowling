@@ -10,7 +10,7 @@ class BracketBrain {
   int maxBracket = 100;
 
   findWinnersOfBrackets(
-      List<Bracket> brackets, BuildContext context, List<Bowler> bowlers) {
+      List<Bracket> brackets, BuildContext context, List<Bowler> bowlersMain) {
     String winnersString = '';
 
     brackets.sort((a, b) => a.division.compareTo(b.division));
@@ -23,13 +23,13 @@ class BracketBrain {
       int place = 1;
       for (Bowler bowler in bowlers.reversed.toList()) {
         if (place == 1) {
-          int indexOfBowler = bowlers.indexOf(bowler);
-          bowlers[indexOfBowler].bracketWinnings += 25;
+          int indexOfBowler = bowlersMain.indexOf(bowler);
+          bowlersMain[indexOfBowler].bracketWinnings += 25;
 
           winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$25\n';
         } else if (place == 2) {
-          int indexOfBowler = bowlers.indexOf(bowler);
-          bowlers[indexOfBowler].bracketWinnings += 10;
+          int indexOfBowler = bowlersMain.indexOf(bowler);
+         bowlersMain[indexOfBowler].bracketWinnings += 10;
           winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
         } else if (place == 3) {}
         place += 1;
@@ -46,7 +46,7 @@ class BracketBrain {
     winnersString += '\n';
     winnersString += '\n';
 
-    for(Bowler bowler in bowlers){
+    for(Bowler bowler in bowlersMain){
        winnersString += bowler.firstName + ' ' + bowler.lastName + ':' +  bowler.bracketWinnings.toString() + '\n';
     }
 
