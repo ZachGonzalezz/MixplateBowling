@@ -13,7 +13,8 @@ class DoublePartner {
       String? divison,
       bool sortbyScores = false,
       String? squad,
-      String? type}) {
+      String? type,
+      bool isHandicap = true}) {
     List<Bowler> filtered = [];
 
     //if the search bar is empty send them back to default
@@ -33,8 +34,8 @@ class DoublePartner {
     //if division if not null only return those bowlers who meet search have division requirement
 
     filtered.sort((a, b) => b
-        .findScoreForSquad(squad ?? '', outOf, percent, true, []).compareTo(
-            a.findScoreForSquad(squad ?? '', outOf, percent, true, [])));
+        .findScoreForSquad(squad ?? '', outOf, percent, isHandicap, []).compareTo(
+            a.findScoreForSquad(squad ?? '', outOf, percent, isHandicap, [])));
 
     if (divison?.contains('No Division') != true &&
         divison != null &&

@@ -157,7 +157,11 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                             percent: percent,
                                             divison: selectedDivisions[
                                                 selectedSquad],
-                                            squad: selectedSquad);
+                                            squad: selectedSquad,
+                                            isHandicap: !(selectedDivisions[
+                                                        selectedSquad] ??
+                                                    '')
+                                                .contains('Scratch'));
                                       });
                                     },
                                   ),
@@ -182,15 +186,20 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                     //when user types in search bar automatically changes who pops up
                                     setState(() {
                                       results = DoublePartner.filterBowlers(
-                                          sortbyScores: true,
-                                          bowlers: bowlers,
-                                          search: text,
-                                          outOf: outOf,
-                                          percent: percent,
-                                          type: 'Singles',
-                                          divison:
-                                              selectedDivisions[selectedSquad],
-                                          squad: selectedSquad);
+                                        sortbyScores: true,
+                                        bowlers: bowlers,
+                                        search: text,
+                                        outOf: outOf,
+                                        percent: percent,
+                                        type: 'Singles',
+                                        divison:
+                                            selectedDivisions[selectedSquad],
+                                        squad: selectedSquad,
+                                        isHandicap: !(selectedDivisions[
+                                                    selectedSquad] ??
+                                                '')
+                                            .contains('Scratch'),
+                                      );
                                     });
                                   }),
                               SizedBox(
@@ -236,12 +245,16 @@ class _SearchSinglesScreenState extends State<SearchSinglesScreen> {
                                                 SizedBox(
                                                   width: 20,
                                                 ),
-                                                Text(results[index]
-                                                    .findScoreForSquad(
-                                                        selectedSquad,
-                                                        outOf,
-                                                        percent,
-                                                        true, []).toString())
+                                                Text(results[index].findScoreForSquad(
+                                                    selectedSquad,
+                                                    outOf,
+                                                    percent,
+                                                    !(results[index].divisions[
+                                                                selectedSquad +
+                                                                    'Singles'] ??
+                                                            '')
+                                                        .contains('Scratch'),
+                                                    []).toString())
                                               ],
                                             ),
                                           ),
