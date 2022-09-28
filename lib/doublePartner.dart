@@ -64,7 +64,7 @@ class DoublePartners {
     return total;
   }
 
-  int findDoublesTotalAverage() {
+  int findDoublesTotalAverage(int numOfGames) {
     int total = 0;
     for (Bowler bowler in bowlers) {
       total += bowler.average.toInt();

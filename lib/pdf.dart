@@ -452,7 +452,7 @@ class PDFBrain {
       }
       //these athe totals at the bottom
       PdfGridRow totalRow = grid.rows.add();
-      totalRow.cells[1].value = doubleTeam.findDoublesTotalAverage().toString();
+      totalRow.cells[1].value = doubleTeam.findDoublesTotalAverage(gamesSelected.length).toString();
       totalRow.cells[2].value =
           doubleTeam.findDoublesTotalHandicap(outof, percent).toString();
       totalRow.cells[1].style = PdfGridCellStyle(
