@@ -640,6 +640,28 @@ class PDFBrain {
                   .findWinnersOfGametwo(
                       bracket.division == 'Handicap', outof, percent)
                   .contains(bowler)) {
+
+                  List<Bowler> bowlersWhoMadeIt = bracket
+                  .findWinnersOfGametwo(
+                      bracket.division == 'Handicap', outof, percent);
+
+                  //finds the best bowler of those who made it whoever is the best wins
+                  int indexOfBestBowler = -1;
+                  double scoreOfBestBowler = 0;
+                  for(Bowler bowler in bowlersWhoMadeIt){
+                    var bowlerHandicap =  bowler.findHandicap(outof, percent).toDouble();
+                    var bowlerScore = (bowler.scores!['A']?[(3).toString()] ?? 0);
+                    if((bowlerScore + bowlerHandicap) > scoreOfBestBowler){
+                      scoreOfBestBowler = bowlerScore + bowlerHandicap;
+                      indexOfBestBowler = bowlersWhoMadeIt.indexOf(bowler);
+                    }
+                  }
+                
+                String moneyAdd = '';
+                if(bowler == bowlersWhoMadeIt[indexOfBestBowler]){
+                  moneyAdd = '    \$15';
+                }
+
                 double scoreHandicap = 0;
 
                 if (bracket.division == 'Handicap') {
@@ -651,7 +673,7 @@ class PDFBrain {
                         ' ' +
                         ((bowler.scores!['A']?[(3).toString()] ?? 0) +
                                 scoreHandicap)
-                            .toString();
+                            .toString() + moneyAdd;
               }
             } else if (i == 2) {
               if (bracket
@@ -659,7 +681,7 @@ class PDFBrain {
                       bracket.division == 'Handicap', outof, percent)
                   .contains(bowler)) {
                 row.cells[1 + i].value =
-                    (bowler.firstName + ' ' + bowler.lastName);
+                    (bowler.firstName + ' ' + bowler.lastName + '  \$25');
               }
             }
 
