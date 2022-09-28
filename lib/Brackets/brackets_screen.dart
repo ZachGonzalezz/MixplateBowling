@@ -133,8 +133,22 @@ class _BracketScreenState extends State<BracketScreen> {
                             CustomButton(
                                 buttonTitle: 'Generate',
                                 onClicked: () {
-                                  bracketBrain.generateBrackets(
-                                      context, bowlers);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text(
+                                                'THIS WILL OVERRIDE PREVIOUSE BRACKETS'),
+                                            actions: [
+                                              GestureDetector(
+                                                  onLongPress: () {
+                                                    bracketBrain
+                                                        .generateBrackets(
+                                                            context, bowlers);
+                                                  },
+                                                  child: Text(
+                                                      'I am taking that risk!!! (Long Press to Confirm)'))
+                                            ],
+                                          ));
                                 }),
                             SizedBox(
                               height: 20,
