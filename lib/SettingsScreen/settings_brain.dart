@@ -94,7 +94,11 @@ class SettingsBrain {
       return 'Singles';
     } else if (title.contains('Doubles')) {
       return 'Doubles';
-    } else {
+    } 
+    else if (title.contains('Senior')) {
+      return 'Senior';
+    } 
+    else {
       return 'Team';
     }
   }
@@ -107,7 +111,8 @@ class SettingsBrain {
     switch (title
         .replaceAll('Singles', '')
         .replaceAll('Doubles', '')
-        .replaceAll('Team', '')) {
+        .replaceAll('Team', '')
+        .replaceAll('Senior', '')) {
       case (' Scratch (One Division)'):
         //adds the division to divisions check array to be saved to db
         if (isChecking) {

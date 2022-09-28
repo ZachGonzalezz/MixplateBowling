@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/checkbox_tile.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
 
-class TeamsDivisionList extends StatefulWidget {
-  TeamsDivisionList({Key? key, required this.brain}) : super(key: key);
+class SeniorDivisionList extends StatefulWidget {
+  SeniorDivisionList({Key? key, required this.brain}) : super(key: key);
   SettingsBrain brain;
 
   @override
-  _TeamsDivisionListState createState() => _TeamsDivisionListState();
+  _SeniorDivisionListState createState() => _SeniorDivisionListState();
 }
 
-class _TeamsDivisionListState extends State<TeamsDivisionList> {
+class _SeniorDivisionListState extends State<SeniorDivisionList> {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -29,41 +29,42 @@ class _TeamsDivisionListState extends State<TeamsDivisionList> {
           height: 20,
         ),
         CheckBoxTile(
-            title: 'Team Scratch (One Division)',
+            title: 'Senior Scratch (One Division)',
             brain: widget.brain,
             isGreyedOut: widget.brain.greyOutBoxed
-                .contains('Team Scratch (One Division)'),
-            divisionType: 'Team',
+                .contains('Senior Scratch (One Division)'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain.newBoxedChecked(
+                    isChecked, 'Senior Scratch (One Division)');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Men\'s Senior Scratch',
+            brain: widget.brain,
+            isGreyedOut:
+                widget.brain.greyOutBoxed.contains('Men\'s Senior Scratch'),
+            divisionType: 'Senior',
             changeValues: (isChecked) {
               //remove function
               setState(() {
                 widget.brain
-                    .newBoxedChecked(isChecked, 'Team Scratch (One Division)');
+                    .newBoxedChecked(isChecked, 'Men\'s Senior Scratch');
               });
             }),
         CheckBoxTile(
-            title: 'Men\'s Team Scratch',
+            title: 'Women\'s Senior Scratch',
             brain: widget.brain,
             isGreyedOut:
-                widget.brain.greyOutBoxed.contains('Men\'s Team Scratch'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain.newBoxedChecked(isChecked, 'Men\'s Team Scratch');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Women\'s Team Scratch',
-            brain: widget.brain,
-            isGreyedOut:
-                widget.brain.greyOutBoxed.contains('Women\'s Team Scratch'),
-            divisionType: 'Team',
+                widget.brain.greyOutBoxed.contains('Women\'s Senior Scratch'),
+            divisionType: 'Senior',
             changeValues: (isChecked) {
               //remove function
               setState(() {
                 widget.brain
-                    .newBoxedChecked(isChecked, 'Women\'s Team Scratch');
+                    .newBoxedChecked(isChecked, 'Women\'s Senior Scratch');
               });
             }),
         const SizedBox(
@@ -80,119 +81,120 @@ class _TeamsDivisionListState extends State<TeamsDivisionList> {
           height: 20,
         ),
         CheckBoxTile(
-            title: 'Team Handicap (One Division)',
+            title: 'Senior Handicap (One Division)',
             brain: widget.brain,
             isGreyedOut: widget.brain.greyOutBoxed
-                .contains('Team Handicap (One Division)'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain
-                    .newBoxedChecked(isChecked, 'Team Handicap (One Division)');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Men\'s Team Handicap',
-            brain: widget.brain,
-            isGreyedOut:
-                widget.brain.greyOutBoxed.contains('Men\'s Team Handicap'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain.newBoxedChecked(isChecked, 'Men\'s Team Handicap');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Women\'s Team Handicap',
-            brain: widget.brain,
-            isGreyedOut:
-                widget.brain.greyOutBoxed.contains('Women\'s Team Handicap'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain
-                    .newBoxedChecked(isChecked, 'Women\'s Team Handicap');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Men\'s Team Handicap Low',
-            brain: widget.brain,
-            isGreyedOut:
-                widget.brain.greyOutBoxed.contains('Men\'s Team Handicap Low'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain
-                    .newBoxedChecked(isChecked, 'Men\'s Team Handicap) Low');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Men\'s Team Handicap High',
-            brain: widget.brain,
-            isGreyedOut:
-                widget.brain.greyOutBoxed.contains('Men\'s Team Handicap High'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain
-                    .newBoxedChecked(isChecked, 'Men\'s Team Handicap) High');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Women\'s Team Handicap Low',
-            brain: widget.brain,
-            isGreyedOut: widget.brain.greyOutBoxed
-                .contains('Women\'s Team Handicap Low'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain
-                    .newBoxedChecked(isChecked, 'Women\'s Team Handicap Low');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Women\'s Team Handicap High',
-            brain: widget.brain,
-            isGreyedOut: widget.brain.greyOutBoxed
-                .contains('Women\'s Team Handicap High'),
-            divisionType: 'Team',
-            changeValues: (isChecked) {
-              //remove function
-              setState(() {
-                widget.brain
-                    .newBoxedChecked(isChecked, 'Women\'s Team Handicap High');
-              });
-            }),
-        CheckBoxTile(
-            title: 'Team Gender Neutural Handicap Low',
-            brain: widget.brain,
-            isGreyedOut: widget.brain.greyOutBoxed
-                .contains('Team Gender Neutural Handicap Low'),
-            divisionType: 'Team',
+                .contains('Senior Handicap (One Division)'),
+            divisionType: 'Senior',
             changeValues: (isChecked) {
               //remove function
               setState(() {
                 widget.brain.newBoxedChecked(
-                    isChecked, 'Team Gender Neutural Handicap Low');
+                    isChecked, 'Senior Handicap (One Division)');
               });
             }),
         CheckBoxTile(
-            title: 'Team Gender Neutural Handicap High',
+            title: 'Men\'s Senior Handicap',
+            brain: widget.brain,
+            isGreyedOut:
+                widget.brain.greyOutBoxed.contains('Men\'s Senior Handicap'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain
+                    .newBoxedChecked(isChecked, 'Men\'s Senior Handicap');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Women\'s Senior Handicap',
+            brain: widget.brain,
+            isGreyedOut:
+                widget.brain.greyOutBoxed.contains('Women\'s Senior Handicap'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain
+                    .newBoxedChecked(isChecked, 'Women\'s Senior Handicap');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Men\'s Senior Handicap Low',
             brain: widget.brain,
             isGreyedOut: widget.brain.greyOutBoxed
-                .contains('Team Gender Neutural Handicap High'),
-            divisionType: 'Team',
+                .contains('Men\'s Senior Handicap Low'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain
+                    .newBoxedChecked(isChecked, 'Men\'s Senior Handicap) Low');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Men\'s Senior Handicap High',
+            brain: widget.brain,
+            isGreyedOut: widget.brain.greyOutBoxed
+                .contains('Men\'s Senior Handicap High'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain
+                    .newBoxedChecked(isChecked, 'Men\'s Senior Handicap) High');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Women\'s Senior Handicap Low',
+            brain: widget.brain,
+            isGreyedOut: widget.brain.greyOutBoxed
+                .contains('Women\'s Senior Handicap Low'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain
+                    .newBoxedChecked(isChecked, 'Women\'s Senior Handicap Low');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Women\'s Senior Handicap High',
+            brain: widget.brain,
+            isGreyedOut: widget.brain.greyOutBoxed
+                .contains('Women\'s Senior Handicap High'),
+            divisionType: 'Senior',
             changeValues: (isChecked) {
               //remove function
               setState(() {
                 widget.brain.newBoxedChecked(
-                    isChecked, 'Team Gender Neutural Handicap High');
+                    isChecked, 'Women\'s Senior Handicap High');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Senior Gender Neutural Handicap Low',
+            brain: widget.brain,
+            isGreyedOut: widget.brain.greyOutBoxed
+                .contains('Senior Gender Neutural Handicap Low'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain.newBoxedChecked(
+                    isChecked, 'Senior Gender Neutural Handicap Low');
+              });
+            }),
+        CheckBoxTile(
+            title: 'Senior Gender Neutural Handicap High',
+            brain: widget.brain,
+            isGreyedOut: widget.brain.greyOutBoxed
+                .contains('Senior Gender Neutural Handicap High'),
+            divisionType: 'Senior',
+            changeValues: (isChecked) {
+              //remove function
+              setState(() {
+                widget.brain.newBoxedChecked(
+                    isChecked, 'Senior Gender Neutural Handicap High');
               });
             }),
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loisbowlingwebsite/LoginScreen/custom_button.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/doubles_divisions_list.dart';
+import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/senior_division_list.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/singles_division_list.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/DivisionSettings/teams_divisions_list.dart';
 import 'package:loisbowlingwebsite/SettingsScreen/settings_brain.dart';
@@ -24,7 +25,6 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
   void initState() {
     super.initState();
     Constants.saveTournamentIdBeforeRefresh();
-    
   }
 
   @override
@@ -45,7 +45,7 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
       },
       child: DefaultTabController(
         initialIndex: 0,
-        length: 3,
+        length: 4,
         child: Scaffold(
           body: ScreenLayout(
               height: 1200,
@@ -71,12 +71,21 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                           const SizedBox(
                             height: 20,
                           ),
-                        Builder(
-                          builder:(ctx) =>  CustomButton(
+                          Builder(
+                            builder: (ctx) => CustomButton(
                               buttonTitle: 'Save Settings',
                               length: 300,
                               onClicked: () {
-                                Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                Scaffold.of(ctx).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Saved',
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                );
                                 widget.brain!.saveDivisionSettings();
                               },
                             ),
@@ -91,7 +100,9 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                           ),
                           SquadPicker(
                             brain: widget.brain!,
-                            numberOfSquads: (widget.brain!.miscSettings['Squads'] ?? 1).toInt(),
+                            numberOfSquads:
+                                (widget.brain!.miscSettings['Squads'] ?? 1)
+                                    .toInt(),
                             chnageSquads: (text) {
                               setState(() {
                                 widget.brain!.divisionSelectedSquad = text;
@@ -123,6 +134,13 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                                       color: Colors.black,
                                       fontWeight: FontWeight.w700)),
                             ),
+                            Tab(
+                              child: Text('Seniors',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700)),
+                            ),
                           ]),
                           SizedBox(
                             height: 600,
@@ -135,6 +153,9 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                               ),
                               Tab(
                                 child: TeamsDivisionList(brain: widget.brain!),
+                              ),
+                              Tab(
+                                child: SeniorDivisionList(brain: widget.brain!),
                               ),
                             ]),
                           )

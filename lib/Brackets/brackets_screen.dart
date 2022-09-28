@@ -142,8 +142,8 @@ class _BracketScreenState extends State<BracketScreen> {
                             CustomButton(
                                 buttonTitle: 'Find Winners',
                                 onClicked: () {
-                                  bracketBrain.findWinnersOfBrackets(
-                                      brackets, context, bowlers);
+                                  bracketBrain.findWinnersOfBrackets(brackets,
+                                      context, bowlers, outOf, percent);
                                 }),
                             SizedBox(
                               height: 20,

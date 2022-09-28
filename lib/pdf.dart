@@ -552,19 +552,36 @@ class PDFBrain {
     //     cellPadding: PdfPaddings(left: 0, right: 0),
     //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
     //   ..borders = borderStyle;
-
+    int count = 0;
     //goes through every bowler adding name average
     for (Bracket bracket in brackets) {
+      if (count % 6 == 0) {
+        makeSpaceBrackets(grid, games);
+      }
+      count++;
       int personInBracket = 1;
       PdfGridRow row = grid.rows.add();
       row.cells[0].style = PdfGridCellStyle(
           cellPadding: PdfPaddings(left: 0, right: 0),
           font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
         ..borders = borderStyle;
-      row.cells[0].value = 'Bracket Num: ' + bracket.id.toString() + ' ' + bracket.division ;
+      bracket.findWinnersOfGameOne(
+          bracket.division == 'Handicap', outof, percent);
+      bracket.findWinnersOfGametwo(
+          bracket.division == 'Handicap', outof, percent);
+      bracket.findWinnersOfGamethree(
+          bracket.division == 'Handicap', outof, percent);
+      row.cells[0].value = 'Bracket Num: ' +
+          bracket.id.toString() +
+          ' ' +
+          bracket.division +
+          (bracket.isTie ? ' TIE' : '');
       row.cells[1].style = PdfGridCellStyle(
           cellPadding: PdfPaddings(left: 0, right: 0),
-          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+          font: PdfStandardFont(
+            PdfFontFamily.helvetica,
+            fontsize,
+          ))
         ..borders = borderStyle;
 
       row.cells[2].style = PdfGridCellStyle(
@@ -576,10 +593,10 @@ class PDFBrain {
           cellPadding: PdfPaddings(left: 0, right: 0),
           font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
         ..borders = borderStyle;
-      row.cells[4].style = PdfGridCellStyle(
-          cellPadding: PdfPaddings(left: 0, right: 0),
-          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
-        ..borders = borderStyle;
+      // row.cells[4].style = PdfGridCellStyle(
+      //     cellPadding: PdfPaddings(left: 0, right: 0),
+      //     font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+      //   ..borders = borderStyle;
 
       for (Bowler bowler in bracket.bowlers) {
         PdfGridRow row = grid.rows.add();
@@ -587,30 +604,60 @@ class PDFBrain {
             cellPadding: PdfPaddings(left: 0, right: 0),
             font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
           ..borders = borderStyle;
+        double scoreHandicap = 0;
 
+        if (bracket.division == 'Handicap') {
+          scoreHandicap = bowler.findHandicap(outof, percent).toDouble();
+        }
         row.cells[0].value = (bowler.firstName + ' ' + bowler.lastName) +
             ' ' +
-            (bowler.scores!['A']?[(1).toString()] ?? 0).toString();
+            ((bowler.scores!['A']?[(1).toString()] ?? 0) + scoreHandicap)
+                .toString();
 
         //goes through every game and adds the score
         for (int i = 0; i < games; i++) {
           if ((gamesSelected.isEmpty || gamesSelected.contains(i + 1))) {
             if (i == 0) {
-              if (bracket.findWinnersOfGameOne().contains(bowler)) {
+              if (bracket
+                  .findWinnersOfGameOne(
+                      bracket.division == 'Handicap', outof, percent)
+                  .contains(bowler)) {
+                double scoreHandicap = 0;
+
+                if (bracket.division == 'Handicap') {
+                  scoreHandicap =
+                      bowler.findHandicap(outof, percent).toDouble();
+                }
                 row.cells[1 + i].value =
                     (bowler.firstName + ' ' + bowler.lastName) +
                         ' ' +
-                        (bowler.scores!['A']?[(2).toString()] ?? 0).toString();
+                        ((bowler.scores!['A']?[(2).toString()] ?? 0) +
+                                scoreHandicap)
+                            .toString();
               }
             } else if (i == 1) {
-              if (bracket.findWinnersOfGametwo().contains(bowler)) {
+              if (bracket
+                  .findWinnersOfGametwo(
+                      bracket.division == 'Handicap', outof, percent)
+                  .contains(bowler)) {
+                double scoreHandicap = 0;
+
+                if (bracket.division == 'Handicap') {
+                  scoreHandicap =
+                      bowler.findHandicap(outof, percent).toDouble();
+                }
                 row.cells[1 + i].value =
                     (bowler.firstName + ' ' + bowler.lastName) +
                         ' ' +
-                        (bowler.scores!['A']?[(3).toString()] ?? 0).toString();
+                        ((bowler.scores!['A']?[(3).toString()] ?? 0) +
+                                scoreHandicap)
+                            .toString();
               }
             } else if (i == 2) {
-              if (bracket.findWinnersOfGamethree().contains(bowler)) {
+              if (bracket
+                  .findWinnersOfGamethree(
+                      bracket.division == 'Handicap', outof, percent)
+                  .contains(bowler)) {
                 row.cells[1 + i].value =
                     (bowler.firstName + ' ' + bowler.lastName);
               }
@@ -620,7 +667,6 @@ class PDFBrain {
                 cellPadding: PdfPaddings(left: 0, right: 0),
                 font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
               ..borders = borderStyle;
-    
           }
           personInBracket += 1;
         }
@@ -649,6 +695,17 @@ class PDFBrain {
     PdfGridRow row = grid.rows.add();
     row.height = 20;
     for (int i = 0; i < games + 5; i++) {
+      row.cells[i].style = PdfGridCellStyle(
+          cellPadding: PdfPaddings(left: 0, right: 0),
+          font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))
+        ..borders = borderStyle;
+    }
+  }
+
+  void makeSpaceBrackets(PdfGrid grid, int games) {
+    PdfGridRow row = grid.rows.add();
+    row.height = 40;
+    for (int i = 0; i < games + 1; i++) {
       row.cells[i].style = PdfGridCellStyle(
           cellPadding: PdfPaddings(left: 0, right: 0),
           font: PdfStandardFont(PdfFontFamily.helvetica, fontsize))

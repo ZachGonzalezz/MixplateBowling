@@ -10,27 +10,27 @@ class BracketBrain {
   int maxBracket = 100;
 
   findWinnersOfBrackets(
-      List<Bracket> brackets, BuildContext context, List<Bowler> bowlersMain) {
+      List<Bracket> brackets, BuildContext context, List<Bowler> bowlersMain, int outof, int percent) {
     String winnersString = '';
 
     brackets.sort((a, b) => a.division.compareTo(b.division));
     for (Bracket bracket in brackets) {
       winnersString += '\n';
       winnersString += '\n';
-      List<Bowler> bowlers = bracket.findWinnersOfGametwo();
+      List<Bowler> bowlers = bracket.findWinnersOfGametwo(bracket.division == 'Handicap', outof, percent);
       bowlers.sort(
           (a, b) => (a.scores!['A']!['3']!).compareTo((b.scores!['A']!['3']!)));
       int place = 1;
       for (Bowler bowler in bowlers.reversed.toList()) {
         if (place == 1) {
           int indexOfBowler = bowlersMain.indexOf(bowler);
-          bowlersMain[indexOfBowler].bracketWinnings += 25;
+          bowlersMain[indexOfBowler].bracketWinnings += 2;
 
-          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$25\n';
+          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$2\n';
         } else if (place == 2) {
-          int indexOfBowler = bowlersMain.indexOf(bowler);
-         bowlersMain[indexOfBowler].bracketWinnings += 10;
-          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
+        //   int indexOfBowler = bowlersMain.indexOf(bowler);
+        //  bowlersMain[indexOfBowler].bracketWinnings += 0;
+        //   winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
         } else if (place == 3) {}
         place += 1;
       }
