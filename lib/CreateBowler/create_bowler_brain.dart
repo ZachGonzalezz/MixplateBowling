@@ -12,8 +12,8 @@ class CreateBowlerBrain {
   TextEditingController address = TextEditingController();
   TextEditingController phoneNum = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController handicapBrackets = TextEditingController();
-  TextEditingController scratchBrackets = TextEditingController();
+  TextEditingController handicapBrackets = TextEditingController(text: '0');
+  TextEditingController scratchBrackets = TextEditingController(text: '0');
   String paymentMethod = '';
 
   Map<String, dynamic> sidePotsUser = {};
