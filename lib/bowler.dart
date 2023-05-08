@@ -209,8 +209,8 @@ class Bowler {
   int findHandicap(int outOf, int percent) {
     double diff = outOf - average;
     double result = (percent / 100) * diff;
-
-    int handicap = result.round();
+    //TODO: Handicap Round Issue
+    int handicap = result.floor();
     this.handicap = handicap.toDouble();
     // print(result);
     return handicap;

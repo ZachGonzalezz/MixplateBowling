@@ -106,7 +106,7 @@ String nameOfTournament = '';
                                   ),
                                    TextButton(
                                   onPressed: () async {
-SchedulerBinding.instance?.addPostFrameCallback((_) async{
+SchedulerBinding.instance.addPostFrameCallback((_) async{
 
 
                                  DateTime? newFrom = await   showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.now().add(Duration(days: 1000)));
