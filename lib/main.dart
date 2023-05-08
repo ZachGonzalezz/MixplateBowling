@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -23,15 +22,17 @@ import 'package:loisbowlingwebsite/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(apiKey: 'AIzaSyB8O3477HeaIclWx52H8W9RHcy6noBX7UU', appId: '1:276175805543:web:2d1902fe32528d6cac48c2', messagingSenderId: '276175805543', projectId: 'bowling-app-70561')
+  );
 
   if (kIsWeb) {
 //this means user is to stayed signed in accross sessions
-    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+    // await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
 //this check user state when user refreshes the page this called reset the value
-    FirebaseAuth.instance.authStateChanges().listen((event) {
-      Constants.currentSignedInEmail = event?.email ?? 'Error';
-    });
+    // FirebaseAuth.instance.authStateChanges().listen((event) {
+    //   Constants.currentSignedInEmail = event?.email ?? 'Error';
+    // });
   }
   runApp(const MyApp());
 }

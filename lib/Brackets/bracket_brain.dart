@@ -24,13 +24,13 @@ class BracketBrain {
       for (Bowler bowler in bowlers.reversed.toList()) {
         if (place == 1) {
           int indexOfBowler = bowlersMain.indexOf(bowler);
-          bowlersMain[indexOfBowler].bracketWinnings += 2;
+          bowlersMain[indexOfBowler].bracketWinnings += 25;
 
-          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$2\n';
+          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$25\n';
         } else if (place == 2) {
-        //   int indexOfBowler = bowlersMain.indexOf(bowler);
-        //  bowlersMain[indexOfBowler].bracketWinnings += 0;
-        //   winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
+          int indexOfBowler = bowlersMain.indexOf(bowler);
+         bowlersMain[indexOfBowler].bracketWinnings += 10;
+          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
         } else if (place == 3) {}
         place += 1;
       }

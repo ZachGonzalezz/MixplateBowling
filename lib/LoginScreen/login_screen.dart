@@ -23,10 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (FirebaseAuth.instance.currentUser != null) {
+        // Constants.currentSignedInEmail =
+        //     FirebaseAuth.instance.currentUser!.email ?? 'Error';
+        // FirebaseUser user = await FirebaseAuth.instance.currentUser();
         Constants.currentSignedInEmail =
-            FirebaseAuth.instance.currentUser!.email ?? 'Error';
+            FirebaseAuth.instance.currentUser?.email ?? 'Error';
         Navigator.pushNamed(context, Constants.tournamentHome);
       }
     });
@@ -38,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // FirebaseAuth.instance.currentUser.email 
+    // FirebaseAuth.instance.currentUser.email
     return Scaffold(
       body: GestureDetector(
         onTap: () {

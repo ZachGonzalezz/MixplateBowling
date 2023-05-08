@@ -18,7 +18,7 @@ try {
      Constants.currentSignedInEmail = email;
 }
 
-on FirebaseAuthException catch (e)  {
+catch (e)  {
  returnError = e.toString();
 }
 return returnError;

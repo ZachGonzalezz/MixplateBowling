@@ -53,7 +53,7 @@ class SidePotNew extends StatelessWidget {
                           context: context,
                           builder: (context) => ErrorPopUp(error: isError));
                     } else {
-                      Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                     ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
                       //save to database then send back to update ui on other screen
                       SidePotBrain().saveToDB(name.text, price.text);
                       Map<String, dynamic> data = {name.text : int.parse(price.text)};

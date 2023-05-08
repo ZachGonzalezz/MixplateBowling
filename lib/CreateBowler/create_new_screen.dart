@@ -514,7 +514,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                   onClicked: () async {
                                     //if returns '' no errors else display error code do not save user to db incomplete
                                     String error = brain.isGoodToSavePerson();
-                                    Scaffold.of(ctx).showSnackBar(
+                                ScaffoldMessenger.of(ctx).showSnackBar(
                                       SnackBar(
                                         content: Text(
                                           'Saved',

@@ -116,35 +116,56 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Responsive.isMobileOs(context) ? Align(
-                                alignment: Alignment.centerLeft,
-                                
-                                child: IconButton(onPressed: (){
-                                  Navigator.pop(context);
-                                }, icon: Icon(MdiIcons.chevronLeft)),
-                              ) : SizedBox(),
+                              Responsive.isMobileOs(context)
+                                  ? Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: Icon(MdiIcons.chevronLeft)),
+                                    )
+                                  : SizedBox(),
                               SizedBox(
                                 height: Responsive.isMobileOs(context) ? 0 : 20,
                               ),
-                             Builder(
-                          builder:(ctx) => Center(
+                              Builder(
+                                builder: (ctx) => Center(
                                   child: CustomButton(
                                     buttonTitle: 'Save Scores',
                                     length: 300,
                                     onClicked: () {
-                                      Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
-                                      if(Responsive.isMobileOs(context) != true){
-                                      scoreBrain.saveScores();
-                                      }
-                                      else {
-                                                List<Bowler> bowlersNotInDB = results.where((element) => element.bowlerDoesExistInDB != true).toList();
-                                                      List<Bowler> bowlersInDb = results.where((element) => element.bowlerDoesExistInDB).toList();
-                                                      picBrain.checkIfAllBowlersExists(bowlersInDb, bowlersNotInDB, context);
+                                      ScaffoldMessenger.of(ctx).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Saved',
+                                            style: TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      );
+                                      if (Responsive.isMobileOs(context) !=
+                                          true) {
+                                        scoreBrain.saveScores();
+                                      } else {
+                                        List<Bowler> bowlersNotInDB = results
+                                            .where((element) =>
+                                                element.bowlerDoesExistInDB !=
+                                                true)
+                                            .toList();
+                                        List<Bowler> bowlersInDb = results
+                                            .where((element) =>
+                                                element.bowlerDoesExistInDB)
+                                            .toList();
+                                        picBrain.checkIfAllBowlersExists(
+                                            bowlersInDb,
+                                            bowlersNotInDB,
+                                            context);
                                       }
                                     },
                                   ),
                                 ),
-                            
                               ),
                               SizedBox(
                                 height: 20,
@@ -160,7 +181,7 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                     onDivisionChange: (newDivision) {
                                       selectedDivisions[selectedSquad] =
                                           newDivision;
-                
+
                                       if (newDivision != '  No Division') {
                                         setState(() {
                                           results = DoublePartner.filterBowlers(
@@ -168,8 +189,8 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                             percent: percent,
                                             bowlers: bowlers,
                                             search: '',
-                                            divison:
-                                                selectedDivisions[selectedSquad],
+                                            divison: selectedDivisions[
+                                                selectedSquad],
                                             squad: selectedSquad,
                                           );
                                         });
@@ -197,14 +218,15 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                               SizedBox(height: 30),
                               Responsive.isMobileOs(context)
                                   ? Center(
-                                    child: TextButton(
-                                        onPressed: isLoading
-                                            ? null
-                                            : () {
-                                                getImage();
-                                              },
-                                        child: Text('Import Scores Through Photo')),
-                                  )
+                                      child: TextButton(
+                                          onPressed: isLoading
+                                              ? null
+                                              : () {
+                                                  getImage();
+                                                },
+                                          child: Text(
+                                              'Import Scores Through Photo')),
+                                    )
                                   : SizedBox(),
                               CustomSearchBar(
                                   backTo: Constants.settingsHome,
@@ -225,23 +247,22 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                                 height: 40,
                               ),
                               ScoreBoard(
-                                  nmOfGames: nmOfGames,
-                                  results: results,
-                                  scoreBrain: scoreBrain,
-                                  selectedSquad: selectedSquad,
-                                  moveOneDown: (index, game){
-                                    setState(() {
-                                      results = ImageToScores().moveOneDown(results, index, game);
-                                    });
-                                    
-                                  },
-                                  moveOneUp: (index, game){
-                                    //  setState(() {
-                                    //   results = ImageToScores().moveOneUp(results, index, game);
-                                    // });
-                
-                                  },
-                                  ),
+                                nmOfGames: nmOfGames,
+                                results: results,
+                                scoreBrain: scoreBrain,
+                                selectedSquad: selectedSquad,
+                                moveOneDown: (index, game) {
+                                  setState(() {
+                                    results = ImageToScores()
+                                        .moveOneDown(results, index, game);
+                                  });
+                                },
+                                moveOneUp: (index, game) {
+                                  //  setState(() {
+                                  //   results = ImageToScores().moveOneUp(results, index, game);
+                                  // });
+                                },
+                              ),
                             ])),
                   ),
                 ),
@@ -323,7 +344,6 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
         setState(() {
           results = picBrain.makeTable(blocks, bowlers);
         });
-
       } else {
         print(picBrain.isGoodToContinue(blocks));
       }

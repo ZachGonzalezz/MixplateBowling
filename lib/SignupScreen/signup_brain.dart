@@ -27,7 +27,7 @@ try {
 
 }
 
-on FirebaseAuthException catch (e)  {
+catch (e)  {
  returnError = e.toString();
 }
 return returnError;

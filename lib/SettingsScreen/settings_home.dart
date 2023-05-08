@@ -42,7 +42,6 @@ class _SettingsHomeState extends State<SettingsHome> {
         if (value['isAllDoubles'] == 1) {
           isAll = true;
         }
-     
       });
     });
 
@@ -55,7 +54,6 @@ class _SettingsHomeState extends State<SettingsHome> {
       to = toStamp.toDate();
       from = fromStamp.toDate();
       tournId = value['id'] ?? '';
-      
     });
     return;
   }
@@ -106,13 +104,20 @@ class _SettingsHomeState extends State<SettingsHome> {
                             height: 20,
                           ),
                           Builder(
-                          builder:(ctx) => CustomButton(
+                            builder: (ctx) => CustomButton(
                               buttonTitle: 'Save Settings',
                               length: 300,
                               onClicked: () {
-                               
-                                
-                                 Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                ScaffoldMessenger.of(ctx).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Saved',
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                );
                                 brain.saveHomeSettings();
                               },
                             ),
@@ -205,9 +210,7 @@ class _SettingsHomeState extends State<SettingsHome> {
                                           .toInt())
                             ],
                           ),
-                          SizedBox(
-                            height: 30
-                          ),
+                          SizedBox(height: 30),
                           TextButton(
                             onPressed: () {
                               showDialog(
@@ -216,20 +219,23 @@ class _SettingsHomeState extends State<SettingsHome> {
                             },
                             child: Text('Import Bowlers'),
                           ),
-                          SizedBox(
-                            height: 30
-                          ),
-                            TextButton(
+                          SizedBox(height: 30),
+                          TextButton(
                             onPressed: () {
                               showDialog(
                                   context: context,
-                                  builder: (context) => SharePopUp(emailsToSendTo: sharedWith, name:  name, to:  to, from: from, isTournamnetCreatedAlready: true, id: tournId,));
+                                  builder: (context) => SharePopUp(
+                                        emailsToSendTo: sharedWith,
+                                        name: name,
+                                        to: to,
+                                        from: from,
+                                        isTournamnetCreatedAlready: true,
+                                        id: tournId,
+                                      ));
                             },
                             child: Text('Share'),
                           ),
-                            SizedBox(
-                            height: 30
-                          ),
+                          SizedBox(height: 30),
                         ])),
                   ),
                 ),

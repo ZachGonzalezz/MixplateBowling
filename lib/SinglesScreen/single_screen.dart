@@ -140,7 +140,7 @@ class _SingleScoreScreenState extends State<SingleScoreScreen> {
                                   length: 300,
                                   onClicked: () {
                                     scoreBrain.bowlers = [widget.bowler];
-                            Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                        ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
                                     scoreBrain.saveScores();
                                     Navigator.popAndPushNamed(context, Constants.searchSingles);
                                   },

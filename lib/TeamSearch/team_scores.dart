@@ -166,7 +166,7 @@ class _TeamScoreScreenState extends State<TeamScoreScreen> {
                                   length: 300,
                                   onClicked: () {
                                     scoreBrain.saveScores();
-                                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                                    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
                                     Navigator.popAndPushNamed(context, Constants.teamSearch);
                                   },
                                 ),

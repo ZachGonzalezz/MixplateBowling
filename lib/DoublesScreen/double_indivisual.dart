@@ -133,7 +133,7 @@ class _DoubleScoreScreenState extends State<DoubleScoreScreen> {
                                   buttonTitle: 'Update Info',
                                   length: 300,
                                   onClicked: () {
-                                    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
+                               ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text('Saved', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),),);
                             
                                     scoreBrain.bowlers = widget.bowler.bowlers;
                             

@@ -76,16 +76,18 @@ class _DivisionSettingsHomeState extends State<DivisionSettingsHome> {
                               buttonTitle: 'Save Settings',
                               length: 300,
                               onClicked: () {
-                                Scaffold.of(ctx).showSnackBar(
+                                ScaffoldMessenger.of(ctx).showSnackBar(
                                   SnackBar(
                                     content: Text(
                                       'Saved',
                                       style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w500),
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 );
+
                                 widget.brain!.saveDivisionSettings();
                               },
                             ),
