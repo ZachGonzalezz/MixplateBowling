@@ -160,7 +160,7 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                               .toInt()
                                               .toString();
                                       return GestureDetector(
-                                        onTap: (){
+                                        onTap: () {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -172,24 +172,37 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                         },
                                         child: ListTile(
                                           // onTap: () {
-                                            
+
                                           // },
                                           leading: SizedBox(
                                             width: 250,
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(results[index].firstName +
                                                     ' ' +
                                                     results[index].lastName),
-                                                                    
+
                                                 //this textfield allows us to change the average of the bowlers
                                                 SizedBox(
                                                   width: 50,
                                                   child: TextField(
                                                     controller: results[index]
                                                         .averageController,
+                                                    onSubmitted: (newAverage
+                                                    ) {
+                                                      if (double.tryParse(
+                                                              newAverage) !=
+                                                          null) {
+                                                        results[index]
+                                                            .saveNewAverage(
+                                                                double.parse(
+                                                                    newAverage));
+                                                      }
+                                                      setState(() {});
+                                                    },
                                                     onChanged: (newAverage) {
                                                       //makes sure average is a number so no issues if so saves it
                                                       if (double.tryParse(
@@ -202,6 +215,13 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                                       }
                                                     },
                                                   ),
+                                                ),
+                                                SizedBox(
+                                                  width: 50,
+                                                  child: Text(results[index]
+                                                      .findHandicap(
+                                                          outOf, percent)
+                                                      .toString()),
                                                 )
                                               ],
                                             ),
@@ -209,13 +229,14 @@ class _SearchBowlerScreenState extends State<SearchBowlerScreen> {
                                           trailing: IconButton(
                                               onPressed: () {
                                                 Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CreateNewBowlerScreen(
-                                                        bowlerInfo:
-                                                            results[index],
-                                                      )));
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CreateNewBowlerScreen(
+                                                              bowlerInfo:
+                                                                  results[
+                                                                      index],
+                                                            )));
                                               },
                                               icon: Icon(
                                                 MdiIcons.chevronRight,

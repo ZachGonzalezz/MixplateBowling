@@ -299,6 +299,7 @@ class Bowler {
   }
 
   void saveNewAverage(double newAverage) async {
+    average = newAverage;
     await Constants.getTournamentId();
 
     await FirebaseFirestore.instance
