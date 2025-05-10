@@ -91,7 +91,7 @@ class DoublePartner {
             Map<String, String>.from(data['divisions'] ?? {});
         Map<String, dynamic> scoresDB =
             Map<String, dynamic>.from(data['scores'] ?? {});
-        bool isMale = data['IsMale'] ?? false;
+        bool isMale = data['isMale'] ?? false;
         Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
         Map<String, dynamic> sidepotsDB = Map.from(data['userSidePots'] ?? {});
         Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});

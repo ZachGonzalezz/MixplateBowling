@@ -35,6 +35,20 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  void login(BuildContext context) {
+    LoginBrain.signInUser(email.text, password.text).then((errorCode) {
+      if (errorCode == '') {
+        Navigator.pushNamed(context, Constants.tournamentHome);
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text(errorCode),
+                ));
+      }
+    });
+  }
+
   TextEditingController email = TextEditingController();
 
   TextEditingController password = TextEditingController();
@@ -87,18 +101,34 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFieldCustom(
                           hintText: 'Email',
                           leftIcon: const Icon(Icons.email),
+                          onFieldSubmitted: (text) {
+                            login(context);
+                          },
                           ontyped: (text) {
                             email.text = text;
                           },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            return null;
+                          },
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
+                        const SizedBox(height: 30),
                         TextFieldCustom(
                           hintText: 'Password',
                           leftIcon: const Icon(Icons.lock),
                           ontyped: (text) {
                             password.text = text;
+                          },
+                          onFieldSubmitted: (text) {
+                            login(context);
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
                           },
                         ),
                         const SizedBox(
@@ -107,19 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         CustomButton(
                           buttonTitle: 'Login',
                           onClicked: () {
-                            LoginBrain.signInUser(email.text, password.text)
-                                .then((errorCode) {
-                              if (errorCode == '') {
-                                Navigator.pushNamed(
-                                    context, Constants.tournamentHome);
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          title: Text(errorCode),
-                                        ));
-                              }
-                            });
+                            login(context);
                           },
                         ),
                         const SizedBox(

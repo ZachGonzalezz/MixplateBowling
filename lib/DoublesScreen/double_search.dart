@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
 import 'package:loisbowlingwebsite/DoublesScreen/double_indivisual.dart';
@@ -30,6 +33,9 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
   int game = 1;
   List<String> divisions = ['No Division'];
 
+  List<String> doubleTypes = ['Mens', 'Ladies', 'Mixed'];
+  String selectedDoubleType = 'Mens';
+
   String selectedSquad = 'A';
   //this keeps track of which division is selecter per Squad sotred in {"A" : "A Singles (One Division)"}
   Map<String, String> selectedDivisions = {};
@@ -51,6 +57,49 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
     super.initState();
     loadTournamentSettings();
     loadBowlers();
+  }
+
+  _filterBowlersBased(String type) async {
+    resultsPartners = await DoubleSearchBrain()
+        .findDoublePartnes(bowlers, results, null, null);
+    resultsPartners.sort((a, b) => b.findTeamTotal(
+        outOf, percent, []).compareTo(a.findTeamTotal(outOf, percent, [])));
+    List<DoublePartners> partners = [];
+
+    for (var double in resultsPartners) {
+      try {
+        if (double.bowlers.length != 2) {
+          continue;
+        }
+        Bowler firstBowler = double.bowlers.first;
+        Bowler secondBowler = double.bowlers.last;
+
+        if (type == 'Mixed') {
+          if (firstBowler.isMale != secondBowler.isMale) {
+            partners.add(double);
+            continue;
+          }
+        }
+        if (type == 'Mens') {
+          if (firstBowler.isMale && secondBowler.isMale) {
+            partners.add(double);
+            continue;
+          }
+        }
+        if (type == 'Ladies') {
+          if (!firstBowler.isMale && !secondBowler.isMale) {
+            partners.add(double);
+            continue;
+          }
+        }
+      } catch (e) {
+        // Handle the error here
+        print('Error: $e');
+      }
+    }
+    setState(() {
+      resultsPartners = partners;
+    });
   }
 
   void loadBowlers() {
@@ -114,16 +163,73 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-
-                                   Align(
+                                Align(
                                     alignment: Alignment.topRight,
                                     child: TextButton(
-                                      child: Text(resultsPartners.length.toString() + ' Total Doubles', style: TextStyle(fontSize: 15,)),
-                                      onPressed: () {
-                                        
-                                      },
+                                      child: Text(
+                                          resultsPartners.length.toString() +
+                                              ' Total Doubles',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          )),
+                                      onPressed: () {},
                                     )),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      StringBuffer csvData = StringBuffer();
+                                      // Add headers, if needed
+                                      csvData.writeln(
+                                          "Bowler,Handicap,Score 1,Score 2,Score 3,Score 4,Scratch Total,Handicap Total");
 
+                                      double scratchTotal = 0;
+                                      double handicapTotal = 0;
+
+                                      results.forEach((element) {
+                                        csvData.writeln(
+                                            '${element.firstName} ${element.lastName},${element.findHandicap(outOf, percent)},${element.scores?['A']?['1']},${element.scores?['A']?['2']},${element.scores?['A']?['3']},${element.scores?['A']?['4']},${element.findScoreForSquad('A', outOf, percent, false, [
+                                              1,
+                                              2,
+                                              3
+                                            ])},${element.findScoreForSquad('A', outOf, percent, true, [
+                                              1,
+                                              2,
+                                              3
+                                            ])}');
+                                      });
+
+                                      // Convert CSV string to UTF-8 encoded Blob
+                                      final bytes =
+                                          utf8.encode(csvData.toString());
+                                      // Correctly specify only the MIME type for the Blob
+                                      final blob =
+                                          html.Blob([bytes], 'text/csv');
+
+                                      // Create a URL for the Blob
+                                      final url =
+                                          html.Url.createObjectUrlFromBlob(
+                                              blob);
+
+                                      // Create an anchor element and trigger download
+                                      final anchor =
+                                          html.AnchorElement(href: url)
+                                            ..setAttribute("download",
+                                                "scores_${DateTime.now().toIso8601String()}.csv")
+                                            ..click();
+
+                                      // Clean up the object URL
+                                      html.Url.revokeObjectUrl(url);
+                                    },
+                                    child: Text(
+                                      'Download Spreadsheet',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
                                 Align(
                                     alignment: Alignment.topRight,
                                     child: TextButton(
@@ -194,6 +300,28 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                         selectedSquad = squad;
                                       });
                                     }),
+
+                                SizedBox(
+                                  width: 30,
+                                ),
+
+                                //double type dropdown
+
+                                DropdownButton(
+                                  value: selectedDoubleType,
+                                  items: doubleTypes
+                                      .map((String type) => DropdownMenuItem(
+                                            value: type,
+                                            child: Text(type),
+                                          ))
+                                      .toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedDoubleType = newValue!;
+                                      _filterBowlersBased(selectedDoubleType);
+                                    });
+                                  },
+                                ),
                               ],
                             ),
                             SizedBox(height: 30),
@@ -236,8 +364,9 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       DoubleScoreScreen(
-                                                          bowler: resultsPartners[
-                                                              index])));
+                                                          bowler:
+                                                              resultsPartners[
+                                                                  index])));
                                         },
                                         leading: SizedBox(
                                             width: 700,
@@ -257,8 +386,8 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                                 SizedBox(
                                                   width: 20,
                                                 ),
-                                                Text(
-                                                    resultsPartners[index].squad),
+                                                Text(resultsPartners[index]
+                                                    .squad),
                                                 SizedBox(
                                                   width: 20,
                                                 ),
@@ -266,7 +395,9 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                                   width: 20,
                                                 ),
                                                 Text(resultsPartners[index]
-                                                    .findTeamTotal(outOf, percent,
+                                                    .findTeamTotal(
+                                                        outOf,
+                                                        percent,
                                                         []).toString()),
                                                 resultsPartners[index].isNoError(
                                                             selectedSquad) ==
@@ -274,13 +405,12 @@ class _SearchDoublesScreenState extends State<SearchDoublesScreen> {
                                                     ? SizedBox()
                                                     : IconButton(
                                                         onPressed: () {
-                                                          BasicPopUp()
-                                                              .showBasicDialog(
-                                                                  context,
-                                                                  resultsPartners[
-                                                                          index]
-                                                                      .isNoError(
-                                                                          selectedSquad));
+                                                          BasicPopUp().showBasicDialog(
+                                                              context,
+                                                              resultsPartners[
+                                                                      index]
+                                                                  .isNoError(
+                                                                      selectedSquad));
                                                         },
                                                         icon: Icon(
                                                           Icons.warning,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loisbowlingwebsite/constants.dart';
 
@@ -58,13 +60,12 @@ class SettingsBrain {
         .then((doc) {
       Map<String, dynamic> mainSettings = doc.data() as Map<String, dynamic>;
       returnData = {};
-       Map<String, int>  intReturn =  Map<String, int>.from(mainSettings['Basic Settings'] ?? {});
+      Map<String, int> intReturn =
+          Map<String, int>.from(mainSettings['Basic Settings'] ?? {});
 
-       intReturn.forEach((key, value) {
-         returnData[key] = value.toDouble();
-       });
-
-          
+      intReturn.forEach((key, value) {
+        returnData[key] = value.toDouble();
+      });
     });
 
     return returnData;
@@ -79,7 +80,6 @@ class SettingsBrain {
         .doc(Constants.currentIdForTournament)
         .get()
         .then((doc) {
-     
       Map<String, dynamic> dataReturned = doc.data() as Map<String, dynamic>;
       dataReturned['id'] = doc.id;
       returnData = dataReturned;
@@ -94,11 +94,9 @@ class SettingsBrain {
       return 'Singles';
     } else if (title.contains('Doubles')) {
       return 'Doubles';
-    } 
-    else if (title.contains('Senior')) {
+    } else if (title.contains('Senior')) {
       return 'Senior';
-    } 
-    else {
+    } else {
       return 'Team';
     }
   }
@@ -814,21 +812,25 @@ class SettingsBrain {
     });
   }
 
-  void shareWithBowlers(List<String> emails, String name, DateTime to, DateTime from, String docId) async{
-      
+  void shareWithBowlers(List<String> emails, String name, DateTime to,
+      DateTime from, String docId) async {
+    await Future.forEach(emails, (String email) async {
+      String trimmedEmail = email.replaceAll(' ', ''); // Remove all spaces
+      String lowercaseEmail = trimmedEmail.toLowerCase();
 
-       
-       await Future.forEach(emails, (String email)  async {
+      bool isValidEmail = RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+          .hasMatch(lowercaseEmail);
 
+      if (!isValidEmail) {
+        return;
+      }
 
-
-DocumentReference id =  FirebaseFirestore.instance.collection('Users').doc(email.replaceAll(' ', '')).collection('Tournaments').doc(docId);
-
-          print(id.id);
-     //     Users/loistsunoda2@gmail.com/Tournaments/Users/1@2.com/Tournaments/NbgWklKFMz8IdWbhcoGT
-
-
-          id.set({
+      DocumentReference id = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(lowercaseEmail)
+          .collection('Tournaments')
+          .doc(docId);
+      id.set({
         'to': to,
         'from': from,
         'name': name,
@@ -839,8 +841,7 @@ DocumentReference id =  FirebaseFirestore.instance.collection('Users').doc(email
         //if it is shared then we will use this email in doucment address user/thisId/tourn/thisTournId (can do this bc we made them identical)
         'owner': Constants.currentSignedInEmail
       });
-
-      
+      log('Tournament Shared with $email');
     });
-}
+  }
 }

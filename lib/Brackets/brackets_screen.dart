@@ -146,7 +146,7 @@ class _BracketScreenState extends State<BracketScreen> {
                                                             context, bowlers);
                                                   },
                                                   child: Text(
-                                                      'I am taking that risk!!! (Long Press to Confirm)'))
+                                                      'Confirm (Long Press to Confirm)'))
                                             ],
                                           ));
                                 }),

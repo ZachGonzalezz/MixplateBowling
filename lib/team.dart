@@ -37,7 +37,7 @@ class Team {
             Map<String, String>.from(data['divisions'] ?? {});
         Map<String, dynamic> scoresDB =
             Map<String, dynamic>.from(data['scores'] ?? {});
-        bool isMale = data['IsMale'] ?? false;
+        bool isMale = data['isMale'] ?? false;
         Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
 
         Map<String, Map<String, int>> scores = {};

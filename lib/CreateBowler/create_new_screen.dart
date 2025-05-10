@@ -79,6 +79,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
               widget.bowlerInfo!.firstName.toString();
           brain.lastNameController.text = widget.bowlerInfo!.lastName;
           brain.isMale = widget.bowlerInfo!.isMale;
+
           brain.selectedSinglesDivisions = widget.bowlerInfo!.divisions;
           brain.laneNum.text = widget.bowlerInfo!.laneNUm;
           brain.usbcNumController.text = widget.bowlerInfo!.uscbNum;
@@ -514,7 +515,7 @@ class _CreateNewBowlerScreenState extends State<CreateNewBowlerScreen> {
                                   onClicked: () async {
                                     //if returns '' no errors else display error code do not save user to db incomplete
                                     String error = brain.isGoodToSavePerson();
-                                ScaffoldMessenger.of(ctx).showSnackBar(
+                                    ScaffoldMessenger.of(ctx).showSnackBar(
                                       SnackBar(
                                         content: Text(
                                           'Saved',

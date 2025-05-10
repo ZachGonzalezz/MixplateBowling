@@ -147,7 +147,7 @@ class Bowler {
           Map<String, String>.from(data['divisions'] ?? {});
       Map<String, dynamic> scoresDB =
           Map<String, dynamic>.from(data['scores'] ?? {});
-      bool isMale = data['IsMale'] ?? false;
+      bool isMale = data['isMale'] ?? false;
       Map<String, dynamic> partners = Map.from(data['doublePartners'] ?? {});
       Map<String, dynamic> sidepotsDB = Map.from(data['userSidePots'] ?? {});
       Map<String, dynamic> financesDB = Map.from(data['financesPaid'] ?? {});
@@ -210,10 +210,10 @@ class Bowler {
     double diff = outOf - average;
     double result = (percent / 100) * diff;
     //TODO: Handicap Round Issue
-    int handicap = result.floor();
-    this.handicap = handicap.toDouble();
+    int handicapResult = result.floor();
+    this.handicap = handicapResult.toDouble();
     // print(result);
-    return handicap;
+    return handicapResult;
   }
 
   findBestSquadScore() {

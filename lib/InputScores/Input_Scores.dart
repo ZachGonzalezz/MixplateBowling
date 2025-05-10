@@ -18,6 +18,7 @@ import 'package:loisbowlingwebsite/universal_ui.dart/division_picker.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/search_bar.dart';
 import 'package:loisbowlingwebsite/universal_ui.dart/squad_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:universal_html/html.dart' as html;
 
 class InputScoreScreen extends StatefulWidget {
   const InputScoreScreen({Key? key}) : super(key: key);
@@ -116,6 +117,59 @@ class _InputScoreScreenState extends State<InputScoreScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.max,
                             children: [
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    StringBuffer csvData = StringBuffer();
+                                    // Add headers, if needed
+                                    csvData.writeln(
+                                        "Bowler,Handicap,Score 1,Score 2,Score 3,Score 4,Scratch Total,Handicap Total");
+
+                                    double scratchTotal = 0;
+                                    double handicapTotal = 0;
+
+                                    results.forEach((element) {
+                                      csvData.writeln(
+                                          '${element.firstName} ${element.lastName},${element.findHandicap(outOf, percent)},${element.scores?['A']?['1']},${element.scores?['A']?['2']},${element.scores?['A']?['3']},${element.scores?['A']?['4']},${element.findScoreForSquad('A', outOf, percent, false, [
+                                            1,
+                                            2,
+                                            3
+                                          ])},${element.findScoreForSquad('A', outOf, percent, true, [
+                                            1,
+                                            2,
+                                            3
+                                          ])}');
+                                    });
+
+                                    // Convert CSV string to UTF-8 encoded Blob
+                                    final bytes =
+                                        utf8.encode(csvData.toString());
+                                    // Correctly specify only the MIME type for the Blob
+                                    final blob = html.Blob([bytes], 'text/csv');
+
+                                    // Create a URL for the Blob
+                                    final url =
+                                        html.Url.createObjectUrlFromBlob(blob);
+
+                                    // Create an anchor element and trigger download
+                                    final anchor = html.AnchorElement(href: url)
+                                      ..setAttribute("download",
+                                          "scores_${DateTime.now().toIso8601String()}.csv")
+                                      ..click();
+
+                                    // Clean up the object URL
+                                    html.Url.revokeObjectUrl(url);
+                                  },
+                                  child: Text(
+                                    'Download Spreadsheet',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
                               Responsive.isMobileOs(context)
                                   ? Align(
                                       alignment: Alignment.centerLeft,

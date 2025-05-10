@@ -9,28 +9,35 @@ class BracketBrain {
   int bracketSize = 8;
   int maxBracket = 100;
 
-  findWinnersOfBrackets(
-      List<Bracket> brackets, BuildContext context, List<Bowler> bowlersMain, int outof, int percent) {
+// Find the winners of the brackets
+// Pay out 25 for first place and 10 for second place
+// Determine the winners of the brackets on 3rd game
+  findWinnersOfBrackets(List<Bracket> brackets, BuildContext context,
+      List<Bowler> bowlersMain, int outof, int percent) {
     String winnersString = '';
 
     brackets.sort((a, b) => a.division.compareTo(b.division));
     for (Bracket bracket in brackets) {
       winnersString += '\n';
       winnersString += '\n';
-      List<Bowler> bowlers = bracket.findWinnersOfGametwo(bracket.division == 'Handicap', outof, percent);
-      bowlers.sort(
-          (a, b) => (a.scores!['A']!['3']!).compareTo((b.scores!['A']!['3']!)));
+      List<Bowler> bowlers = bracket.findWinnersOfGametwo(
+          bracket.division == 'Handicap', outof, percent);
+      bowlers.sort((a, b) =>
+          (a.scores?['A']?['3'] ?? 0).compareTo((b.scores!['A']?['3'] ?? 0)));
       int place = 1;
       for (Bowler bowler in bowlers.reversed.toList()) {
+        winnersString += 'Bracket ${bracket.id} ${bracket.division} Division\n';
         if (place == 1) {
           int indexOfBowler = bowlersMain.indexOf(bowler);
           bowlersMain[indexOfBowler].bracketWinnings += 25;
 
-          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$25\n';
+          winnersString +=
+              bowler.firstName + ' ' + bowler.lastName + ': \$25\n';
         } else if (place == 2) {
           int indexOfBowler = bowlersMain.indexOf(bowler);
-         bowlersMain[indexOfBowler].bracketWinnings += 10;
-          winnersString += bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
+          bowlersMain[indexOfBowler].bracketWinnings += 10;
+          winnersString +=
+              bowler.firstName + ' ' + bowler.lastName + ': \$10\n';
         } else if (place == 3) {}
         place += 1;
       }
@@ -46,8 +53,17 @@ class BracketBrain {
     winnersString += '\n';
     winnersString += '\n';
 
-    for(Bowler bowler in bowlersMain){
-       winnersString += bowler.firstName + ' ' + bowler.lastName + ':' +  bowler.bracketWinnings.toString() + '\n';
+    //exclude 0 from the list
+    bowlersMain =
+        bowlersMain.where((bowler) => bowler.bracketWinnings != 0).toList();
+
+    for (Bowler bowler in bowlersMain) {
+      winnersString += bowler.firstName +
+          ' ' +
+          bowler.lastName +
+          ':' +
+          (bowler.bracketWinnings / 2).toString() +
+          '\n';
     }
 
     showDialog(
@@ -59,6 +75,13 @@ class BracketBrain {
         });
   }
 
+// Generate the brackets
+// Sort the bowlers by the number of brackets they are in
+// Shuffle the bowlers
+// For each bowler, add them to a bracket
+// If the bracket is full, add them to the next bracket
+// If there is no bracket for them, create a new bracket
+// Save the brackets to the database
   List<Bracket> generateBrackets(BuildContext context, List<Bowler> bowlers) {
     bowlers.sort((a, b) => (a.numOfHandicapBrackets + a.numOfScratchBrackets)
         .compareTo(b.numOfHandicapBrackets + a.numOfScratchBrackets));
@@ -125,6 +148,10 @@ class BracketBrain {
     return brackets;
   }
 
+// Delete the old brackets
+// Get the current tournament id
+// Get the brackets from the database
+// Delete the brackets
   Future<void> deleteOldBrackets(List<Bracket> brackets) async {
     await Constants.getTournamentId();
 
@@ -139,6 +166,7 @@ class BracketBrain {
     await batch.commit();
   }
 
+// Save the brackets to the database
   void saveBracketsDb(List<Bracket> brackets) async {
     //delete old one to clear brackets
     await deleteOldBrackets(brackets);
@@ -151,6 +179,7 @@ class BracketBrain {
     }
   }
 
+  // Save the bracket to the database
   void saveBracketToDb(Bracket bracket, int index) {
     final instance = FirebaseFirestore.instance;
     //this randomizes people in the bracket
@@ -165,6 +194,7 @@ class BracketBrain {
     });
   }
 
+  // Get the brackets from the database
   Future<List<Bracket>> getBrackets(List<Bowler> bowlers) async {
     await Constants.getTournamentId();
     final instance = FirebaseFirestore.instance;
@@ -199,6 +229,9 @@ class BracketBrain {
     return brackets;
   }
 
+// Find the index of the bracket to add the bowler to
+// If the bowler is not in the bracket and the bracket is not full, return the index
+// If the bowler is in the bracket, return -1
   int findIndexOfBracketToAdd(
       List<Bracket> brackets, Bowler bowler, String division) {
     int index = 0;
@@ -213,6 +246,13 @@ class BracketBrain {
     return -1;
   }
 
+// Generate the success metrics
+// Find the number of brackets made
+// Find the number of handicap brackets made
+// Find the number of scratch brackets made
+// Find the total money from brackets
+// Find the total money from handicap brackets
+// Find the total money from scratch brackets
   String successMetrics(List<Bracket> brackets) {
     String metrics = '\nSuccess\n\n\n';
 

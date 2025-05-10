@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:loisbowlingwebsite/AddDoublePartner/partner_brain.dart';
@@ -92,6 +94,7 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Sanity Check");
     return Scaffold(
       body: ScreenLayout(
         selected: 'Create Bowler',
@@ -157,115 +160,105 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                               height: teamSize * 75,
                               width: MediaQuery.of(context).size.width * 0.25,
                               child: ListView.builder(
-                                  itemCount: teamSize,
-                                  itemBuilder: (context, index) {
-                                    return SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.1,
-                                        child: Column(
+                                itemCount: teamSize,
+                                itemBuilder: (context, index) {
+                                  print("Index: " + index.toString());
+                                  final TextEditingController controller =
+                                      TextEditingController(
+                                    text: TeamBrain().displayName(
+                                      bowler: teamMates[index.toString()],
+                                    ),
+                                  );
+
+                                  return SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.1,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text((index + 1).toString()),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.22,
-                                                  child: TypeAheadField<Bowler>(
-                                                    suggestionsCallback:
-                                                        (text) {
-                                                      return DoublePartner
-                                                          .filterBowlers(
-                                                              bowlers: bowlers,
-                                                              search: text,
-                                                              outOf: outOf,
-                                                              percent: percent);
-                                                    },
-                                                    itemBuilder:
-                                                        (context, bowler) {
-                                                      return Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(12.0),
-                                                            child: Text(
-                                                              bowler.firstName +
-                                                                  ' ' +
-                                                                  bowler
-                                                                      .lastName,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 0,
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                    onSuggestionSelected:
-                                                        (bowlerSelected) {
-                                                      print('hi');
-                                                      // print(widget.teamData!.bowlerIDs);
-                                                      setState(() {
-                                                        teamMates[index
-                                                                .toString()] =
-                                                            bowlerSelected;
-                                                        if (widget.teamData !=
-                                                            null) {
-                                                          widget.teamData!
-                                                                      .bowlerIDs[
-                                                                  index
-                                                                      .toString()] =
-                                                              bowlerSelected
-                                                                  .uniqueId;
-                                                        }
-                                                      });
-                                                      print(widget
-                                                          .teamData!.bowlerIDs);
-                                                    },
-                                                    textFieldConfiguration:
-                                                        TextFieldConfiguration(
-                                                      controller: TextEditingController(
-                                                          text: TeamBrain().displayName(
-                                                              bowler: teamMates[
-                                                                  index
-                                                                      .toString()])),
-                                                      decoration: InputDecoration(
-                                                          hintText:
-                                                              'Team Member ' +
-                                                                  (index + 1)
-                                                                      .toString(),
-                                                          border: OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          fillColor:
-                                                              Colors.white,
-                                                          filled: true),
+                                            Text((index + 1).toString()),
+                                            const SizedBox(width: 20),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.22,
+                                              child: TypeAheadField<Bowler>(
+                                                
+                                                suggestionsCallback: (text) {
+                                                  return DoublePartner
+                                                      .filterBowlers(
+                                                    bowlers: bowlers,
+                                                    search: text,
+                                                    outOf: outOf,
+                                                    percent: percent,
+                                                  );
+                                                },
+                                                itemBuilder: (context, bowler) {
+                                                  return ListTile(
+                                                      title: Text(
+                                                          bowler.firstName +
+                                                              ' ' +
+                                                              bowler.lastName));
+                                                },
+                                                onSuggestionSelected:
+                                                    (bowlerSelected) {
+                                                  log("Test");
+                                                  print("Bowlers Selected" +
+                                                      bowlerSelected
+                                                          .toString());
+                                                  try {
+                                                    setState(() {
+                                                      teamMates[index
+                                                              .toString()] =
+                                                          bowlerSelected;
+                                                      if (widget.teamData !=
+                                                          null) {
+                                                        widget.teamData!
+                                                                    .bowlerIDs[
+                                                                index
+                                                                    .toString()] =
+                                                            bowlerSelected
+                                                                .uniqueId;
+                                                      }
+                                                      controller
+                                                          .text = bowlerSelected
+                                                              .firstName +
+                                                          ' ' +
+                                                          bowlerSelected
+                                                              .lastName; // Update the text field
+                                                    });
+                                                  } catch (e) {
+                                                    print(e);
+                                                  }
+                                                },
+                                                textFieldConfiguration:
+                                                    TextFieldConfiguration(
+                                                  controller: controller,
+                                                  decoration: InputDecoration(
+                                                    hintText: 'Team Member ' +
+                                                        (index + 1).toString(),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
                                                     ),
+                                                    fillColor: Colors.white,
+                                                    filled: true,
                                                   ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                            SizedBox(
-                                              height: 20,
-                                            )
                                           ],
-                                        ));
-                                  }),
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
 
                             SizedBox(
@@ -346,8 +339,8 @@ class _TeamCreateScreenState extends State<TeamCreateScreen> {
                             Center(
                               child: CustomButton(
                                   buttonTitle: 'Delete',
-                                  onClicked: () async{
-                                  await  TeamBrain()
+                                  onClicked: () async {
+                                    await TeamBrain()
                                         .deleteTeam(widget.teamData?.id ?? '');
                                     Navigator.pushNamed(
                                         context, Constants.teamSearch);

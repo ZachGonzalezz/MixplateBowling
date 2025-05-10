@@ -659,7 +659,7 @@ class PDFBrain {
                 
                 String moneyAdd = '';
                 if(bowler == bowlersWhoMadeIt[indexOfBestBowler]){
-                  moneyAdd = '    \$15';
+                  moneyAdd = '    \$10';
                 }
 
                 double scoreHandicap = 0;
